@@ -1,6 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 
-const Category = ({ category, active, onClick }) => {
+export default function Category({ category, active, onClick }) {
   const categoryClass = active
     ? "bg-black text-white"
     : "bg-gray-200 text-blue-gray-800";
@@ -13,6 +13,4 @@ const Category = ({ category, active, onClick }) => {
       <Typography variant="h6">{category}</Typography>
     </div>
   );
-};
-
-export default Category;
+}

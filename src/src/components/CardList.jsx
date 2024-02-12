@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-// Ganti cara mengimpor komponen dari @material-tailwind/react
 import {
   Card,
   CardHeader,
@@ -18,7 +17,7 @@ const CardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const masjidData = await fetchMasjidData(); // Memanggil API data masjid
+        const masjidData = await fetchMasjidData();
         setMasjids(masjidData);
       } catch (error) {
         console.error("Error fetching masjid data:", error);
@@ -31,23 +30,16 @@ const CardList = () => {
   const handleUpdateMasjid = async (id, newData) => {
     try {
       await updateMasjidData(id, newData); // Menggunakan fungsi updateMasjidData dari api.js
-      const updatedData = await fetchMasjidData(); // Menggunakan fungsi fetchMasjidData dari api.js
-      setMasjids(updatedData);
+      const updatedData = await fetchMasjidData();
     } catch (error) {
       console.error(`Error updating masjid data with ID ${id}:`, error);
     }
   };
 
   return (
-    <div className="mx-auto max-w-screen-xl py-2">
-      <div className="flex flex-col">
-        <h1 className="text-3xl font-bold mb-4">Blog</h1>
-        <p className="text-gray-600 mb-8 pb-2">
-          Here, we share about mosques and the history of mosques, which will
-          broaden your insight.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <div className="mx-auto max-w-screen-xl">
+      <div className="flex flex-col ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-14 py-16">
           {masjids.map((masjid) => (
             <Card key={masjid.id} className="w-full">
               <CardHeader color="blue-gray">

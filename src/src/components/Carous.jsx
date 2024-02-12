@@ -23,7 +23,7 @@ const Carous = () => {
         "https://static.republika.co.id/uploads/images/xlarge/masjid-jami-al-anwar-dahulu-pernah-menjadi-markas-para-pejuang_220903192743-865.jpg",
       country: "Indonesia",
     },
-    // Add more entries as needed
+    
   ];
 
   return (

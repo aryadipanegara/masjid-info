@@ -1,16 +1,16 @@
 /* eslint-disable react/no-unknown-property */
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Navbar,
-  MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { FaHome, FaFileAlt, FaInfoCircle, FaSearch } from "react-icons/fa";
-
-export function NavbarWithSearch() {
+import { FaSearch } from "react-icons/fa";
+const NavbarWithSearch = () => {
   const [openNav, setOpenNav] = React.useState(
     sessionStorage.getItem("openNav") === "true" || false
   );
@@ -38,31 +38,29 @@ export function NavbarWithSearch() {
           activePage === "home" && "bg-blue-gray-100"
         }`}
       >
-        <FaHome size={16} />
-        <a
-          href="#"
+        <Link
+          to="/home"
           className="flex items-center"
           onClick={() => setActivePage("home")}
         >
           Home
-        </a>
+        </Link>
       </Typography>
       <Typography
         as="li"
         variant="small"
-        color={activePage === "article" ? "black" : "blue-gray"}
+        color={activePage === "artikel" ? "black" : "blue-gray"}
         className={`flex items-center gap-x-2 p-1 font-medium rounded-md ${
-          activePage === "article" && "bg-blue-gray-100"
+          activePage === "artikel" && "bg-blue-gray-100"
         }`}
       >
-        <FaFileAlt size={16} />
-        <a
-          href="#"
+        <Link
+          to="/artikel"
           className="flex items-center"
-          onClick={() => setActivePage("article")}
+          onClick={() => setActivePage("artikel")}
         >
           Article
-        </a>
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -72,14 +70,13 @@ export function NavbarWithSearch() {
           activePage === "about" && "bg-blue-gray-100"
         }`}
       >
-        <FaInfoCircle size={16} />
-        <a
-          href="#"
+        <Link
+          to="/about"
           className="flex items-center"
           onClick={() => setActivePage("about")}
         >
           About
-        </a>
+        </Link>
       </Typography>
     </ul>
   );
@@ -89,7 +86,7 @@ export function NavbarWithSearch() {
       <div className="container mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
-          href="#"
+          to="/"
           className="mr-4 cursor-pointer py-1.5 font-medium"
         >
           Masjid Info
@@ -141,7 +138,7 @@ export function NavbarWithSearch() {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
+      <Collapse open={openNav}>
         <div className="container mx-auto">
           {navList}
           <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center">
@@ -166,7 +163,9 @@ export function NavbarWithSearch() {
             </Button>
           </div>
         </div>
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
-}
+};
+
+export default NavbarWithSearch;

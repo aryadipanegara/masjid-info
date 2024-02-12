@@ -1,21 +1,11 @@
-import CardList from "./src/components/CardList";
-import Carous from "./src/components/Carousel";
-import Pagination from "./src/components/Pagination";
-import { FooterWithSocialLinks } from "./src/components/footer/Footer";
-import { NavbarWithSearch } from "./src/components/navbar/Navbar";
+// src/App.jsx
+import { BrowserRouter } from "react-router-dom";
+import Router from "./src/router/route";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <div>
-        <NavbarWithSearch />
-        <Carous />
-        <CardList />
-        <Pagination />
-        <FooterWithSocialLinks />
-      </div>
-    </>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   );
 }
-
-export default App;

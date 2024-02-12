@@ -2,7 +2,7 @@ import React from "react";
 import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-const Pagination = () => {
+export default function Pagination() {
   const [active, setActive] = React.useState(1);
 
   const getItemProps = (index) => ({
@@ -51,6 +51,4 @@ const Pagination = () => {
       </Button>
     </div>
   );
-};
-
-export default Pagination;
+}
