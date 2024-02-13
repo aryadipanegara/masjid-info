@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
 import { fetchMasjidData } from "../utils/api";
 
 const ArticlePage = () => {
-  const { articleId } = useParams();
+  const { ID } = useParams();
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const masjidData = await fetchMasjidData();
-        const foundArticle = masjidData.find((masjid) => masjid.id);
+        const foundArticle = masjidData.find((masjid) => masjid.id === ID);
 
         if (foundArticle) {
           setArticle(foundArticle);
@@ -24,7 +24,7 @@ const ArticlePage = () => {
     };
 
     fetchData();
-  }, [articleId]);
+  }, [ID]);
 
   if (!article) {
     return <div>Loading...</div>;
@@ -47,7 +47,6 @@ const ArticlePage = () => {
       <Typography variant="subtitle" color="gray" className="mb-2">
         Tanggal Dibuat: {article.tanggal_dibuat}
       </Typography>
-      {/* Tambahan informasi lainnya sesuai dengan struktur API */}
     </div>
   );
 };

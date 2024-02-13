@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://65c376a039055e7482c0f3a2.mockapi.io";
+const baseURL = "https://65c376a039055e7482c0f3a2.mockapi.io/";
 
 const api = axios.create({
   baseURL,
@@ -15,6 +15,7 @@ export const fetchMasjidData = async () => {
     throw error;
   }
 };
+
 
 export const updateMasjidData = async (id, newData) => {
   try {

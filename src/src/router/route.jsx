@@ -12,6 +12,7 @@ const index = () => {
     <>
       <NavbarWithSearch />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/artikel" element={<Artikel />} />
         <Route path="/about" element={<About />} />

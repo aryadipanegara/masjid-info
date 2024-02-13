@@ -6,7 +6,6 @@ import {
   CardBody,
   Typography,
 } from "@material-tailwind/react";
-import { fetchMasjidData, updateMasjidData } from "../utils/api";
 
 const CardList = () => {
   const navigate = useNavigate();
@@ -15,7 +14,8 @@ const CardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const masjidData = await fetchMasjidData();
+        const response = await fetch("http://localhost:3001/masjid");
+        const masjidData = await response.json();
         setMasjids(masjidData);
       } catch (error) {
         console.error("Error fetching masjid data:", error);
@@ -24,15 +24,6 @@ const CardList = () => {
 
     fetchData();
   }, []);
-
-  const handleUpdateMasjid = async (id, newData) => {
-    try {
-      await updateMasjidData(id, newData);
-      const updatedData = await fetchMasjidData();
-    } catch (error) {
-      console.error(`Error updating masjid data with ID ${id}:`, error);
-    }
-  };
 
   return (
     <div className="mx-auto max-w-screen-xl">
