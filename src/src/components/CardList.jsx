@@ -1,3 +1,4 @@
+// Other imports...
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -25,6 +26,14 @@ const CardList = () => {
     fetchData();
   }, []);
 
+  // Fungsi untuk memotong teks sejarah menjadi 20 kata
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
+
   return (
     <div className="mx-auto max-w-screen-xl">
       <div className="flex flex-col">
@@ -38,7 +47,9 @@ const CardList = () => {
               <CardHeader color="blue-gray">
                 <img
                   src={
-                    masjid.foto_masjid.length > 0 ? masjid.foto_masjid[0] : ""
+                    masjid.foto_masjid.length > 0
+                      ? masjid.foto_masjid[0].url1
+                      : ""
                   }
                   alt={`Masjid ${masjid.id}`}
                   className="w-full h-40 object-cover rounded-t-lg"
@@ -49,7 +60,7 @@ const CardList = () => {
                   {masjid.nama_masjid}
                 </Typography>
                 <Typography className="text-gray-700 mb-4">
-                  {masjid.sejarah}
+                  {truncateText(masjid.sejarah, 10)}
                 </Typography>
               </CardBody>
             </Card>

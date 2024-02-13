@@ -12,18 +12,18 @@ const currentYear = new Date().getFullYear();
 
 const FooterLinks = () => {
   return (
-    <footer className="relative w-full">
-      <div className="mx-auto max-w-screen-xl  py-2">
+    <footer className="relative w-full bottom-0">
+      <div className=" py-2">
         <div className="mt-12 flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
           <Typography
             variant="small"
-            className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0"
+            className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0 px-5"
           >
             &copy; {currentYear}{" "}
             <a href="https://material-tailwind.com/">Masjid info</a>. All Rights
             Reserved.
           </Typography>
-          <div className="flex gap-4 text-blue-gray-900 sm:justify-center">
+          <div className="flex gap-4 text-blue-gray-900 sm:justify-center px-5">
             <Typography
               as="a"
               href="#"
