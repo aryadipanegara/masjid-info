@@ -8,7 +8,7 @@ export default function Pagination() {
   const getItemProps = (index) => ({
     variant: active === index ? "filled" : "text",
     color: "gray",
-    onclick: () => setActive(index),
+    onClick: () => setActive(index),
   });
 
   const next = () => {
@@ -34,11 +34,11 @@ export default function Pagination() {
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
       </Button>
       <div className="flex items-center gap-2">
-        <IconButton {...getItemProps(1)}>1</IconButton>
-        <IconButton {...getItemProps(2)}>2</IconButton>
-        <IconButton {...getItemProps(3)}>3</IconButton>
-        <IconButton {...getItemProps(4)}>4</IconButton>
-        <IconButton {...getItemProps(5)}>5</IconButton>
+        {[1, 2, 3].map((index) => (
+          <IconButton key={index} {...getItemProps(index)}>
+            {index}
+          </IconButton>
+        ))}
       </div>
       <Button
         variant="text"

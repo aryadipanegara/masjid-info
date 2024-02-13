@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div>
       <Carous />
-      <div className="mx-auto max-w-screen-xl py-2 max-w-full">
+      <div className="mx-auto max-w-screen-xl p-2 lg:py-4">
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold mb-4">Blog</h1>
           <p className="text-gray-600">

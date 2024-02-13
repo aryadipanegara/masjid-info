@@ -1,16 +1,17 @@
+// Other imports...
 import { FaGithub, FaInstagram, FaTiktok, FaLinkedin } from "react-icons/fa";
 
 const About = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="flex space-x-8">
+    <div className="flex justify-center items-center min-h-screen overflow-y-hidden">
+      <div className="flex flex-col space-y-8 sm:space-y-0 sm:flex-row sm:space-x-8">
         {/* Card 1 */}
         <div className="bg-white rounded-lg shadow-md p-8 max-w-md">
           <div className="flex items-center justify-center mb-4">
             <img
               src="/src/assets/hendra gunawan.jpeg"
               alt="Profile Picture 1"
-              className=" w-28  h-28 rounded-full"
+              className="w-28 h-28 rounded-full"
             />
           </div>
           <h2 className="text-xl font-bold text-gray-800">Hendra Gunawan</h2>
@@ -48,13 +49,14 @@ const About = () => {
             </a>
           </div>
         </div>
-        {/* {card 2} */}
+
+        {/* Card 2 */}
         <div className="bg-white rounded-lg shadow-md p-8 max-w-md">
           <div className="flex items-center justify-center mb-4">
             <img
               src="/src/assets/argun.jpg"
-              alt="Profile Picture 1"
-              className=" w-28  h-28 rounded-full"
+              alt="Profile Picture 2"
+              className="w-28 h-28 rounded-full"
             />
           </div>
           <h2 className="text-xl font-bold text-gray-800">Arya Gunawan</h2>

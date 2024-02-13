@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -10,6 +9,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { FaSearch } from "react-icons/fa";
+
 const NavbarWithSearch = () => {
   const [openNav, setOpenNav] = React.useState(
     sessionStorage.getItem("openNav") === "true" || false
@@ -85,34 +85,14 @@ const NavbarWithSearch = () => {
     <Navbar className="mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4">
       <div className="container mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
         <Typography
-          as="a"
+          as={Link}
           to="/"
           className="mr-4 cursor-pointer py-1.5 font-medium"
         >
           Masjid Info
         </Typography>
-        <div className="hidden lg:block">{navList}</div>
-        <div className="hidden items-center gap-x-2 lg:flex">
-          <div className="relative flex w-full gap-2 md:w-max">
-            <Input
-              type="search"
-              placeholder="Search"
-              containerProps={{
-                className: "min-w-[288px]",
-              }}
-              className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <div className="!absolute left-3 top-[13px]">
-              <FaSearch size={16} color="#CFD8DC" />
-            </div>
-          </div>
-          <Button size="md" className="rounded-lg">
-            Search
-          </Button>
-        </div>
+
+        {/* Hamburger Icon for Mobile */}
         <IconButton
           variant="text"
           className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -137,10 +117,40 @@ const NavbarWithSearch = () => {
             </svg>
           )}
         </IconButton>
+
+        {/* Navigation List for Desktop */}
+        <div className="hidden lg:flex">{navList}</div>
+
+        {/* Search and Button for Desktop */}
+        <div className="hidden items-center gap-x-2 lg:flex">
+          <div className="relative flex w-full gap-2 md:w-max">
+            <Input
+              type="search"
+              placeholder="Search"
+              containerProps={{
+                className: "min-w-[288px]",
+              }}
+              className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+            <div className="!absolute left-3 top-[13px]">
+              <FaSearch size={16} color="#CFD8DC" />
+            </div>
+          </div>
+          <Button size="md" className="rounded-lg">
+            Search
+          </Button>
+        </div>
       </div>
+
+      {/* Collapsible Navbar for Mobile */}
       <Collapse open={openNav}>
         <div className="container mx-auto">
           {navList}
+
+          {/* Search and Button for Mobile */}
           <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center">
             <div className="relative w-full gap-2 md:w-max">
               <Input

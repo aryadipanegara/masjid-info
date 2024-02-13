@@ -41,7 +41,7 @@ const CardList = () => {
   return (
     <div className="mx-auto max-w-screen-xl">
       <div className="flex flex-col">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-14 py-16">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-14 py-16">
           {masjids.map((masjid) => (
             <Card
               key={masjid.id}
@@ -64,7 +64,7 @@ const CardList = () => {
                   {masjid.nama_masjid}
                 </Typography>
                 <Typography className="text-gray-700 mb-4">
-                  {truncateText(masjid.sejarah.bagian_1, 10)}
+                  {truncateText(masjid.sejarah.bagian_1, 5)}
                 </Typography>
               </CardBody>
             </Card>
