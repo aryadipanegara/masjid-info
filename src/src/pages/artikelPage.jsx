@@ -31,51 +31,64 @@ const ArticlePage = () => {
 
   return (
     <div className="mx-auto max-w-screen-xl p-8">
-      <Typography variant="h3" color="blue-gray" className="mb-4">
+      <Typography variant="subtitle" color="gray" className="mb-2 text-lg">
+        {article.tanggal_dibuat}
+      </Typography>
+
+      <Typography variant="h3" color="lightBlue" className="mb-6">
         {article.nama_masjid}
       </Typography>
-      <Typography variant="subtitle" color="gray" className="mb-2">
-        Lokasi: {article.lokasi}
-      </Typography>
-      <Typography variant="subtitle" color="gray" className="mb-2">
-        Tanggal Dibuat: {article.tanggal_dibuat}
-      </Typography>
-      <Typography variant="subtitle" color="gray" className="mb-2">
-        Negara: {article.negara}
-      </Typography>
 
-      {article.foto_masjid &&
-        article.foto_masjid.map((foto, index) => (
-          <div key={index} className="mt-4 text-center">
-            <img
-              src={Object.values(foto)[0]}
-              alt={`Foto Masjid ${article.id} - ${index + 1}`}
-              className="mx-auto max-w-full rounded-md"
-            />
+      <div className="mb-6">
+        <Typography variant="body" color="blueGray">
+          {article.lokasi}
+        </Typography>
+      </div>
+
+      <div className="mb-6">
+        <Typography variant="body" color="blueGray">
+          {article.negara}
+        </Typography>
+      </div>
+
+      <div className="mt-4 text-center">
+        {article.foto_masjid &&
+          article.foto_masjid
+            .slice(0, 1)
+            .map((foto, index) => (
+              <img
+                key={index}
+                src={Object.values(foto)[0]}
+                alt={`Foto Masjid ${article.id} - ${index + 1}`}
+                className="mx-auto max-w-full rounded-md shadow-lg"
+              />
+            ))}
+      </div>
+
+      <Typography
+        variant="subtitle"
+        color="gray"
+        className="mb-2 mt-8 text-lg"
+      ></Typography>
+
+      {article.sejarah &&
+        Object.values(article.sejarah).map((bagian, index) => (
+          <div key={index} className="mb-6">
+            <Typography variant="body" color="blueGray" className=" text-black">
+              {bagian}
+            </Typography>
+
+            {article.foto_masjid && article.foto_masjid[index + 1] && (
+              <div className="mt-4 text-center">
+                <img
+                  src={article.foto_masjid[index + 1][`url${index + 2}`]}
+                  alt={`Foto Masjid ${article.id} - ${index + 2}`}
+                  className="mx-auto max-w-full rounded-md shadow-lg"
+                />
+              </div>
+            )}
           </div>
         ))}
-
-      <Typography variant="subtitle" color="gray" className="mb-2 mt-4">
-        Sejarah:
-      </Typography>
-
-      {article.sejarah.split("\n").map((paragraph, index) => (
-        <div key={index} className="mb-4">
-          <Typography variant="subtitle" color="gray">
-            {paragraph}
-          </Typography>
-
-          {article.foto_masjid && article.foto_masjid[index + 1] && (
-            <div className="mt-4 text-center">
-              <img
-                src={Object.values(article.foto_masjid[index + 1])[0]}
-                alt={`Foto Masjid ${article.id} - ${index + 2}`}
-                className="mx-auto max-w-full rounded-md"
-              />
-            </div>
-          )}
-        </div>
-      ))}
     </div>
   );
 };

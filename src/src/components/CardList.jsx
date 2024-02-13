@@ -28,10 +28,14 @@ const CardList = () => {
 
   // Fungsi untuk memotong teks sejarah menjadi 20 kata
   const truncateText = (text, wordLimit) => {
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
+    if (text && text.split) {
+      const words = text.split(" ");
+      return words.length > wordLimit
+        ? words.slice(0, wordLimit).join(" ") + "..."
+        : text;
+    } else {
+      return "";
+    }
   };
 
   return (
@@ -60,7 +64,7 @@ const CardList = () => {
                   {masjid.nama_masjid}
                 </Typography>
                 <Typography className="text-gray-700 mb-4">
-                  {truncateText(masjid.sejarah, 10)}
+                  {truncateText(masjid.sejarah.bagian_1, 10)}
                 </Typography>
               </CardBody>
             </Card>
