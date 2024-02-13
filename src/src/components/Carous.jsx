@@ -23,26 +23,46 @@ const Carous = () => {
         "https://static.republika.co.id/uploads/images/xlarge/masjid-jami-al-anwar-dahulu-pernah-menjadi-markas-para-pejuang_220903192743-865.jpg",
       country: "Indonesia",
     },
-    
   ];
 
   return (
-    <div className="mx-auto max-w-screen-xl  py-2 ">
-      <Carousel>
+    <div className="mx-auto max-w-screen-xl py-2">
+      <Carousel
+        additionalClasses="overflow-hidden rounded-lg shadow-md"
+        responsive={[
+          {
+            breakpoint: "sm",
+            options: {
+              slidesPerView: 1,
+            },
+          },
+          {
+            breakpoint: "md",
+            options: {
+              slidesPerView: 2,
+            },
+          },
+          {
+            breakpoint: "lg",
+            options: {
+              slidesPerView: 3,
+            },
+          },
+        ]}
+      >
         {masjids.map((masjid, index) => (
           <div key={index} className="relative">
             <img
               src={masjid.image}
               alt={masjid.name}
-              className="w-full max-w-screen-2xl h-96 object-cover rounded-lg"
+              className="w-full h-80 object-cover rounded-lg"
             />
-            <div className="absolute bottom-4 left-4 text-black">
-              <Typography variant="h5" className="mb-1">
+            <div className="absolute bottom-4 left-4 text-white ">
+              <div className="#">{masjid.country}</div>
+              <Typography variant="h5" className="text-lg font-bold my-1">
                 {masjid.name}
               </Typography>
-              <Typography variant="body2">
-                {masjid.location}, {masjid.country}
-              </Typography>
+              <Typography variant="body2">{masjid.location}</Typography>
             </div>
           </div>
         ))}

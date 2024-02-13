@@ -1,6 +1,7 @@
 import CardList from "../components/CardList";
 import Carous from "../components/Carous";
 import Pagination from "../components/Pagination";
+import Category from "../components/Category";
 
 export default function Home() {
   return (
@@ -13,6 +14,9 @@ export default function Home() {
             Here, we share about mosques and the history of mosques, which will
             broaden your insight.
           </p>
+          <div className="px-2 pt-4">
+            <Category />
+          </div>
         </div>
         <CardList />
       </div>
