@@ -9,7 +9,7 @@ const About = () => {
         <div className="bg-white rounded-lg shadow-md p-8 max-w-md">
           <div className="flex items-center justify-center mb-4">
             <img
-              src="/src/assets/hendra gunawan.jpeg"
+              src="/public/assets/hendra gunawan.jpeg"
               alt="Profile Picture 1"
               className="w-28 h-28 rounded-full"
             />
@@ -54,7 +54,7 @@ const About = () => {
         <div className="bg-white rounded-lg shadow-md p-8 max-w-md">
           <div className="flex items-center justify-center mb-4">
             <img
-              src="/src/assets/argun.jpg"
+              src="/public/assets/argun.jpg"
               alt="Profile Picture 2"
               className="w-28 h-28 rounded-full"
             />

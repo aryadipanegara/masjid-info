@@ -6,9 +6,15 @@ const port = 3001;
 
 app.use(express.json());
 
-// Rute untuk mendapatkan semua data masjid
 app.get("/masjid", (req, res) => {
-  res.json(masjidData);
+  const { page = 1, pageSize = 12 } = req.query;
+
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + parseInt(pageSize);
+
+  const paginatedMasjids = masjidData.slice(startIndex, endIndex);
+
+  res.json(paginatedMasjids);
 });
 
 // Rute untuk mendapatkan satu data masjid berdasarkan ID

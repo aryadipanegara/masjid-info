@@ -1,26 +1,38 @@
+/* eslint-disable react/prop-types */
+// Pagination.js
 import React from "react";
 import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useLocation } from "react-router-dom";
 
-export default function Pagination() {
+const Pagination = ({ setActivePage }) => {
+  // eslint-disable-next-line no-unused-vars
+  const location = useLocation();
   const [active, setActive] = React.useState(1);
 
   const getItemProps = (index) => ({
     variant: active === index ? "filled" : "text",
     color: "gray",
-    onClick: () => setActive(index),
+    onClick: () => {
+      setActive(index);
+      setActivePage(index); 
+    },
   });
 
   const next = () => {
-    if (active === 5) return;
-
-    setActive(active + 1);
+    setActive((prevActive) => {
+      if (prevActive === 5) return prevActive;
+      setActivePage(prevActive + 1);
+      return prevActive + 1;
+    });
   };
 
   const prev = () => {
-    if (active === 1) return;
-
-    setActive(active - 1);
+    setActive((prevActive) => {
+      if (prevActive === 1) return prevActive;
+      setActivePage(prevActive - 1);
+      return prevActive - 1;
+    });
   };
 
   return (
@@ -51,4 +63,6 @@ export default function Pagination() {
       </Button>
     </div>
   );
-}
+};
+
+export default Pagination;

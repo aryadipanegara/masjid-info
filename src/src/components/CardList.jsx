@@ -1,21 +1,25 @@
-// Other imports...
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Card,
   CardHeader,
   CardBody,
   Typography,
 } from "@material-tailwind/react";
+import Pagination from "./Pagination";
 
 const CardList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [masjids, setMasjids] = useState([]);
+  const [activePage, setActivePage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/masjid");
+        const response = await fetch(
+          `http://localhost:3001/masjid?page=${activePage}`
+        );
         const masjidData = await response.json();
         setMasjids(masjidData);
       } catch (error) {
@@ -24,9 +28,8 @@ const CardList = () => {
     };
 
     fetchData();
-  }, []);
+  }, [activePage]);
 
-  // Fungsi untuk memotong teks sejarah menjadi 20 kata
   const truncateText = (text, wordLimit) => {
     if (text && text.split) {
       const words = text.split(" ");
@@ -38,14 +41,16 @@ const CardList = () => {
     }
   };
 
+  const showPagination = location.pathname === "/artikel";
+
   return (
-    <div className="mx-auto max-w-screen-xl">
-      <div className="flex flex-col">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-14 py-16">
+    <div className="container mx-auto pt-2">
+      <div className="justify-center">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-8 py-8">
           {masjids.map((masjid) => (
             <Card
               key={masjid.id}
-              className="w-full shadow-md transition-transform transform hover:scale-105 cursor-pointer"
+              className="w-full max-w-sm shadow-md transition-transform transform hover:scale-105 cursor-pointer mb-8"
               onClick={() => navigate(`/masjid/${masjid.id}`)}
             >
               <CardHeader color="blue-gray">
@@ -71,6 +76,7 @@ const CardList = () => {
           ))}
         </div>
       </div>
+      {showPagination && <Pagination setActivePage={setActivePage} />}
     </div>
   );
 };
