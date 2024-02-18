@@ -48,12 +48,22 @@ const CardList = () => {
     }
   };
 
+  const truncateName = (name, wordLimit) => {
+    if (name && name.split) {
+      const words = name.split(" ");
+      const truncatedName = words.slice(0, wordLimit).join(" ");
+      return words.length > wordLimit ? truncatedName + "..." : truncatedName;
+    } else {
+      return "";
+    }
+  };
+
   const showPagination = location.pathname === "/artikel";
 
   return (
     <div className="container mx-auto pt-2">
       <div className="justify-center">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-8 py-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 py-8">
           {masjids.map((masjid) => (
             <Card
               key={masjid.id}
@@ -71,13 +81,13 @@ const CardList = () => {
                   className="w-full h-40 object-cover rounded-t-lg"
                   onError={(e) => {
                     console.error("Error loading image:", e);
-                    e.target.src = "//public/assets/logo.png";
+                    e.target.src = "/public/assets/logo.png";
                   }}
                 />
               </CardHeader>
               <CardBody className="flex flex-col">
                 <Typography variant="h5" color="blue-gray" className="mb-2">
-                  {masjid.nama_masjid}
+                  {truncateName(masjid.nama_masjid, 4)}
                 </Typography>
                 <Typography className="text-gray-700 mb-4">
                   {truncateText(masjid.sejarah.bagian_1, 5)}

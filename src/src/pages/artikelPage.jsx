@@ -1,21 +1,25 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Typography } from "@material-tailwind/react";
+import { RiCalendarFill, RiMapPin2Fill, RiEarthFill } from "react-icons/ri";
 
 const ArticlePage = () => {
   const { ID } = useParams();
-  const [article, setArticle] = useState(null);
+  const [id, setId] = useState(ID);
+  const [masjid, setMasjid] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/masjid/${ID}`);
+        const response = await fetch(`http://localhost:3001/api/masjid/${id}`);
         const masjidData = await response.json();
 
-        if (masjidData) {
-          setArticle(masjidData);
+        console.log("Masjid data from API:", masjidData);
+
+        if (masjidData.status === "success") {
+          setMasjid(masjidData.data);
         } else {
-          console.error("Article not found");
+          console.error("Masjid not found");
         }
       } catch (error) {
         console.error("Error fetching masjid data:", error);
@@ -23,72 +27,58 @@ const ArticlePage = () => {
     };
 
     fetchData();
-  }, [ID]);
+  }, [id]);
 
-  if (!article) {
+  if (!masjid) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="mx-auto max-w-screen-xl p-8">
-      <Typography variant="subtitle" color="gray" className="mb-2 text-lg">
-        {article.tanggal_dibuat}
-      </Typography>
-
-      <Typography variant="h3" color="lightBlue" className="mb-6">
-        {article.nama_masjid}
-      </Typography>
-
-      <div className="mb-6">
-        <Typography variant="body" color="blueGray">
-          {article.lokasi}
-        </Typography>
+    <div className="mx-auto max-w-screen-xl p-8 bg-gray-100 rounded-md shadow-lg">
+      <div className="flex items-center mb-4">
+        <RiCalendarFill size={10} className="mr-2 text-black" />
+        <span className="text-xs">{masjid.data.tanggal_dibuat}</span>
       </div>
-
-      <div className="mb-6">
-        <Typography variant="body" color="blueGray">
-          {article.negara}
-        </Typography>
+      <h1 className="text-3xl font-bold mb-2">{masjid.data.nama_masjid}</h1>
+      <div className="flex items-center mb-2">
+        <RiMapPin2Fill size={20} className="mr-2 text-black" />
+        <span>{masjid.data.lokasi}</span>
+      </div>
+      <div className="flex items-center mb-4">
+        <RiEarthFill size={20} className="mr-2 text-black" />
+        <span>{masjid.data.negara}</span>
       </div>
 
       <div className="mt-4 text-center">
-        {article.foto_masjid &&
-          article.foto_masjid
-            .slice(0, 1)
-            .map((foto, index) => (
-              <img
-                key={index}
-                src={Object.values(foto)[0]}
-                alt={`Foto Masjid ${article.id} - ${index + 1}`}
-                className="mx-auto max-w-full rounded-md shadow-lg"
-              />
-            ))}
+        {Object.entries(masjid.data.foto_masjid)
+          .slice(0, 1)
+          .map(([key, value], index) => (
+            <img
+              key={index}
+              src={value}
+              alt={`Foto Masjid ${masjid.data.id} - ${key}`}
+              className="mx-auto max-w-full rounded-md shadow-lg"
+            />
+          ))}
       </div>
 
-      <Typography
-        variant="subtitle"
-        color="gray"
-        className="mb-2 mt-8 text-lg"
-      ></Typography>
+      {Object.entries(masjid.data.sejarah).map(([key, value], index) => (
+        <div key={index} className="mb-6">
+          <p className="text-lg mb-4">{value}</p>
 
-      {article.sejarah &&
-        Object.values(article.sejarah).map((bagian, index) => (
-          <div key={index} className="mb-6">
-            <Typography variant="body" color="blueGray" className=" text-black">
-              {bagian}
-            </Typography>
-
-            {article.foto_masjid && article.foto_masjid[index + 1] && (
+          {masjid.data.foto_masjid &&
+            masjid.data.foto_masjid[`foto_${index + 2}`] && (
               <div className="mt-4 text-center">
+                <small className="block italic mb-2">MasjidInfo</small>
                 <img
-                  src={article.foto_masjid[index + 1][`url${index + 2}`]}
-                  alt={`Foto Masjid ${article.id} - ${index + 2}`}
+                  src={masjid.data.foto_masjid[`foto_${index + 2}`]}
+                  alt={`Foto Masjid ${masjid.data.id} - ${index + 2}`}
                   className="mx-auto max-w-full rounded-md shadow-lg"
                 />
               </div>
             )}
-          </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };
