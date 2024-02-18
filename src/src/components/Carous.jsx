@@ -2,28 +2,31 @@ import { useEffect, useState } from "react";
 import { Carousel, Typography } from "@material-tailwind/react";
 
 const Carous = () => {
-  const [masjids, setMasjids] = useState([]);
+  const [masjidData, setMasjidData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/masjid");
-        const masjidData = await response.json();
-        setMasjids(masjidData);
+        const response = await fetch("http://localhost:3001/api/masjid");
+        const data = await response.json();
+        setMasjidData(data.data.data);
       } catch (error) {
-        console.error("Error fetching masjid data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, []);
 
-  // Ambil hanya 3 elemen pertama dari masjids
-  const limitedMasjids = masjids.slice(0, 3);
+  const limitedPhotos = masjidData.map((masjid) => {
+    // Ambil satu foto pertama dari setiap masjid
+    const firstPhoto = masjid.foto_masjid ? masjid.foto_masjid.foto_1 : null;
+    return { url: firstPhoto, nama_masjid: masjid.nama_masjid };
+  });
 
   return (
     <div className="container mx-auto">
-      <div className=" justify-center py-2">
+      <div className="justify-center py-2">
         <Carousel
           additionalClasses="overflow-hidden rounded-lg shadow-md"
           responsive={[
@@ -47,7 +50,7 @@ const Carous = () => {
             },
           ]}
           autoplay={true}
-          infiniteLoop={true} 
+          infiniteLoop={true}
           arrow={{
             next: (
               <div className="flex items-center justify-center w-10 h-10 bg-black rounded-full">
@@ -61,23 +64,17 @@ const Carous = () => {
             ),
           }}
         >
-          {limitedMasjids.map((masjid, index) => (
+          {limitedPhotos.map((photo, index) => (
             <div key={index} className="relative">
               <img
-                src={
-                  masjid.foto_masjid.length > 0
-                    ? masjid.foto_masjid[0].url1
-                    : ""
-                }
-                alt={masjid.nama_masjid}
+                src={photo.url}
+                alt={photo.nama_masjid}
                 className="w-full h-80 object-cover rounded-lg"
               />
-              <div className="absolute bottom-4 left-4 text-white ">
-                <div className="#">{masjid.country}</div>
+              <div className="absolute bottom-4 left-4 text-white">
                 <Typography variant="h5" className="text-lg font-bold my-1">
-                  {masjid.nama_masjid}
+                  {photo.nama_masjid}
                 </Typography>
-                <Typography variant="body2">{masjid.location}</Typography>
               </div>
             </div>
           ))}

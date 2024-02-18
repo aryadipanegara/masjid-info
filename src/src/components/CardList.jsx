@@ -18,10 +18,18 @@ const CardList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/masjid?page=${activePage}`
+          `http://localhost:3001/api/masjid?page=${activePage}`
         );
-        const masjidData = await response.json();
-        setMasjids(masjidData);
+        const responseData = await response.json();
+
+        if (
+          responseData.status === "success" &&
+          Array.isArray(responseData.data.data)
+        ) {
+          setMasjids(responseData.data.data);
+        } else {
+          console.error("Data from the server is not an array:", responseData);
+        }
       } catch (error) {
         console.error("Error fetching masjid data:", error);
       }
@@ -33,9 +41,8 @@ const CardList = () => {
   const truncateText = (text, wordLimit) => {
     if (text && text.split) {
       const words = text.split(" ");
-      return words.length > wordLimit
-        ? words.slice(0, wordLimit).join(" ") + "..."
-        : text;
+      const truncatedText = words.slice(0, wordLimit).join(" ");
+      return words.length > wordLimit ? truncatedText + "..." : truncatedText;
     } else {
       return "";
     }
@@ -56,12 +63,16 @@ const CardList = () => {
               <CardHeader color="blue-gray">
                 <img
                   src={
-                    masjid.foto_masjid.length > 0
-                      ? masjid.foto_masjid[0].url1
+                    masjid.foto_masjid && masjid.foto_masjid.foto_1
+                      ? masjid.foto_masjid.foto_1
                       : ""
                   }
                   alt={`Masjid ${masjid.id}`}
                   className="w-full h-40 object-cover rounded-t-lg"
+                  onError={(e) => {
+                    console.error("Error loading image:", e);
+                    e.target.src = "//public/assets/logo.png";
+                  }}
                 />
               </CardHeader>
               <CardBody className="flex flex-col">
