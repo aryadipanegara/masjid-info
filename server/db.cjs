@@ -1,11 +1,16 @@
 const mysql = require("mysql2");
-require("dotenv").config(); // Menggunakan dotenv untuk mengambil variabel lingkungan
+require("dotenv").config();
 
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  database: process.env.DB_DATABASE || "masjid_info",
-  password: process.env.DB_PASSWORD || "", // Menggunakan nilai default kosong
+  host:
+    process.env.MYSQL_ADDON_HOST ||
+    "boywhqubwekwc6rafepy-mysql.services.clever-cloud.com",
+  user: process.env.MYSQL_ADDON_USER || "uqeg3jldr2xyhgqx",
+  database: process.env.MYSQL_ADDON_DB || "boywhqubwekwc6rafepy",
+  password: process.env.MYSQL_ADDON_PASSWORD || "4Nc0fURNpLzfidNJSwFA",
+  port: process.env.MYSQL_ADDON_PORT || 3306,
+
+  // uri: process.env.MYSQL_ADDON_URI || "",
 });
 
 connection.connect((err) => {
