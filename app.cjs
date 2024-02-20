@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors"); 
-const db = require("./db.cjs");
-const ApiResponse = require("./response.cjs");
+const db = require("./server/db.cjs");
+const ApiResponse = require("./server/response.cjs");
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3001;;
 
 // Use cors middleware before defining routes
 app.use(cors());
