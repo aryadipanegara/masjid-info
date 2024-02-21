@@ -7,7 +7,7 @@ const Carous = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/masjid");
+        const response = await fetch("https://masjid-info-api.vercel.app/api/masjid");
         const data = await response.json();
         setMasjidData(data.data.data);
       } catch (error) {

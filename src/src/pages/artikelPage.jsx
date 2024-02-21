@@ -11,7 +11,7 @@ const ArticlePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/masjid/${id}`);
+        const response = await fetch(`https://masjid-info-api.vercel.app/api/masjid/${id}`);
         const masjidData = await response.json();
 
         console.log("Masjid data from API:", masjidData);

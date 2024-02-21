@@ -1,11 +1,12 @@
 const mysql = require("mysql2");
+require("dotenv").config();
 
 const connection = mysql.createConnection({
-  host: "boywhqubwekwc6rafepy-mysql.services.clever-cloud.com",
-  user: "uqeg3jldr2xyhgqx",
-  database: "boywhqubwekwc6rafepy",
-  password: "4Nc0fURNpLzfidNJSwFA",
-  port: 3306,
+  host: process.env.MYSQL_ADDON_HOST,
+  user: process.env.MYSQL_ADDON_USER,
+  database: process.env.MYSQL_ADDON_DB,
+  password: process.env.MYSQL_ADDON_PASSWORD,
+  port: process.env.MYSQL_ADDON_PORT,
 });
 
 connection.connect((err) => {

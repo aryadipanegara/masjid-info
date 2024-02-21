@@ -18,7 +18,7 @@ const CardList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/masjid?page=${activePage}`
+          `https://masjid-info-api.vercel.app/api/masjid?page=${activePage}`
         );
         const responseData = await response.json();
 
