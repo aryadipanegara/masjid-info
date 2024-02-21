@@ -79,10 +79,6 @@ const CardList = () => {
                   }
                   alt={`Masjid ${masjid.id}`}
                   className="w-full h-40 object-cover rounded-t-lg"
-                  onError={(e) => {
-                    console.error("Error loading image:", e);
-                    e.target.src = "/public/assets/logo.png";
-                  }}
                 />
               </CardHeader>
               <CardBody className="flex flex-col">
