@@ -14,7 +14,7 @@ const FooterLinks = () => {
   return (
     <footer className="relative w-full bottom-0">
       <div className=" py-2">
-        <div className="mt-12 flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
+        <div className="mt-12 flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between bottom-0">
           <Typography
             variant="small"
             className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0 px-5"

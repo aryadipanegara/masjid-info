@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Carousel, Typography } from "@material-tailwind/react";
+import { CarouselPlaceholderSkeleton } from "./loader/CarouselPlaceholderSkeleton";
 
 const Carous = () => {
   const [masjidData, setMasjidData] = useState([]);
@@ -7,7 +8,9 @@ const Carous = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://masjid-info-api.vercel.app/api/masjid");
+        const response = await fetch(
+          "https://masjid-info-api.vercel.app/api/masjid"
+        );
         const data = await response.json();
         setMasjidData(data.data.data);
       } catch (error) {
@@ -18,11 +21,18 @@ const Carous = () => {
     fetchData();
   }, []);
 
+  if (masjidData.length === 0) {
+    return <CarouselPlaceholderSkeleton />;
+  }
+
   const limitedPhotos = masjidData.map((masjid) => {
     // Ambil satu foto pertama dari setiap masjid
     const firstPhoto = masjid.foto_masjid ? masjid.foto_masjid.foto_1 : null;
     return { url: firstPhoto, nama_masjid: masjid.nama_masjid };
   });
+
+  // Hanya ambil tiga elemen pertama dari limitedPhotos
+  const firstThreePhotos = limitedPhotos.slice(0, 3);
 
   return (
     <div className="container mx-auto">
@@ -49,8 +59,6 @@ const Carous = () => {
               },
             },
           ]}
-          autoplay={true}
-          infiniteLoop={true}
           arrow={{
             next: (
               <div className="flex items-center justify-center w-10 h-10 bg-black rounded-full">
@@ -64,7 +72,7 @@ const Carous = () => {
             ),
           }}
         >
-          {limitedPhotos.map((photo, index) => (
+          {firstThreePhotos.map((photo, index) => (
             <div key={index} className="relative">
               <img
                 src={photo.url}

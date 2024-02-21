@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Pagination from "./Pagination";
+import { CardListPlaceholderSkeleton } from "./loader/CardSkeleton";
 
 const CardList = () => {
   const navigate = useNavigate();
@@ -59,6 +60,10 @@ const CardList = () => {
   };
 
   const showPagination = location.pathname === "/artikel";
+
+  if (masjids.length === 0) {
+    return <CardListPlaceholderSkeleton />;
+  }
 
   return (
     <div className="container mx-auto pt-2">

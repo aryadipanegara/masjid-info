@@ -122,9 +122,9 @@ const NavbarWithSearch = () => {
 
         {/* Search and Button for Desktop */}
         <div className="hidden items-center gap-x-2 lg:flex">
-          <Button size="md" className="rounded-lg">
+          {/* <Button size="md" className="rounded-lg">
             Search
-          </Button>
+          </Button> */}
         </div>
       </div>
 

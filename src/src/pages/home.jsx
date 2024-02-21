@@ -19,7 +19,7 @@ export default function Home() {
         <CardList showPagination={false} />
         <div className="flex justify-center mt-4">
           <Link to="/artikel">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            <button className="bg-black text-white px-4 py-2 rounded-md hover:bg-white hover:text-black">
               Masjid Lainnya
             </button>
           </Link>
