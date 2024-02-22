@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RiCalendarFill, RiMapPin2Fill, RiEarthFill } from "react-icons/ri";
+import SkeletonLoading from "../components/loader/artikelSkeleton";
 
 const ArticlePage = () => {
   const { ID } = useParams();
@@ -11,7 +12,9 @@ const ArticlePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://masjid-info-api.vercel.app/api/masjid/${id}`);
+        const response = await fetch(
+          `https://masjid-info-api.vercel.app/api/masjid/${id}`
+        );
         const masjidData = await response.json();
 
         console.log("Masjid data from API:", masjidData);
@@ -30,7 +33,7 @@ const ArticlePage = () => {
   }, [id]);
 
   if (!masjid) {
-    return <div>Loading...</div>;
+    return <SkeletonLoading />;
   }
 
   return (
@@ -49,32 +52,20 @@ const ArticlePage = () => {
         <span>{masjid.data.negara}</span>
       </div>
 
-      <div className="mt-4 text-center">
-        {Object.entries(masjid.data.foto_masjid)
-          .slice(0, 1)
-          .map(([key, value], index) => (
-            <img
-              key={index}
-              src={value}
-              alt={`Foto Masjid ${masjid.data.id} - ${key}`}
-              className="mx-auto max-w-full rounded-md shadow-lg"
-            />
-          ))}
-      </div>
-
-      {Object.entries(masjid.data.sejarah).map(([key, value], index) => (
-        <div key={index} className="mb-6">
-          <p className="text-lg mb-4">{value}</p>
-
-          {masjid.data.foto_masjid &&
-            masjid.data.foto_masjid[`foto_${index + 2}`] && (
-              <div className="mt-4 text-center">
-                <small className="block italic mb-2">MasjidInfo</small>
-                <img
-                  src={masjid.data.foto_masjid[`foto_${index + 2}`]}
-                  alt={`Foto Masjid ${masjid.data.id} - ${index + 2}`}
-                  className="mx-auto max-w-full rounded-md shadow-lg"
-                />
+      {Object.entries(masjid.data.foto_masjid).map(([key, foto], index) => (
+        <div key={index} className="mt-4 text">
+          <small className="block italic mb-2 text-center">MasjidInfo</small>
+          <img
+            src={foto}
+            alt={`Foto Masjid ${masjid.id} - ${key}`}
+            className="mx-auto max-w-full rounded-md shadow-lg"
+          />
+          {masjid.data.sejarah &&
+            masjid.data.sejarah[`bagian_${index + 1}`] && (
+              <div className="mb-6">
+                <p className="text-lg mb-4 pt-4">
+                  {masjid.data.sejarah[`bagian_${index + 1}`]}
+                </p>
               </div>
             )}
         </div>
