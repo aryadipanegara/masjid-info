@@ -8,6 +8,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { FaSearch } from "react-icons/fa";
+import SearchBar from "../SearchBar";
 
 const NavbarWithSearch = () => {
   const [openNav, setOpenNav] = React.useState(
@@ -122,9 +123,7 @@ const NavbarWithSearch = () => {
 
         {/* Search and Button for Desktop */}
         <div className="hidden items-center gap-x-2 lg:flex">
-          {/* <Button size="md" className="rounded-lg">
-            Search
-          </Button> */}
+          <SearchBar />
         </div>
       </div>
 
@@ -135,9 +134,8 @@ const NavbarWithSearch = () => {
 
           {/* Search and Button for Mobile */}
           <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center">
-            <Button size="md" className="mt-1 rounded-lg sm:mt-0">
-              Search
-            </Button>
+            <SearchBar />
+            
           </div>
         </div>
       </Collapse>

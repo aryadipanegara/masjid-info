@@ -13,11 +13,9 @@ const ArticlePage = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://masjid-info-api.vercel.app/api/masjid/${id}`
+          `https://masjid-info-api.vercel.app/api/masjid${id}`
         );
         const masjidData = await response.json();
-
-        console.log("Masjid data from API:", masjidData);
 
         if (masjidData.status === "success") {
           setMasjid(masjidData.data);
