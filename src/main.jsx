@@ -1,13 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
+import ReactDOM from 'react-dom';
+import App from './App';
+import MaintenancePage from './src/pages/MaintenancePage';
 import "./index.css";
-import { ThemeProvider } from "@material-tailwind/react";
+import isMaintenanceMode from './src/components/maintenanceConfig';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>
+const rootElement = document.getElementById('root');
+
+ReactDOM.createRoot(rootElement).render(
+  isMaintenanceMode ? <MaintenancePage /> : <App />
 );

@@ -7,6 +7,7 @@ import Home from "../pages/home";
 import Artikel from "../pages/artikel";
 import ArticlePage from "../pages/artikelPage";
 import SearchResult from "../components/SearchResult";
+import MaintenancePage from "../pages/MaintenancePage";
 
 const index = () => {
   return (
@@ -19,6 +20,7 @@ const index = () => {
         <Route path="/about" element={<About />} />
         <Route path="/masjid/:ID" element={<ArticlePage />} />
         <Route path="/search/:searchTerms" element={<SearchResult />} />
+        <Route path="/maintenance" component={<MaintenancePage />} />
       </Routes>
       <FooterLinks />
     </>
