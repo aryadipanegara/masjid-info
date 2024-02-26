@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Carousel, Typography } from "@material-tailwind/react";
-import { CarouselPlaceholderSkeleton } from "./loader/CarouselPlaceholderSkeleton";
 
 const Carous = () => {
   const [masjidData, setMasjidData] = useState([]);
@@ -21,18 +20,13 @@ const Carous = () => {
     fetchData();
   }, []);
 
-  if (masjidData.length === 0) {
-    return <CarouselPlaceholderSkeleton />;
-  }
-
-  const limitedPhotos = masjidData.map((masjid) => {
-    // Ambil satu foto pertama dari setiap masjid
-    const firstPhoto = masjid.foto_masjid ? masjid.foto_masjid.foto_1 : null;
-    return { url: firstPhoto, nama_masjid: masjid.nama_masjid };
-  });
-
-  // Hanya ambil tiga elemen pertama dari limitedPhotos
-  const firstThreePhotos = limitedPhotos.slice(0, 3);
+  const limitedPhotos = masjidData
+    .filter((masjid) => masjid.sejarah && masjid.sejarah.length > 0)
+    .slice(0, 3)
+    .map((masjid) => ({
+      url: masjid.sejarah[0].fotoUrl,
+      nama_masjid: masjid.nama_masjid,
+    }));
 
   return (
     <div className="container mx-auto">
@@ -72,7 +66,7 @@ const Carous = () => {
             ),
           }}
         >
-          {firstThreePhotos.map((photo, index) => (
+          {limitedPhotos.map((photo, index) => (
             <div key={index} className="relative">
               <img
                 src={photo.url}

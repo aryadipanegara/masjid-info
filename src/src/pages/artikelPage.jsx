@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RiCalendarFill, RiMapPin2Fill, RiEarthFill } from "react-icons/ri";
@@ -34,40 +33,77 @@ const ArticlePage = () => {
     return <SkeletonLoading />;
   }
 
+  // Function to create paragraphs from text with line breaks
+  const createParagraphs = (text) => {
+    return text.split(/[\r\n]+/).map((paragraph, idx) => (
+      <p key={idx} className="text-lg pt-2">
+        {paragraph}
+      </p>
+    ));
+  };
+
   return (
     <div className="mx-auto max-w-screen-xl p-8 bg-gray-100 rounded-md shadow-lg">
       <div className="flex items-center mb-4">
-        <RiCalendarFill size={10} className="mr-2 text-black" />
-        <span className="text-xs">{masjid.data.tanggal_dibuat}</span>
+        <RiCalendarFill size={20} className="mr-2 text-black" />
+        <span className="text-xs">
+          {masjid.tanggal_dibuat || "Tanggal Dibuat Tidak Tersedia"}
+        </span>
       </div>
-      <h1 className="text-3xl font-bold mb-2">{masjid.data.nama_masjid}</h1>
+      <h1 className="text-3xl font-bold mb-2">
+        {masjid.nama_masjid || "Nama Masjid Tidak Tersedia"}
+      </h1>
       <div className="flex items-center mb-2">
         <RiMapPin2Fill size={20} className="mr-2 text-black" />
-        <span>{masjid.data.lokasi}</span>
+        <span>{masjid.lokasi || "Lokasi Tidak Tersedia"}</span>
       </div>
       <div className="flex items-center mb-4">
         <RiEarthFill size={20} className="mr-2 text-black" />
-        <span>{masjid.data.negara}</span>
+        <span>{masjid.negara || "Negara Tidak Tersedia"}</span>
       </div>
 
-      {Object.entries(masjid.data.foto_masjid).map(([key, foto], index) => (
-        <div key={index} className="mt-4 text">
-          <small className="block italic mb-2 text-center">MasjidInfo</small>
-          <img
-            src={foto}
-            alt={`Foto Masjid ${masjid.id} - ${key}`}
-            className="mx-auto max-w-full rounded-md shadow-lg"
-          />
-          {masjid.data.sejarah &&
-            masjid.data.sejarah[`bagian_${index + 1}`] && (
+      {masjid.sejarah &&
+        masjid.sejarah.map((sejarah, index) => (
+          <div key={index} className="mt-4 text">
+            <small className="block italic mb-2 text-center">
+              {sejarah.keterangan || "Keterangan Tidak Tersedia"}
+            </small>
+            {sejarah.fotoUrl && (
+              <img
+                src={sejarah.fotoUrl}
+                alt={`Foto Masjid ${masjid.id} - ${index + 1}`}
+                className="mx-auto max-w-full rounded-md shadow-lg"
+              />
+            )}
+            {createParagraphs(sejarah.bagian)}
+          </div>
+        ))}
+
+      {masjid.data?.sejarah &&
+        masjid.data?.sejarah.map((sejarah, index) => (
+          <div key={index} className="mt-4 text">
+            {createParagraphs(sejarah.bagian)}
+            {sejarah.keterangan && (
               <div className="mb-6">
-                <p className="text-lg mb-4 pt-4">
-                  {masjid.data.sejarah[`bagian_${index + 1}`]}
-                </p>
+                <p className="text-lg mb-4 pt-4">{sejarah.keterangan}</p>
               </div>
             )}
-        </div>
-      ))}
+          </div>
+        ))}
+
+      {masjid.foto_masjid &&
+        masjid.foto_masjid.map((fotoMasjid, index) => (
+          <div key={index} className="mt-4 text">
+            <small className="block italic mb-2 text-center">
+              {fotoMasjid.keterangan || "Keterangan Tidak Tersedia"}
+            </small>
+            <img
+              src={fotoMasjid.url}
+              alt={`Foto Masjid ${masjid.id} - ${index + 1}`}
+              className="mx-auto max-w-full rounded-md shadow-lg"
+            />
+          </div>
+        ))}
     </div>
   );
 };

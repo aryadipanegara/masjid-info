@@ -1,11 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Typography,
-} from "@material-tailwind/react";
+import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
 import Pagination from "./Pagination";
 import { CardListPlaceholderSkeleton } from "./loader/CardSkeleton";
 
@@ -23,10 +18,7 @@ const CardList = () => {
         );
         const responseData = await response.json();
 
-        if (
-          responseData.status === "success" &&
-          Array.isArray(responseData.data.data)
-        ) {
+        if (responseData.status === "success" && Array.isArray(responseData.data.data)) {
           setMasjids(responseData.data.data);
         } else {
           console.error("Data from the server is not an array:", responseData);
@@ -40,23 +32,23 @@ const CardList = () => {
   }, [activePage]);
 
   const truncateText = (text, wordLimit) => {
-    if (text && text.split) {
-      const words = text.split(" ");
-      const truncatedText = words.slice(0, wordLimit).join(" ");
-      return words.length > wordLimit ? truncatedText + "..." : truncatedText;
-    } else {
+    if (!text || !text.split) {
       return "";
     }
+
+    const words = text.split(" ");
+    const truncatedText = words.slice(0, wordLimit).join(" ");
+    return words.length > wordLimit ? truncatedText + "..." : truncatedText;
   };
 
   const truncateName = (name, wordLimit) => {
-    if (name && name.split) {
-      const words = name.split(" ");
-      const truncatedName = words.slice(0, wordLimit).join(" ");
-      return words.length > wordLimit ? truncatedName + "..." : truncatedName;
-    } else {
+    if (!name || !name.split) {
       return "";
     }
+
+    const words = name.split(" ");
+    const truncatedName = words.slice(0, wordLimit).join(" ");
+    return words.length > wordLimit ? truncatedName + "..." : truncatedName;
   };
 
   const showPagination = location.pathname === "/artikel";
@@ -78,8 +70,8 @@ const CardList = () => {
               <CardHeader color="blue-gray">
                 <img
                   src={
-                    masjid.foto_masjid && masjid.foto_masjid.foto_1
-                      ? masjid.foto_masjid.foto_1
+                    masjid.sejarah && masjid.sejarah[0] && masjid.sejarah[0].fotoUrl
+                      ? masjid.sejarah[0].fotoUrl
                       : ""
                   }
                   alt={`Masjid ${masjid.id}`}
@@ -91,7 +83,7 @@ const CardList = () => {
                   {truncateName(masjid.nama_masjid, 4)}
                 </Typography>
                 <Typography className="text-gray-700 mb-4">
-                  {truncateText(masjid.sejarah.bagian_1, 5)}
+                  {truncateText(masjid.sejarah[0].bagian, 5)}
                 </Typography>
               </CardBody>
             </Card>

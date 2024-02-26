@@ -89,7 +89,13 @@ const SearchResult = () => {
               >
                 <CardHeader color="blue-gray">
                   <img
-                    src={masjid.foto_masjid?.foto_1 || ""}
+                    src={
+                      masjid.sejarah &&
+                      masjid.sejarah[0] &&
+                      masjid.sejarah[0].fotoUrl
+                        ? masjid.sejarah[0].fotoUrl
+                        : ""
+                    }
                     alt={`Masjid ${masjid.id}`}
                     className="w-full h-40 object-cover rounded-t-lg"
                   />
