@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Typography,
+} from "@material-tailwind/react";
 import Pagination from "./Pagination";
 import { CardListPlaceholderSkeleton } from "./loader/CardSkeleton";
 
@@ -18,7 +23,10 @@ const CardList = () => {
         );
         const responseData = await response.json();
 
-        if (responseData.status === "success" && Array.isArray(responseData.data.data)) {
+        if (
+          responseData.status === "success" &&
+          Array.isArray(responseData.data.data)
+        ) {
           setMasjids(responseData.data.data);
         } else {
           console.error("Data from the server is not an array:", responseData);
@@ -61,7 +69,7 @@ const CardList = () => {
     <div className="container mx-auto pt-2">
       <div className="justify-center">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 py-8">
-          {masjids.map((masjid) => (
+          {masjids.slice(0, 10).map((masjid) => (
             <Card
               key={masjid.id}
               className="w-full max-w-sm shadow-md transition-transform transform hover:scale-105 cursor-pointer mb-8"
@@ -70,7 +78,9 @@ const CardList = () => {
               <CardHeader color="blue-gray">
                 <img
                   src={
-                    masjid.sejarah && masjid.sejarah[0] && masjid.sejarah[0].fotoUrl
+                    masjid.sejarah &&
+                    masjid.sejarah[0] &&
+                    masjid.sejarah[0].fotoUrl
                       ? masjid.sejarah[0].fotoUrl
                       : ""
                   }
