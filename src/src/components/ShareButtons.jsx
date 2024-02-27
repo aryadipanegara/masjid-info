@@ -2,34 +2,38 @@ import React from "react";
 import { FaCopy, FaWhatsapp, FaFacebook, FaInstagram } from "react-icons/fa";
 
 const ShareButtons = ({ articleUrl, onCopyLink }) => {
+  const currentUrl = window.location.href;
+
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(articleUrl);
+    navigator.clipboard.writeText(currentUrl);
     onCopyLink();
   };
 
   const handleShareWhatsApp = () => {
-    const phoneNumber = "62";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      articleUrl
+    // Menggunakan API WhatsApp untuk berbagi ke nomor tertentu
+    const phoneNumber = "1234567890"; // Ganti dengan nomor ponsel tujuan di format internasional
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(
+      currentUrl
     )}`;
-    window.location.href = whatsappUrl;
+    window.open(whatsappUrl, "_blank");
   };
 
   const handleShareFacebook = () => {
     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      articleUrl
+      currentUrl
     )}`;
     window.open(facebookUrl, "_blank");
   };
 
   const handleShareInstagram = () => {
+    // Link Instagram diarahkan ke laman web Instagram
     window.open(`https://www.instagram.com/`);
   };
 
   return (
     <div className="mt-4 flex items-center">
       <button
-        className="bg-white hover:bg-black text-black hover:text-white font-bold py-2 px-4 rounded"
+        className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
         onClick={handleCopyLink}
       >
         <FaCopy size={18} className="mr-1" />
