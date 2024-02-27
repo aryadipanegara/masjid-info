@@ -1,12 +1,15 @@
+// ArticlePage.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RiCalendarFill, RiMapPin2Fill, RiEarthFill } from "react-icons/ri";
 import SkeletonLoading from "../components/loader/artikelSkeleton";
+import ShareButtons from "../components/ShareButtons";
 
 const ArticlePage = () => {
   const { ID } = useParams();
   const [id, setId] = useState(ID);
   const [masjid, setMasjid] = useState(null);
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,9 +32,18 @@ const ArticlePage = () => {
     fetchData();
   }, [id]);
 
+  const handleCopyLink = () => {
+    setIsLinkCopied(true);
+    setTimeout(() => {
+      setIsLinkCopied(false);
+    }, 2000);
+  };
+
   if (!masjid) {
     return <SkeletonLoading />;
   }
+
+  const articleUrl = `https://yourwebsite.com/articles/${masjid.id}`;
 
   // Function to create paragraphs from text with line breaks
   const createParagraphs = (text) => {
@@ -104,6 +116,8 @@ const ArticlePage = () => {
             />
           </div>
         ))}
+
+      <ShareButtons articleUrl={articleUrl} onCopyLink={handleCopyLink} />
     </div>
   );
 };
