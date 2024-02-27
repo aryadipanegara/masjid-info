@@ -1,4 +1,3 @@
-// ShareButtons.jsx
 import React from "react";
 import { FaCopy, FaWhatsapp, FaFacebook, FaInstagram } from "react-icons/fa";
 
@@ -9,7 +8,7 @@ const ShareButtons = ({ articleUrl, onCopyLink }) => {
   };
 
   const handleShareWhatsApp = () => {
-    const phoneNumber = "1234567890"; // Ganti dengan nomor ponsel tujuan di format internasional
+    const phoneNumber = "62";
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
       articleUrl
     )}`;
@@ -24,7 +23,6 @@ const ShareButtons = ({ articleUrl, onCopyLink }) => {
   };
 
   const handleShareInstagram = () => {
-    // Link Instagram diarahkan ke laman web Instagram
     window.open(`https://www.instagram.com/`);
   };
 
