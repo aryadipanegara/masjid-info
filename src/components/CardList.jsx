@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Pagination from "./Pagination";
+import Bookmarks from "./bookmark/bookmarks";
 import { CardListPlaceholderSkeleton } from "./loader/CardSkeleton";
 
 const CardList = () => {
@@ -75,6 +76,9 @@ const CardList = () => {
               className="w-full max-w-sm shadow-md transition-transform transform hover:scale-105 cursor-pointer mb-8"
               onClick={() => navigate(`/masjid/${masjid.id}`)}
             >
+              {/* Use Bookmarks component here */}
+              <Bookmarks />
+
               <CardHeader color="blue-gray">
                 <img
                   src={
