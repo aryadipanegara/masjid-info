@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Card,
@@ -7,7 +7,6 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Pagination from "./Pagination";
-import Bookmarks from "./bookmark/bookmarks";
 import { CardListPlaceholderSkeleton } from "./loader/CardSkeleton";
 
 const CardList = () => {
@@ -20,7 +19,7 @@ const CardList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://masjid-info-api.vercel.app/api/masjid?page=${activePage}`
+          `https://masjid-info-api.vercel.app/api/masjid?page=${activePage}&limit=10`
         );
         const responseData = await response.json();
 
@@ -70,38 +69,39 @@ const CardList = () => {
     <div className="container mx-auto pt-2">
       <div className="justify-center">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 py-8">
-          {masjids.slice(0, 10).map((masjid) => (
-            <Card
-              key={masjid.id}
-              className="w-full max-w-sm shadow-md transition-transform transform hover:scale-105 cursor-pointer mb-8"
-              onClick={() => navigate(`/masjid/${masjid.id}`)}
-            >
-              {/* Use Bookmarks component here */}
-              <Bookmarks />
+          {masjids
+            .slice((activePage - 1) * 10, activePage * 10)
+            .map((masjid) => (
+              <Card
+                key={masjid.id}
+                className="w-full max-w-sm shadow-md transition-transform transform hover:scale-105 cursor-pointer mb-8"
+                onClick={() => navigate(`/masjid/${masjid.id}`)}
+              >
+                {/* Use Bookmarks component here */}
 
-              <CardHeader color="blue-gray">
-                <img
-                  src={
-                    masjid.sejarah &&
-                    masjid.sejarah[0] &&
-                    masjid.sejarah[0].fotoUrl
-                      ? masjid.sejarah[0].fotoUrl
-                      : ""
-                  }
-                  alt={`Masjid ${masjid.id}`}
-                  className="w-full h-40 object-cover rounded-t-lg"
-                />
-              </CardHeader>
-              <CardBody className="flex flex-col">
-                <Typography variant="h5" color="blue-gray" className="mb-2">
-                  {truncateName(masjid.nama_masjid, 4)}
-                </Typography>
-                <Typography className="text-gray-700 mb-4">
-                  {truncateText(masjid.sejarah[0].bagian, 5)}
-                </Typography>
-              </CardBody>
-            </Card>
-          ))}
+                <CardHeader color="blue-gray">
+                  <img
+                    src={
+                      masjid.sejarah &&
+                      masjid.sejarah[0] &&
+                      masjid.sejarah[0].fotoUrl
+                        ? masjid.sejarah[0].fotoUrl
+                        : ""
+                    }
+                    alt={`Masjid ${masjid.id}`}
+                    className="w-full h-40 object-cover rounded-t-lg"
+                  />
+                </CardHeader>
+                <CardBody className="flex flex-col">
+                  <Typography variant="h5" color="blue-gray" className="mb-2">
+                    {truncateName(masjid.nama_masjid, 4)}
+                  </Typography>
+                  <Typography className="text-gray-700 mb-4">
+                    {truncateText(masjid.sejarah[0].bagian, 5)}
+                  </Typography>
+                </CardBody>
+              </Card>
+            ))}
         </div>
       </div>
       {showPagination && <Pagination setActivePage={setActivePage} />}

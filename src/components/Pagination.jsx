@@ -14,7 +14,7 @@ const Pagination = ({ setActivePage }) => {
     color: "gray",
     onClick: () => {
       setActive(index);
-      setActivePage(index); 
+      setActivePage(index);
     },
   });
 
@@ -38,7 +38,7 @@ const Pagination = ({ setActivePage }) => {
     <div className="flex justify-center items-center gap-4 pt-5 pb-3">
       <Button
         variant="text"
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 text-black hover:underline"
         onClick={prev}
         disabled={active === 1}
       >
@@ -46,19 +46,24 @@ const Pagination = ({ setActivePage }) => {
       </Button>
       <div className="flex items-center gap-2">
         {[1, 2, 3].map((index) => (
-          <IconButton key={index} {...getItemProps(index)}>
+          <IconButton
+            key={index}
+            {...getItemProps(index)}
+            className={`${
+              active === index ? "bg-black text-white" : "text-black"
+            } hover:bg-white`}
+          >
             {index}
           </IconButton>
         ))}
       </div>
       <Button
         variant="text"
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 text-black hover:underline"
         onClick={next}
         disabled={active === 5}
       >
-        Next
-        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+        Next <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
       </Button>
     </div>
   );
