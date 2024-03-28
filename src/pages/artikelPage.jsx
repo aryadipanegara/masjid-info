@@ -1,9 +1,9 @@
-// ArticlePage.js
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RiCalendarFill, RiMapPin2Fill, RiEarthFill } from "react-icons/ri";
 import SkeletonLoading from "../components/loader/artikelSkeleton";
 import ShareButtons from "../components/ShareButtons";
+import CommentForm from "../components/CommentForm";
 
 const ArticlePage = () => {
   const { ID } = useParams();
@@ -118,6 +118,10 @@ const ArticlePage = () => {
         ))}
 
       <ShareButtons articleUrl={articleUrl} onCopyLink={handleCopyLink} />
+
+      <div className="pt-2">
+        <CommentForm addComment={CommentForm} />
+      </div>
     </div>
   );
 };

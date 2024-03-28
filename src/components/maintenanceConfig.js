@@ -1,3 +1,3 @@
-const isMaintenanceMode = false; //true atau false
+const isMaintenanceMode = true; //true atau false
 
 export default isMaintenanceMode;

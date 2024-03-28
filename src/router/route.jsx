@@ -8,6 +8,8 @@ import Artikel from "../pages/artikel";
 import ArticlePage from "../pages/artikelPage";
 import SearchResult from "../components/SearchResult";
 import MaintenancePage from "../pages/MaintenancePage";
+import Login from "../auth/login";
+import Logout from "../auth/logout";
 
 const index = () => {
   return (
@@ -21,6 +23,8 @@ const index = () => {
         <Route path="/masjid/:ID" element={<ArticlePage />} />
         <Route path="/search/:searchTerms" element={<SearchResult />} />
         <Route path="/maintenance" component={<MaintenancePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
       <FooterLinks />
     </>
