@@ -38,7 +38,7 @@ export default function Blog() {
         {articles.map((article, index) => (
           <div key={index}>
             {/* Menggunakan Link untuk membuat link ke halaman BlogDetail */}
-            <Link href={`/blogDetail/${article.id}`} passHref>
+            <Link href={`/blog/${article.id}`} passHref>
               <div>
                 <Card key={index} className="max-w-sm overflow-hidden mb-4">
                   <CardHeader
