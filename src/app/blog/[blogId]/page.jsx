@@ -90,6 +90,19 @@ export default function BlogDetailPage({ params: { blogId } }) {
           </div>
         );
       })}
+      {/* Tampilkan foto-foto yang tersisa di bagian paling bawah */}
+      {blog.foto.slice(photoIndex).map((photo, index) => (
+        <div key={index} className="mb-6">
+          <img
+            src={photo.url}
+            alt={photo.keterangan}
+            className="w-full h-auto rounded-lg shadow-lg"
+          />
+          <p className="text-sm text-gray-600 mt-2 textpce">
+            {photo.keterangan}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }

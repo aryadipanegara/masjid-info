@@ -14,17 +14,16 @@ export function NavbarDefault({ onLogout }) {
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      // Periksa apakah email sudah tersimpan di local storage saat komponen dimuat
       const email = localStorage.getItem("email");
-      setIsLoggedIn(!!email); // Set isLoggedIn menjadi true jika email ada di local storage
+      setIsLoggedIn(!!email);
     }
   }, []);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("email");
-      setIsLoggedIn(false); // Set isLoggedIn menjadi false saat logout
-      onLogout(); // Panggil fungsi logout
+      setIsLoggedIn(false);
+      onLogout();
     }
   };
 
@@ -64,21 +63,16 @@ export function NavbarDefault({ onLogout }) {
           Masjid Info
         </Typography>
         <div className="hidden lg:block">{navList}</div>
-        <div className="items-center gap-x-1 hidden lg:block">
+        <div className="items-center gap-x-1 hidden lg:block border border-black rounded-xl">
           {isLoggedIn ? (
             <Button fullWidth variant="text" size="sm" onClick={handleLogout}>
-              <span>Log Out</span>
+              <span>LogOut</span>
             </Button>
           ) : (
             <div className="flex">
               <Link href="/login">
                 <Button fullWidth variant="text" size="sm">
                   <span>Log In</span>
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button fullWidth variant="gradient" size="sm">
-                  <span>Sign up</span>
                 </Button>
               </Link>
             </div>
@@ -141,11 +135,6 @@ export function NavbarDefault({ onLogout }) {
                 <Link href="/login">
                   <Button fullWidth variant="text" size="sm">
                     <span>Log In</span>
-                  </Button>
-                </Link>
-                <Link href="/register">
-                  <Button fullWidth variant="gradient" size="sm">
-                    <span>Sign up</span>
                   </Button>
                 </Link>
               </>
