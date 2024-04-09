@@ -6,11 +6,8 @@ import axios from "axios";
 import {
   Card,
   CardHeader,
-  CardBody,
   CardFooter,
   Typography,
-  Input,
-  Checkbox,
   Button,
 } from "@material-tailwind/react";
 import { FcGoogle } from "react-icons/fc";
@@ -48,30 +45,11 @@ export default function Login() {
             Sign In
           </Typography>
         </CardHeader>
-        <CardBody className="flex flex-col gap-4">
-          <Input label="Email" size="lg" />
-          <Input label="Password" size="lg" />
-          <div className="-ml-2.5">
-            <Checkbox label="Remember Me" />
-          </div>
-        </CardBody>
         <CardFooter className="pt-0">
           <Button variant="gradient" fullWidth onClick={handleGoogleSignIn}>
             <FcGoogle className="h-5 w-5 mr-2" />
             Sign In with Google
           </Button>
-          <Typography variant="small" className="mt-6 flex justify-center">
-            Don&apos;t have an account?
-            <Typography
-              as="a"
-              href="/register"
-              variant="small"
-              color="blue-gray"
-              className="ml-1 font-bold"
-            >
-              Sign up
-            </Typography>
-          </Typography>
         </CardFooter>
       </Card>
       {error && <p>{error}</p>}

@@ -34,7 +34,7 @@ export function NavbarDefault({ onLogout }) {
         as="li"
         variant="small"
         color="blue-gray"
-        className="flex items-center gap-x-2 p-1 font-medium"
+        className="flex items-center gap-x-2 p-1 font-semibold"
       >
         <a href="/blog" className="flex items-center">
           Artikel
@@ -44,7 +44,7 @@ export function NavbarDefault({ onLogout }) {
         as="li"
         variant="small"
         color="blue-gray"
-        className="flex items-center gap-x-2 p-1 font-medium"
+        className="flex items-center gap-x-2 p-1 font-semibold"
       >
         <a href="/blog" className="flex items-center">
           About
@@ -74,11 +74,6 @@ export function NavbarDefault({ onLogout }) {
               <Link href="/login">
                 <Button fullWidth variant="text" size="sm">
                   <span>Log In</span>
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button fullWidth variant="gradient" size="sm">
-                  <span>Sign up</span>
                 </Button>
               </Link>
             </div>
@@ -141,11 +136,6 @@ export function NavbarDefault({ onLogout }) {
                 <Link href="/login">
                   <Button fullWidth variant="text" size="sm">
                     <span>Log In</span>
-                  </Button>
-                </Link>
-                <Link href="/register">
-                  <Button fullWidth variant="gradient" size="sm">
-                    <span>Sign up</span>
                   </Button>
                 </Link>
               </>
