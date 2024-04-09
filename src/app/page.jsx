@@ -10,7 +10,8 @@ const Home = () => {
           Selamat Datang di Masjid Info
         </h1>
         <p className="text-gray-600">
-          Temukan informasi menarik seputar masjid dan sejarahnya.
+          Temukan informasi menarik seputar masjid dan sejarahnya. Mari
+          tingkatkan pengetahuan kita!
         </p>
         <div>
           <Blog />
