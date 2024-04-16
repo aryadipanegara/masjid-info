@@ -7,6 +7,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import Link from "next/link";
+import SearchBar from "../search/SearchBar";
 
 export function NavbarDefault({ onLogout }) {
   const [openNav, setOpenNav] = React.useState(false);
@@ -64,6 +65,7 @@ export function NavbarDefault({ onLogout }) {
           Masjid Info
         </Typography>
         <div className="hidden lg:block">{navList}</div>
+        <SearchBar />
         <div className="items-center gap-x-1 hidden lg:block">
           {isLoggedIn ? (
             <Button fullWidth variant="text" size="sm" onClick={handleLogout}>
