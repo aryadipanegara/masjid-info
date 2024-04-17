@@ -1,49 +1,39 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import SearchInput from "@/components/search/SearchInput";
 
-const SearchPage = () => {
+export default function SearchPage() {
+  const [searchResults, setSearchResults] = useState([]);
   const router = useRouter();
-  const searchQuery = router?.query?.q || "";
-  const [searchResults, setSearchResults] = useState(null);
-
-  if (!searchQuery) {
-    // Handle jika query tidak tersedia
-    return <div>No search query provided</div>;
-  }
-
-  // Rest of the component logic
+  const { q } = router.query || "";
 
   useEffect(() => {
-    const fetchSearchResults = async () => {
+    // Lakukan pencarian menggunakan API berdasarkan query pencarian dari URL
+    const fetchData = async () => {
       try {
-        // Lakukan permintaan pencarian ke server dengan query pencarian
-        const response = await fetch(`/api/search?q=${searchQuery}`);
+        const response = await fetch(`/api/masjid?q=${q}`);
         const data = await response.json();
         setSearchResults(data);
       } catch (error) {
         console.error("Error fetching search results:", error);
-        setSearchResults([]);
       }
     };
 
-    if (searchQuery.trim() !== "") {
-      fetchSearchResults();
+    if (q) {
+      fetchData();
     }
-  }, [searchQuery]);
+  }, [q]);
 
   return (
     <div>
-      <h1>Search Results for "{searchQuery}"</h1>
-      {searchResults && (
-        <ul>
-          {searchResults.map((result, index) => (
-            <li key={index}>{result.title}</li>
-          ))}
-        </ul>
-      )}
+      <h1>Search Page</h1>
+      <SearchInput initialQuery={q || ""} />
+      <ul>
+        {searchResults.map((masjid) => (
+          <li key={masjid.id}>{masjid.name}</li>
+        ))}
+      </ul>
     </div>
   );
-};
-
-export default SearchPage;
+}
