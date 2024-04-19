@@ -1,27 +1,37 @@
-// components/SearchInput.js
+"use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-export default function SearchInput() {
+export default function SearchMasjid({ getSearchResults }) {
   const [query, setQuery] = useState("");
-  const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Menggunakan router untuk beralih ke halaman pencarian dengan query pencarian
-    router.push(`/search?q=${query}`);
+
+    const response = await fetch(`/api/masjid/search?query=${query}`);
+
+    const masjid = await response.json();
+
+    getSearchResults(masjid);
   };
 
   return (
-    <form onSubmit={handleSearch}>
-      <input
-        type="text"
-        placeholder="Cari masjid..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button type="submit">Cari</button>
-    </form>
+    <div className="text-center my-20">
+      <form onSubmit={handleSubmit}>
+        <input
+          className="text-black border-2 border-black rounded-full px-3 py-2"
+          type="text"
+          placeholder="Search masjid..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button
+          className="bg-black text-white rounded-full px-3 py-2 hover:bg-black/60"
+          type="submit"
+        >
+          Search
+        </button>
+      </form>
+    </div>
   );
 }

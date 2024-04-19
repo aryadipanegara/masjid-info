@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-async function fetchMasjid() {
+async function fetchMasjid(re) {
   const response = await fetch("http://localhost:5000/articles");
   const masjids = await response.json();
   return masjids;
