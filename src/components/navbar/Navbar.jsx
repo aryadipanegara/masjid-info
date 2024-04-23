@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import SearchInput from "../search/SearchInput";
 
 export function NavbarDefault({ onLogout }) {
   const [openNav, setOpenNav] = React.useState(false);
@@ -15,17 +14,16 @@ export function NavbarDefault({ onLogout }) {
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      // Periksa apakah email sudah tersimpan di local storage saat komponen dimuat
       const email = localStorage.getItem("email");
-      setIsLoggedIn(!!email); // Set isLoggedIn menjadi true jika email ada di local storage
+      setIsLoggedIn(!!email);
     }
   }, []);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("email");
-      setIsLoggedIn(false); // Set isLoggedIn menjadi false saat logout
-      onLogout(); // Panggil fungsi logout
+      setIsLoggedIn(false);
+      onLogout();
     }
   };
 
@@ -65,7 +63,7 @@ export function NavbarDefault({ onLogout }) {
           Masjid Info
         </Typography>
         <div className="hidden lg:block">{navList}</div>
-        <SearchInput />
+
         <div className="items-center gap-x-1 hidden lg:block">
           {isLoggedIn ? (
             <Button fullWidth variant="text" size="sm" onClick={handleLogout}>
