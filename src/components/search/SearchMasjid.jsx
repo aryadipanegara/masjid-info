@@ -9,15 +9,18 @@ export default function SearchMasjid({ handleSearch }) {
   };
 
   return (
-    <div>
-      <form>
-        <input
-          className="text-black border-2 border-black rounded-full px-3 py-2"
-          type="text"
-          placeholder="Cari masjid..."
-          value={query}
-          onChange={handleChange}
-        />
+    <div className="flex justify-center mt-5">
+      <form className="w-full max-w-sm">
+        <div className="flex items-center border-b border-teal-500 py-2">
+          <input
+            className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            type="text"
+            placeholder="Cari masjid..."
+            aria-label="Cari masjid"
+            value={query}
+            onChange={handleChange}
+          />
+        </div>
       </form>
     </div>
   );

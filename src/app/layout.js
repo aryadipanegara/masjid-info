@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body>
+      <body className="bg-white">
         <NavbarDefault isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         {children}
         <Footer />

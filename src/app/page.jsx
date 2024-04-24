@@ -14,7 +14,7 @@ const Home = () => {
           tingkatkan pengetahuan kita!
         </p>
         <div>
-          <Blog />
+          <Blog showSearchMasjid={false} />
         </div>
       </div>
     </div>

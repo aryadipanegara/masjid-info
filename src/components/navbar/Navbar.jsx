@@ -45,7 +45,7 @@ export function NavbarDefault({ onLogout }) {
         color="blue-gray"
         className="flex items-center gap-x-2 p-1 font-semibold"
       >
-        <a href="/blog" className="flex items-center">
+        <a href="/about" className="flex items-center">
           About
         </a>
       </Typography>

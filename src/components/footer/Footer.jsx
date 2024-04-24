@@ -2,17 +2,17 @@ import { Typography } from "@material-tailwind/react";
 
 export function Footer() {
   return (
-    <footer className="absolute  w-full flex flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50  text-center md:justify-between p-2">
-      <Typography color="blue-gray" className="font-normal">
+    <footer className="fixed bottom-0 w-full flex flex-col md:flex-row items-center justify-between bg-white text-gray-900 p-4 border">
+      <Typography color="gray" className="text-lg font-semibold">
         &copy; 2024 Masjid Info
       </Typography>
-      <ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
+      <ul className="flex flex-wrap items-center justify-center mt-2 md:mt-0">
         <li>
           <Typography
             as="a"
             href="#"
-            color="blue-gray"
-            className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
+            color="gray"
+            className="text-sm font-medium transition-colors hover:text-blue-300 focus:text-blue-300"
           >
             About Us
           </Typography>

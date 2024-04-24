@@ -13,7 +13,7 @@ import axios from "axios";
 import SkeletonBlog from "@/components/skeleton/skeletonBlog";
 import SearchMasjid from "@/components/search/SearchMasjid";
 
-export default function Blog() {
+export default function Blog({ showSearchMasjid = true }) {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
@@ -21,7 +21,7 @@ export default function Blog() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("/api/masjid");
+        const response = await axios.get("http://localhost:5000/articles");
         setArticles(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -45,8 +45,8 @@ export default function Blog() {
 
   return (
     <div className="mx-auto pt-2">
-      <SearchMasjid handleSearch={handleSearch} />
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 py-8">
+      {showSearchMasjid && <SearchMasjid handleSearch={handleSearch} />}
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 py-8 p-5">
         {loading || !Array.isArray(articles) || articles.length === 0
           ? Array.from({ length: 10 }, (_, index) => (
               <SkeletonBlog key={index} />
