@@ -12,11 +12,15 @@ import Link from "next/link";
 import axios from "axios";
 import SkeletonBlog from "@/components/skeleton/skeletonBlog";
 import SearchMasjid from "@/components/search/SearchMasjid";
+import { useDispatch, useSelector } from "react-redux";
+import { addBookmark, removeBookmark } from "@/redux/actions/store";
 
 export default function Blog({ showSearchMasjid = true }) {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
+  const dispatch = useDispatch();
+  const articleBookmarks = useSelector((state) => state.articleBookmarks);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -43,6 +47,14 @@ export default function Blog({ showSearchMasjid = true }) {
     setSearchResults(searchResults);
   };
 
+  const handleBookmark = (articleId) => {
+    if (articleBookmarks.includes(articleId)) {
+      dispatch(removeBookmark(articleId));
+    } else {
+      dispatch(addBookmark(articleId));
+    }
+  };
+
   return (
     <div className="mx-auto pt-2">
       {showSearchMasjid && <SearchMasjid handleSearch={handleSearch} />}
@@ -54,12 +66,9 @@ export default function Blog({ showSearchMasjid = true }) {
           : (searchResults.length > 0 ? searchResults : articles).map(
               (article, index) => (
                 <div key={index}>
-                  <Link href={`/blog/${article.id}`} passHref>
-                    <div>
-                      <Card
-                        key={index}
-                        className="max-w-sm overflow-hidden mb-4"
-                      >
+                  <Card key={index} className="max-w-sm overflow-hidden mb-4">
+                    <Link href={`/blog/${article.id}`} passHref>
+                      <div title="Detail">
                         <CardHeader
                           floated={false}
                           shadow={false}
@@ -82,6 +91,7 @@ export default function Blog({ showSearchMasjid = true }) {
                             <FaImage className="w-full h-48 object-cover" />
                           )}
                         </CardHeader>
+
                         <CardBody>
                           <Typography variant="h6" color="blue-gray">
                             {article.nama.substring(0, 20)}...
@@ -94,17 +104,24 @@ export default function Blog({ showSearchMasjid = true }) {
                             {article.sejarah.substring(0, 73)}...
                           </Typography>
                         </CardBody>
-                        <CardFooter className="flex items-center justify-between">
-                          <div className="flex items-center -space-x-3 cursor-pointer">
-                            <FaHeart className="h-5 w-5" />
-                          </div>
-                          <Typography className="font-normal cursor-pointer">
-                            <FaBookmark className="h-5 w-5" />
-                          </Typography>
-                        </CardFooter>
-                      </Card>
-                    </div>
-                  </Link>
+                      </div>
+                    </Link>
+                    <CardFooter className="flex items-center justify-between">
+                      <div className="flex items-center -space-x-3 cursor-pointer">
+                        {/* <FaHeart className="h-5 w-5" /> */}
+                      </div>
+                      <Typography
+                        className="font-normal cursor-pointer"
+                        onClick={() => handleBookmark(article.id)}
+                      >
+                        {articleBookmarks.includes(article.id) ? (
+                          <FaBookmark className="h-5 w-5 text-blue-500" />
+                        ) : (
+                          <FaBookmark className="h-5 w-5" />
+                        )}
+                      </Typography>
+                    </CardFooter>
+                  </Card>
                 </div>
               )
             )}
