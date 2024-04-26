@@ -1,63 +1,63 @@
 "use client";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Typography,
 } from "@material-tailwind/react";
-import { FaBookmark } from "react-icons/fa";
-import { removeBookmark } from "@/redux/actions/store";
+import Link from "next/link";
 
-const BookmarkPage = () => {
-  const dispatch = useDispatch();
+export default function BookmarkPage() {
   const articleBookmarks = useSelector((state) => state.articleBookmarks);
-
-  const handleRemoveBookmark = (articleId) => {
-    dispatch(removeBookmark(articleId));
-  };
 
   return (
     <div className="mx-auto pt-2">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 py-8 p-5">
-        {articleBookmarks.length > 0 ? (
-          articleBookmarks.map((articleId, index) => (
-            <div key={index}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 py-8 p-5">
+        {articleBookmarks && articleBookmarks.length === 0 ? (
+          <Typography variant="body" color="gray" className="font-normal">
+            Tidak ada artikel yang disimpan.
+          </Typography>
+        ) : (
+          articleBookmarks.map((article) => (
+            <div key={article.id}>
               <Card className="max-w-sm overflow-hidden mb-4">
-                {/* Your card content here */}
-                <CardHeader
-                  floated={false}
-                  shadow={false}
-                  color="transparent"
-                  className="m-0 rounded-none"
-                >
-                  {/* Your card header content here */}
-                </CardHeader>
-                <CardBody>{/* Your card body content here */}</CardBody>
-                <CardFooter className="flex items-center justify-between">
-                  <div className="flex items-center -space-x-3 cursor-pointer">
-                    {/* Your action icons here */}
-                    <Typography
-                      className="font-normal cursor-pointer"
-                      onClick={() => handleRemoveBookmark(articleId)}
+                <Link href={`/blog/${article.id}`} passHref>
+                  <div title="Detail">
+                    <CardHeader
+                      floated={false}
+                      shadow={false}
+                      color="transparent"
+                      className="m-0 rounded-none"
                     >
-                      <FaBookmark className="h-5 w-5 text-red-500" />
-                    </Typography>
+                      <img
+                        src={
+                          article.foto && article.foto[0] && article.foto[0].url
+                        }
+                        alt={article.nama}
+                        className="w-full h-48 object-cover"
+                      />
+                    </CardHeader>
+                    <CardBody>
+                      <Typography variant="h6" color="blue-gray">
+                        {article.nama}
+                      </Typography>
+                      <Typography
+                        variant="body"
+                        color="gray"
+                        className="mt-3 font-normal"
+                      >
+                        {article.sejarah}
+                      </Typography>
+                    </CardBody>
                   </div>
-                </CardFooter>
+                </Link>
               </Card>
             </div>
           ))
-        ) : (
-          <Typography variant="body" color="gray">
-            You haven&apos;t bookmarked any articles yet.
-          </Typography>
         )}
       </div>
     </div>
   );
-};
-
-export default BookmarkPage;
+}

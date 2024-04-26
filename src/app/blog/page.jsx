@@ -20,7 +20,9 @@ export default function Blog({ showSearchMasjid = true }) {
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
   const dispatch = useDispatch();
-  const articleBookmarks = useSelector((state) => state.articleBookmarks);
+  const articleBookmarks = useSelector(
+    (state) => state.bookmark.articleBookmarks
+  );
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -43,16 +45,25 @@ export default function Blog({ showSearchMasjid = true }) {
     setSearchResults(filteredArticles);
   };
 
-  const handleSearchResults = (searchResults) => {
-    setSearchResults(searchResults);
+  const handleBookmark = (articleId, bookmarkId) => {
+    if (isArticleBookmarked(articleId)) {
+      dispatch(removeBookmark(bookmarkId));
+    } else {
+      dispatch(
+        addBookmark({
+          nomorArtikel: articleId,
+          namaMasjid: articleId,
+          url: "",
+          timestamp: new Date().getTime(),
+        })
+      );
+    }
   };
 
-  const handleBookmark = (articleId) => {
-    if (articleBookmarks.includes(articleId)) {
-      dispatch(removeBookmark(articleId));
-    } else {
-      dispatch(addBookmark(articleId));
-    }
+  const isArticleBookmarked = (articleId) => {
+    return articleBookmarks.some(
+      (bookmark) => bookmark.nomorArtikel === articleId
+    );
   };
 
   return (
@@ -112,9 +123,11 @@ export default function Blog({ showSearchMasjid = true }) {
                       </div>
                       <Typography
                         className="font-normal cursor-pointer"
-                        onClick={() => handleBookmark(article.id)}
+                        onClick={() =>
+                          handleBookmark(article.id, article.bookmarkId)
+                        } // Gunakan bookmarkId dari data artikel
                       >
-                        {articleBookmarks.includes(article.id) ? (
+                        {isArticleBookmarked(article.id) ? (
                           <FaBookmark className="h-5 w-5 text-blue-500" />
                         ) : (
                           <FaBookmark className="h-5 w-5" />

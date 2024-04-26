@@ -49,6 +49,16 @@ export function NavbarDefault({ onLogout }) {
           About
         </a>
       </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="flex items-center gap-x-2 p-1 font-semibold"
+      >
+        <a href="/bookmarks" className="flex items-center">
+          Bookmark
+        </a>
+      </Typography>
     </ul>
   );
 

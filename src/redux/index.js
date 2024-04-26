@@ -1,7 +1,11 @@
-import { createStore } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import bookmarkReducer from "@/redux/reducers/store";
+import { thunk } from "redux-thunk";
 
-import rootReducer from "./reducers/store";
+const rootReducer = combineReducers({
+  bookmark: bookmarkReducer,
+});
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default store;

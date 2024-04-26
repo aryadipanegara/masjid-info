@@ -1,28 +1,31 @@
+// reducers/bookmarkReducer.js
+
 import { ActionTypes } from "../actionTypes";
 
 const initialState = {
-  articles: [],
-  loading: true,
-  articleBookmarks: [],
+  articleBookmarks: JSON.parse(localStorage.getItem("bookmarks")) || [],
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_ARTICLE_BOOKMARKS:
-      return {
-        ...state,
-        articleBookmarks: action.payload,
-      };
     case ActionTypes.ADD_BOOKMARK:
       return {
         ...state,
-        articleBookmarks: [...state.articleBookmarks, action.payload],
+        articleBookmarks: [
+          ...state.articleBookmarks,
+          {
+            nomorArtikel: action.payload.nomorArtikel,
+            namaMasjid: action.payload.namaMasjid,
+            url: action.payload.url,
+            timestamp: action.payload.timestamp,
+          },
+        ],
       };
     case ActionTypes.REMOVE_BOOKMARK:
       return {
         ...state,
         articleBookmarks: state.articleBookmarks.filter(
-          (id) => id !== action.payload
+          (bookmark) => bookmark.nomorArtikel !== action.payload
         ),
       };
     default:
