@@ -4,17 +4,19 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, Bell } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { useAuth } from "@/lib/auth-context";
+import { motion } from "framer-motion";
 
 const navItems = [
   { href: "/masjid", label: "Masjid" },
@@ -25,6 +27,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { userRole, logout } = useAuth();
 
   useEffect(() => {
@@ -35,11 +38,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    // This effect will run whenever userRole changes
-    // It will force a re-render of the component
-  }, [userRole]);
 
   const handleLogout = () => {
     setIsDialogOpen(true);
@@ -56,7 +54,7 @@ export default function Header() {
 
   const adminNavItems =
     userRole === "ADMIN" || userRole === "AUTHOR"
-      ? [{ href: "/admin/dashboard", label: "Mengelola" }]
+      ? [{ href: "/admin/dashboard", label: "Manage" }]
       : [];
 
   const AuthButtons = () => {
@@ -66,14 +64,23 @@ export default function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/avatars/01.png" alt="@username" />
+                <AvatarImage alt="@username" />
                 <AvatarFallback>UN</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem>
+              <Link href="/profile" className="flex w-full">
+                Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/settings" className="flex w-full">
+                Settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -82,10 +89,14 @@ export default function Header() {
       return (
         <>
           <Link href="/auth/login">
-            <Button variant="ghost">Login</Button>
+            <Button variant="ghost" className="text-black">
+              Login
+            </Button>
           </Link>
           <Link href="/auth/register">
-            <Button>Register</Button>
+            <Button className="bg-white text-black hover:text-white hover:bg-emerald-700">
+              Register
+            </Button>
           </Link>
         </>
       );
@@ -96,22 +107,22 @@ export default function Header() {
     <header
       className={`sticky top-0 z-50 w-full py-3 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md"
-          : "bg-background"
+          ? "bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-emerald-800/60 shadow-md"
+          : "bg-white"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold mr-6">
-              Masjid Info
+            <Link href="/" className="text-2xl font-bold mr-6 text-black">
+              MasjidInfo
             </Link>
-            <nav className="hidden lg:flex space-x-4">
+            <nav className="hidden lg:flex space-x-1">
               {navItems.concat(adminNavItems).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-sm font-medium transition-colors hover:text-primary"
+                  className="text-sm font-medium transition-colors hover:text-emerald-200 text-black px-3 py-2 rounded-md hover:bg-emerald-700"
                 >
                   {item.label}
                 </Link>
@@ -120,6 +131,26 @@ export default function Header() {
           </div>
 
           <div className="hidden lg:flex items-center space-x-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-black hover:text-emerald-200"
+                >
+                  <Bell className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>New prayer time updates</DropdownMenuItem>
+                <DropdownMenuItem>
+                  Event reminder: Eid celebration
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  New mosque added in your area
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <AuthButtons />
           </div>
 
@@ -127,32 +158,34 @@ export default function Header() {
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
-                className="lg:hidden"
+                className="lg:hidden text-black"
                 size="icon"
                 aria-label="Toggle Menu"
               >
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent
+              side="right"
+              className="w-[300px] sm:w-[400px] bg-white"
+            >
               <div className="flex items-center justify-between mb-8">
-                <Link href="/" className="text-2xl font-bold">
-                  Masjid Info
+                <Link href="/" className="text-2xl font-bold text-black">
+                  MasjidInfo
                 </Link>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <X className="h-6 w-6" />
-                </Button>
+                  className="text-black"
+                ></Button>
               </div>
               <nav className="flex flex-col space-y-4">
                 {navItems.concat(adminNavItems).map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-sm font-medium transition-colors hover:text-primary"
+                    className="text-sm font-medium transition-colors hover:text-emerald-200 text-black px-3 py-2 rounded-md hover:bg-emerald-700"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
@@ -169,12 +202,24 @@ export default function Header() {
         </div>
       </div>
 
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{
+          height: isSearchOpen ? "auto" : 0,
+          opacity: isSearchOpen ? 1 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+        className="container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden"
+      >
+        {isSearchOpen && <div className="py-4"></div>}
+      </motion.div>
+
       <ConfirmationDialog
         isOpen={isDialogOpen}
         onClose={cancelLogout}
         onConfirm={confirmLogout}
-        title="Konfirmasi Logout"
-        description="Apakah Anda yakin ingin meninggalkan kami?"
+        title="Confirm Logout"
+        description="Are you sure you want to log out?"
       />
     </header>
   );

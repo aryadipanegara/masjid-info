@@ -78,7 +78,6 @@ export default function MasjidCategoriesPage() {
       setMasjidCategoriesList(data);
       setFilteredMasjidCategoriesList(data);
     } catch (error) {
-      console.error("Error fetching masjid categories:", error);
       toast({
         title: "Error",
         description: "Failed to fetch masjid categories. Please try again.",
@@ -130,6 +129,7 @@ export default function MasjidCategoriesPage() {
         throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
+      console.log("Fetched categories:", data); // Tambahkan log untuk melihat hasil fetch
       setCategoryList(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -270,7 +270,7 @@ export default function MasjidCategoriesPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: any) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {

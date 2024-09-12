@@ -95,7 +95,7 @@ export default function GenericModal({
                           {item.name}
                         </SelectItem>
                       ))
-                    ) : field.name === "id_categories" ? (
+                    ) : field.name === "id_category" ? (
                       categoriesList.length > 0 ? (
                         categoriesList.map((category) => (
                           <SelectItem key={category.id} value={category.id}>

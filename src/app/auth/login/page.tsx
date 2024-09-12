@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/card";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/lib/auth-context";
+import Alert from "@/components/AlertCustom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,6 +25,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | null;
+  }>({ message: "", type: null });
   const router = useRouter();
   const { toast } = useToast();
   const { login } = useAuth();
@@ -33,6 +37,7 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setAlertInfo({ message: "", type: null }); // Reset alert
 
     try {
       const response = await fetch(
@@ -63,30 +68,41 @@ export default function Login() {
       // Simulasi delay untuk melihat progress loading
       setTimeout(() => {
         login(token); // Use the login function from AuthContext
-        toast({
-          title: "Login Successful",
-          description: `Welcome back!`,
-          duration: 5000,
+        setAlertInfo({
+          message: "Login Successful. Welcome back!",
+          type: "success",
         });
 
-        router.push("/");
+        // Navigate after a short delay to allow the alert to be seen
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       }, 1500);
     } catch (error) {
       console.error("Login error:", error);
       setError(
         error instanceof Error ? error.message : "An unexpected error occurred"
       );
-      toast({
-        title: "Login Failed",
-        description: "Please check your email and password.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Login Failed. Please check your email and password.",
+        type: "error",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 py-8">
       <Card className="w-full max-w-md">
+        {alertInfo.type && (
+          <Alert
+            message={alertInfo.message}
+            type={alertInfo.type}
+            duration={3000}
+            onClose={() => setAlertInfo({ message: "", type: null })}
+          />
+        )}
         <CardHeader>
           <h2 className="text-2xl font-bold text-center">
             Login to Masjid Info
@@ -94,11 +110,6 @@ export default function Login() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

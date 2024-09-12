@@ -5,6 +5,7 @@ export interface Masjid {
   name: string;
   description: string;
   thumbnail: string;
+  location: string;
   total_Klik: number;
   created_by: string;
   updated_by: string;
