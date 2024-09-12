@@ -128,7 +128,7 @@ export default function DetailMasjidPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[600px] pr-4">
+              <ScrollArea className=" pr-4">
                 {detailMasjid.sejarah.map((sejarah, index) => (
                   <motion.div
                     key={sejarah.id}
@@ -141,19 +141,19 @@ export default function DetailMasjidPage() {
                       {sejarah.title}
                     </h3>
                     {detailMasjid.photos[index] && (
-                      <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg mb-4">
-                        <Image
-                          src={detailMasjid.photos[index].photo_url}
-                          alt={detailMasjid.photos[index].caption}
-                          layout="fill"
-                          objectFit="cover"
-                          className="transition-transform duration-300 hover:scale-105"
-                        />
-                        <div className="absolute bottom-0 bg-black bg-opacity-50 text-white text-center w-full py-2">
-                          <p className="text-sm">
-                            {detailMasjid.photos[index].caption}
-                          </p>
+                      <div className="mb-4">
+                        <div className="rounded-lg overflow-hidden shadow-lg">
+                          <Image
+                            src={detailMasjid.photos[index].photo_url}
+                            alt={detailMasjid.photos[index].caption}
+                            width={800}
+                            height={450}
+                            className="w-full h-auto"
+                          />
                         </div>
+                        <p className="text-sm text-center mt-2 text-muted-foreground">
+                          {detailMasjid.photos[index].caption}
+                        </p>
                       </div>
                     )}
                     <div
