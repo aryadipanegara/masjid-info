@@ -41,8 +41,6 @@ export default function MasjidListPage() {
       }
       const data = await response.json();
 
-      console.log("Data masjid berhasil diambil:", data); // Baris debugging
-
       setMasjids(data);
       setFilteredMasjids(data);
     } catch (error) {
@@ -67,77 +65,78 @@ export default function MasjidListPage() {
   }, [searchTerm, masjids]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-12 text-center">
-        <p className="text-xl text-muted-foreground">
-          Menjelajahi Keindahan dan Kebijaksanaan Masjid
-        </p>
-      </header>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8 ">
+        <header className="mb-12 text-center">
+          <p className="text-xl text-muted-foreground">
+            Menjelajahi Keindahan dan Kebijaksanaan Masjid
+          </p>
+        </header>
 
-      <div className="mb-8">
-        <Input
-          type="search"
-          placeholder="Cari masjid..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-md mx-auto"
-        />
-      </div>
+        <div className="mb-8">
+          <Input
+            type="search"
+            placeholder="Cari masjid..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-md mx-auto"
+          />
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          filteredMasjids.map((masjid) => (
-            <motion.div
-              key={masjid.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Card className="overflow-hidden">
-                <Image
-                  src={masjid.thumbnail}
-                  alt={masjid.name}
-                  width={400}
-                  height={200}
-                  className="w-full h-48 object-cover"
-                />
-                <CardHeader>
-                  <CardTitle>{masjid.name.slice(0, 35)}...</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {masjid.description.slice(0, 20)}...
-                  </p>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <CalendarIcon className="mr-1 h-4 w-4" />
-                    <span className="mr-4">
-                      {new Date(masjid.created_at).toLocaleDateString()}
-                    </span>
-                    <EyeIcon className="mr-1 h-4 w-4" />
-                    <span>
-                      {masjid.detailMasjids.reduce(
-                        (acc, dm) => acc + dm.total_klik,
-                        0
-                      )}{" "}
-                      views
-                    </span>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between items-center">
-                  <Button variant="outline" size="sm">
-                    <Link
-                      href={`/detailmasjids/${masjid.detailMasjids[0]?.id}`}
-                    >
-                      Lihat detail
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            filteredMasjids.map((masjid) => (
+              <motion.div
+                key={masjid.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card className="overflow-hidden">
+                  <Image
+                    src={masjid.thumbnail}
+                    alt={masjid.name}
+                    width={400}
+                    height={200}
+                    className="w-full h-48 object-cover"
+                  />
+                  <CardHeader>
+                    <CardTitle>{masjid.name.slice(0, 35)}...</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {masjid.description.slice(0, 20)}...
+                    </p>
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <CalendarIcon className="mr-1 h-4 w-4" />
+                      <span className="mr-4">
+                        {new Date(masjid.created_at).toLocaleDateString()}
+                      </span>
+                      <EyeIcon className="mr-1 h-4 w-4" />
+                      <span>
+                        {masjid.detailMasjids.reduce(
+                          (acc, dm) => acc + dm.total_klik,
+                          0
+                        )}
+                      </span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-between items-center">
+                    <Button variant="outline" size="sm">
+                      <Link
+                        href={`/detailmasjids/${masjid.detailMasjids[0]?.id}`}
+                      >
+                        Lihat detail
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

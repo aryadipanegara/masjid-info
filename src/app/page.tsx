@@ -22,16 +22,40 @@ export default function Component() {
     fetchMasjids();
   }, []);
 
+  useEffect(() => {
+    const filtered = masjids.filter((masjid) =>
+      masjid.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredMasjids(filtered);
+  }, [searchTerm, masjids]);
+
   const fetchMasjids = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/masjids?limit=3"
+        "https://masjidinfo-backend.vercel.app/api/masjids"
       );
       if (!response.ok) throw new Error("Failed to fetch masjid data");
+
       const data = await response.json();
-      setMasjids(data);
-      setFilteredMasjids(data);
+
+      // Sort data by total_klik in descending order and get the top 6 masjids
+      const sortedMasjids = data
+        .sort((a: Masjid, b: Masjid) => {
+          const totalKlikA = a.detailMasjids.reduce(
+            (acc, dm) => acc + dm.total_klik,
+            0
+          );
+          const totalKlikB = b.detailMasjids.reduce(
+            (acc, dm) => acc + dm.total_klik,
+            0
+          );
+          return totalKlikB - totalKlikA;
+        })
+        .slice(0, 6); // Get the top 6 masjids
+
+      setMasjids(sortedMasjids);
+      setFilteredMasjids(sortedMasjids);
     } catch (error) {
       console.error("Error fetching masjid data:", error);
       toast({
@@ -44,17 +68,8 @@ export default function Component() {
     }
   };
 
-  useEffect(() => {
-    const filtered = masjids.filter(
-      (masjid) =>
-        masjid.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        masjid.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredMasjids(filtered);
-  }, [searchTerm, masjids]);
-
   return (
-    <div className="min-h-screen bg-gradient-to-b bg-emerald-100 from-gray-50 to-white">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-16">
         <header className="mb-16 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -84,23 +99,32 @@ export default function Component() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
+                className="flex"
               >
-                <Link href={`/detailmasjids/${masjid.detailMasjids[0]?.id}`}>
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <Image
-                      src={masjid.thumbnail}
-                      alt={masjid.name}
-                      width={400}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                    <CardContent className="p-6">
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                        {masjid.name}
-                      </h2>
-                      <p className="text-sm text-gray-600 mb-4">
-                        {masjid.description.slice(0, 100)}...
-                      </p>
+                <Link
+                  href={`/detailmasjids/${masjid.detailMasjids[0]?.id}`}
+                  className="w-full"
+                >
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+                    <div className="relative h-48 w-full">
+                      <Image
+                        src={masjid.thumbnail}
+                        alt={masjid.name}
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </div>
+                    <CardContent className="p-6 flex-grow flex flex-col justify-between">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                          {masjid.name}
+                        </h2>
+                        <p className="text-sm text-gray-600 mb-4">
+                          {masjid.description.length > 100
+                            ? `${masjid.description.slice(0, 100)}...`
+                            : masjid.description}
+                        </p>
+                      </div>
                       <div className="flex items-center text-sm text-gray-500">
                         <CalendarIcon className="mr-1 h-4 w-4" />
                         <span className="mr-4">
@@ -111,8 +135,7 @@ export default function Component() {
                           {masjid.detailMasjids.reduce(
                             (acc, dm) => acc + dm.total_klik,
                             0
-                          )}{" "}
-                          views
+                          )}
                         </span>
                       </div>
                     </CardContent>
