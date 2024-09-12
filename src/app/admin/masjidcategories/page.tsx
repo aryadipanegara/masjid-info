@@ -18,28 +18,7 @@ import { FormField, FormData } from "@/types/form";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
-
-interface Masjid {
-  id: string;
-  name: string;
-}
-
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface MasjidCategory {
-  id: string;
-  id_masjid: string;
-  id_category: string;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-  masjid: Masjid;
-  category: Category;
-}
+import { Category, Masjid, MasjidCategory } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
   { name: "id_masjid", label: "Masjid", type: "select" },

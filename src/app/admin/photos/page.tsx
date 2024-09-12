@@ -26,20 +26,7 @@ import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import Image from "next/image";
-
-interface Photo {
-  id: number;
-  photo_url: string;
-  caption: string;
-  detailMasjidId: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface DetailMasjid {
-  id: string;
-  name: string;
-}
+import { DetailMasjid, Photo } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
   { name: "photo_url", label: "URL Foto", type: "text" },

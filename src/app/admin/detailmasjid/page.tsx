@@ -26,46 +26,7 @@ import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-
-interface Masjid {
-  id: string;
-  name: string;
-}
-
-interface Photo {
-  id: string;
-  photo_url: string;
-  caption: string;
-}
-
-interface Sejarah {
-  id: number;
-  title: string;
-  content: string;
-}
-
-interface Discussion {
-  id: string;
-  message: string;
-  created_at: string;
-  id_user: string;
-}
-
-interface DetailMasjid {
-  id: string;
-  id_masjid: string;
-  name: string;
-  address: string;
-  total_Klik: number;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-  photos: Photo[];
-  sejarah: Sejarah[];
-  discussions: Discussion[];
-  masjid?: Masjid;
-}
+import { DetailMasjid, Masjid } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
   { name: "id_masjid", label: "Nama Masjid", type: "select" },

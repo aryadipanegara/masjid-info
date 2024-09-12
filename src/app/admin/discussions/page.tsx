@@ -9,18 +9,7 @@ import { Input } from "@/components/ui/input";
 import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
-
-interface Discussion {
-  id: string;
-  message?: string;
-  created_at: string;
-  updated_at: string;
-  id_replies_discussion?: string;
-  id_user: string;
-  id_detail_masjid: string;
-  user?: { name: string }; // Assuming user data includes name
-  detailMasjid?: { name: string }; // Assuming DetailMasjid data includes name
-}
+import { Discussion } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
   { name: "message", label: "Pesan", type: "text" },

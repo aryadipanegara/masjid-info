@@ -15,23 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FormField, FormData } from "@/types/form";
+import { FormField, FormData, User } from "@/types/form";
 import { useToast } from "@/hooks/use-toast";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  avatar: string | null;
-  is_verified: boolean;
-  is_email_verification: boolean;
-  role: string;
-  created_at: string;
-  updated_at: string;
-}
 
 const formFields: FormField[] = [
   { name: "name", label: "Name", type: "text" },
@@ -326,7 +314,7 @@ export default function AdminUsersPage() {
                 </TableCell>
                 <TableCell>
                   {user.is_verified ? (
-                    <Badge variant="success">Verified</Badge>
+                    <Badge variant="default">Verified</Badge>
                   ) : (
                     <Badge variant="destructive">Not Verified</Badge>
                   )}

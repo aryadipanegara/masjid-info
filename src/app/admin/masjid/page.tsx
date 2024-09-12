@@ -20,18 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import Alert from "@/components/AlertCustom";
 import Image from "next/image";
-
-interface Masjid {
-  id: string;
-  name: string;
-  description: string;
-  thumbnail: string;
-  totalKliks: number;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-}
+import { Masjid } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
   { name: "name", label: "Nama Masjid", type: "text" },
@@ -46,7 +35,7 @@ export default function AdminMasjidPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentMasjid, setCurrentMasjid] = useState<FormData>({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState<"name" | "totalKliks">("name");
+  const [sortBy, setSortBy] = useState<"name" | "total_Klik">("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [masjidToEdit, setMasjidToEdit] = useState<Masjid | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -108,8 +97,8 @@ export default function AdminMasjidPage() {
           : b.name.localeCompare(a.name);
       } else {
         return sortOrder === "asc"
-          ? a.totalKliks - b.totalKliks
-          : b.totalKliks - a.totalKliks;
+          ? a.total_Klik - b.total_Klik
+          : b.total_Klik - a.total_Klik;
       }
     });
     setFilteredMasjidList(sorted);
@@ -216,7 +205,7 @@ export default function AdminMasjidPage() {
     setCurrentMasjid((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSort = (key: "name" | "totalKliks") => {
+  const handleSort = (key: "name" | "total_Klik") => {
     if (sortBy === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -307,7 +296,7 @@ export default function AdminMasjidPage() {
             </TableHead>
             <TableHead>Deskripsi</TableHead>
             <TableHead>
-              <Button variant="ghost" onClick={() => handleSort("totalKliks")}>
+              <Button variant="ghost" onClick={() => handleSort("total_Klik")}>
                 Total Kliks <ArrowUpDown className="ml-2 h-4 w-4" />
               </Button>
             </TableHead>
@@ -335,7 +324,7 @@ export default function AdminMasjidPage() {
                 </TableCell>
                 <TableCell className="font-medium">{masjid.name}</TableCell>
                 <TableCell>{masjid.description.substring(0, 50)}...</TableCell>
-                <TableCell>{masjid.totalKliks}</TableCell>
+                <TableCell>{masjid.total_Klik}</TableCell>
                 <TableCell>
                   {new Date(masjid.created_at).toLocaleString()}
                 </TableCell>

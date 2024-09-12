@@ -18,15 +18,7 @@ import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-
-interface Category {
-  id: string;
-  name: string;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-}
+import { Category } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
   { name: "name", label: "Nama Kategori", type: "text" },

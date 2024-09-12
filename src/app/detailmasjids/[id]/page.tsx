@@ -29,37 +29,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Loading from "@/app/loading";
-
-interface Photo {
-  id: string;
-  photo_url: string;
-  caption: string;
-}
-
-interface Sejarah {
-  id: string;
-  title: string;
-  content: string;
-}
-
-interface Discussion {
-  id: string;
-  message: string;
-  created_at: string;
-}
-
-interface DetailMasjid {
-  id: string;
-  id_masjid: string;
-  name: string;
-  address: string;
-  total_klik: number;
-  created_at: string;
-  updated_at: string;
-  photos: Photo[];
-  sejarah: Sejarah[];
-  discussions: Discussion[];
-}
+import { DetailMasjid } from "@/types/masjidInterfaces";
 
 export default function DetailMasjidPage() {
   const [detailMasjid, setDetailMasjid] = useState<DetailMasjid | null>(null);

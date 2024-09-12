@@ -13,19 +13,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon, EyeIcon, MapPinIcon, SearchIcon } from "lucide-react";
+import { EyeIcon, MapPinIcon, SearchIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Loading from "./loading";
-
-interface Masjid {
-  id: string;
-  name: string;
-  description: string;
-  thumbnail: string;
-  totalKliks: number;
-  created_at: string;
-  detailMasjids: { id: string }[];
-}
+import { Masjid } from "@/types/masjidInterfaces";
 
 export default function HomePage() {
   const [featuredMasjids, setFeaturedMasjids] = useState<Masjid[]>([]);
@@ -115,7 +106,7 @@ export default function HomePage() {
                         <MapPinIcon className="mr-1 h-4 w-4" />
                         <span className="mr-4">Location</span>
                         <EyeIcon className="mr-1 h-4 w-4" />
-                        <span>{masjid.totalKliks} views</span>
+                        <span>{masjid.total_Klik} views</span>
                       </div>
                     </CardContent>
                     <CardFooter>

@@ -15,31 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CalendarIcon, EyeIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-interface DetailMasjid {
-  id: string;
-  id_masjid: string;
-  name: string;
-  address: string;
-  total_Klik: number;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Masjid {
-  id: string;
-  name: string;
-  description: string;
-  thumbnail: string;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-  detailMasjids: DetailMasjid[];
-  categories: any[];
-}
+import { Masjid } from "@/types/masjidInterfaces";
 
 export default function MasjidListPage() {
   const [masjids, setMasjids] = useState<Masjid[]>([]);
@@ -141,7 +117,7 @@ export default function MasjidListPage() {
                     <EyeIcon className="mr-1 h-4 w-4" />
                     <span>
                       {masjid.detailMasjids.reduce(
-                        (acc, dm) => acc + dm.total_Klik,
+                        (acc, dm) => acc + dm.total_klik,
                         0
                       )}{" "}
                       views

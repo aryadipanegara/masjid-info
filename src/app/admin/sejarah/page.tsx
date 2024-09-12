@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FormField, FormData } from "@/types/form";
+import { DetailMasjid, Sejarah } from "../../../types/masjidInterfaces";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
@@ -22,23 +23,6 @@ import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
-interface Sejarah {
-  id: number;
-  title: string;
-  content: string;
-  masjidId: string;
-  detailMasjidId: string;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface DetailMasjid {
-  id: string;
-  name: string;
-}
 
 const formFields: FormField[] = [
   { name: "title", label: "Judul", type: "text" },
