@@ -148,8 +148,8 @@ export default function AdminMasjidPage() {
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/${currentMasjid.id}`
-        : "https://masjidinfo-backend.vercel.app";
+        ? `https://masjidinfo-backend.vercel.app/api/masjids/${currentMasjid.id}`
+        : "https://masjidinfo-backend.vercel.app/api/masjids";
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -222,7 +222,7 @@ export default function AdminMasjidPage() {
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/${id}`,
+        `https://masjidinfo-backend.vercel.app/api/masjids/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -295,11 +295,6 @@ export default function AdminMasjidPage() {
               </Button>
             </TableHead>
             <TableHead>Deskripsi</TableHead>
-            <TableHead>
-              <Button variant="ghost" onClick={() => handleSort("total_Klik")}>
-                Total Kliks <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
-            </TableHead>
             <TableHead>Tanggal Dibuat</TableHead>
             <TableHead>Aksi</TableHead>
           </TableRow>
