@@ -500,10 +500,7 @@ export default function Component() {
   );
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div>
-        <h2 className="text-2xl font-bold">Discussion</h2>
-      </div>
+    <div className="w-full max-w-2xl mx-auto">
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
@@ -511,7 +508,7 @@ export default function Component() {
             <TabsTrigger value="oldest">Oldest</TabsTrigger>
           </TabsList>
           <TabsContent value={activeTab}>
-            <ScrollArea className="h-[600px] pr-4">
+            <ScrollArea className="h-[200px] pr-4">
               {isLoading ? (
                 <p className="text-center">Loading comments...</p>
               ) : alertInfo ? (

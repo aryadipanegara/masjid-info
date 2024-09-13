@@ -211,8 +211,13 @@ export default function DetailMasjidPage() {
             </div>
           </div>
 
-          <Card className=" min-h-screen">
-            <CardHeader></CardHeader>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl sm:text-2xl font-semibold flex items-center">
+                <MessageSquareIcon className="mr-2 h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                Komentar
+              </CardTitle>
+            </CardHeader>
             <CardContent>
               <Commentar />
             </CardContent>
