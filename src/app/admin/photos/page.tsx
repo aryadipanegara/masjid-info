@@ -117,8 +117,12 @@ export default function AdminPhotosPage() {
   useEffect(() => {
     const filtered = photosList.filter(
       (photo) =>
-        photo.caption.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        photo.photo_url.toLowerCase().includes(searchTerm.toLowerCase())
+        (photo.caption?.toLowerCase() || "").includes(
+          searchTerm.toLowerCase()
+        ) ||
+        (photo.photo_url?.toLowerCase() || "").includes(
+          searchTerm.toLowerCase()
+        )
     );
     setFilteredPhotosList(filtered);
   }, [photosList, searchTerm]);

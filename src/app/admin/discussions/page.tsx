@@ -48,11 +48,14 @@ export default function AdminDiscussionPage() {
   const fetchDiscussions = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/discussions", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://masjidinfo-backend.vercel.app/api/discussions",
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch discussions");
       }
@@ -121,8 +124,8 @@ export default function AdminDiscussionPage() {
       }
 
       const url = isEditing
-        ? `http://localhost:3000/api/discussion/${currentDiscussion.id}`
-        : "http://localhost:3000/api/discussion";
+        ? `https://masjidinfo-backend.vercel.app/api/discussion/${currentDiscussion.id}`
+        : "https://masjidinfo-backend.vercel.app/api/discussion";
 
       const method = isEditing ? "PUT" : "POST";
 

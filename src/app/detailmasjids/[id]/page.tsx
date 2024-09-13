@@ -11,12 +11,11 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   BookOpenIcon,
   MapPinIcon,
@@ -30,6 +29,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import Loading from "@/app/loading";
 import { DetailMasjid } from "@/types/masjidInterfaces";
+import Commentar from "@/components/comments";
 
 export default function DetailMasjidPage() {
   const [detailMasjid, setDetailMasjid] = useState<DetailMasjid | null>(null);
@@ -211,54 +211,10 @@ export default function DetailMasjidPage() {
             </div>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold flex items-center">
-                <MessageSquareIcon className="mr-2 h-6 w-6 text-primary" />
-                Komentar
-              </CardTitle>
-            </CardHeader>
+          <Card className=" min-h-screen">
+            <CardHeader></CardHeader>
             <CardContent>
-              {detailMasjid.discussions.length > 0 ? (
-                <ScrollArea className="h-[400px] pr-4">
-                  {detailMasjid.discussions.map((discussion, index) => (
-                    <motion.div
-                      key={discussion.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="mb-6 p-4 bg-secondary/10 rounded-lg"
-                    >
-                      <div className="flex items-center mb-3">
-                        <Avatar className="mr-3 h-10 w-10">
-                          <AvatarImage
-                            src={`https://api.dicebear.com/6.x/initials/svg?seed=User${
-                              index + 1
-                            }`}
-                          />
-                          <AvatarFallback>U{index + 1}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="text-sm font-semibold">
-                            User {index + 1}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(discussion.created_at).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-sm leading-relaxed text-foreground">
-                        {discussion.message}
-                      </p>
-                    </motion.div>
-                  ))}
-                </ScrollArea>
-              ) : (
-                <p className="text-lg text-muted-foreground text-center py-8">
-                  No discussions yet. Be the first to comment!
-                </p>
-              )}
-              <Button className="w-full mt-4">Add Comment</Button>
+              <Commentar />
             </CardContent>
           </Card>
         </motion.div>
