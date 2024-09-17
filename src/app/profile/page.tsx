@@ -56,9 +56,12 @@ export default function SettingsPage() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/users/me", {
-        headers: { Authorization: `${token}` },
-      });
+      const response = await fetch(
+        "https://masjidinfo-backend.vercel.app/api/users/me",
+        {
+          headers: { Authorization: `${token}` },
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to fetch profile");
 
@@ -95,17 +98,20 @@ export default function SettingsPage() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/users/me", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({
-          name: editedName,
-          avatar: editedAvatarUrl,
-        }),
-      });
+      const response = await fetch(
+        "https://masjidinfo-backend.vercel.app/api/users/me",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({
+            name: editedName,
+            avatar: editedAvatarUrl,
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to update profile");
 

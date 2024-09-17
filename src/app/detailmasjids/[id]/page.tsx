@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import Loading from "@/app/loading";
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import Commentar from "@/components/comments";
+import Head from "next/head";
 
 export default function DetailMasjidPage() {
   const [detailMasjid, setDetailMasjid] = useState<DetailMasjid | null>(null);
@@ -82,6 +83,13 @@ export default function DetailMasjidPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Head>
+        <title>{detailMasjid.name} - Masjid Info</title>
+        <meta
+          name="description"
+          content={`Informasi tentang masjid ${detailMasjid.name}, terletak di ${detailMasjid.address}. Klik untuk melihat lebih lanjut.`}
+        />
+      </Head>
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
