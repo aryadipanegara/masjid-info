@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/card";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -83,7 +82,7 @@ export default function DetailMasjidPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 ">
+      <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -210,18 +209,7 @@ export default function DetailMasjidPage() {
               </Card>
             </div>
           </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl sm:text-2xl font-semibold flex items-center">
-                <MessageSquareIcon className="mr-2 h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                Komentar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Commentar />
-            </CardContent>
-          </Card>
+          <Commentar />
         </motion.div>
       </div>
     </div>

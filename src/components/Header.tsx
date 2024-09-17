@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X, Search, Bell } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -76,7 +75,7 @@ export default function Header() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/settings" className="flex w-full">
+              <Link href="/setting" className="flex w-full">
                 Settings
               </Link>
             </DropdownMenuItem>
@@ -142,13 +141,13 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>New prayer time updates</DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem>Dalam Tahap Pengembangan</DropdownMenuItem>
+                {/* <DropdownMenuItem>
                   Event reminder: Eid celebration
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   New mosque added in your area
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
             <AuthButtons />

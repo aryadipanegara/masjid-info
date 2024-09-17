@@ -49,7 +49,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const logout = () => {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+
     setUserRole(null);
+
     router.push("/auth/login");
   };
 

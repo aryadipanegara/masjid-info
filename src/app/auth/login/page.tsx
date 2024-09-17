@@ -37,7 +37,7 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    setAlertInfo({ message: "", type: null }); // Reset alert
+    setAlertInfo({ message: "", type: null });
 
     try {
       const response = await fetch(
