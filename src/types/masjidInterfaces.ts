@@ -1,5 +1,3 @@
-import { User } from "./form";
-
 export interface Masjid {
   id: string;
   name: string;
@@ -71,9 +69,9 @@ export interface Category {
 }
 
 export interface MasjidCategory {
-  id: string;
+  id: number;
   id_masjid: string;
-  id_category: string;
+  id_category: number;
   created_by: string;
   updated_by: string;
   created_at: string;

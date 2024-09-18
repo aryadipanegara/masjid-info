@@ -16,7 +16,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FormField, FormData } from "@/types/form";
-import { useToast } from "@/hooks/use-toast";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import Alert from "@/components/AlertCustom";
 import Image from "next/image";
@@ -44,7 +43,6 @@ export default function AdminMasjidPage() {
     message: string;
     type: "success" | "error" | "warning" | "info";
   } | null>(null);
-  const { toast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -76,7 +74,6 @@ export default function AdminMasjidPage() {
       setMasjidList(data);
       setFilteredMasjidList(data);
     } catch (error) {
-      console.error("Error fetching masjids:", error);
       setAlertInfo({
         message: "Gagal mengambil data masjid. Silakan coba lagi.",
         type: "error",

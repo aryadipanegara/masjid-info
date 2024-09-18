@@ -61,7 +61,7 @@ export default function Footer() {
                   href="#"
                   className="text-sm text-emerald-100 hover:text-white transition-colors"
                 >
-                  masjidinfo@gmail.com
+                  Bujanglanang@gmail.com
                 </a>
               </li>
               <li className="flex items-center">

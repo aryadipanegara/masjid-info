@@ -15,10 +15,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FormField, FormData } from "@/types/form";
-import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { Category, Masjid, MasjidCategory } from "@/types/masjidInterfaces";
+import Alert from "@/components/AlertCustom";
 
 const formFields: FormField[] = [
   { name: "id_masjid", label: "Masjid", type: "select" },
@@ -45,7 +45,10 @@ export default function MasjidCategoriesPage() {
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [masjidCategoryToEdit, setMasjidCategoryToEdit] =
     useState<MasjidCategory | null>(null);
-  const { toast } = useToast();
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,14 +56,29 @@ export default function MasjidCategoriesPage() {
     if (!token) {
       router.push("/auth/login");
     } else {
-      fetchMasjidCategories();
-      fetchMasjids();
-      fetchCategories();
+      fetchAllData();
     }
   }, []);
 
-  const fetchMasjidCategories = async () => {
+  const fetchAllData = async () => {
     setIsLoading(true);
+    try {
+      await Promise.all([
+        fetchMasjidCategories(),
+        fetchMasjids(),
+        fetchCategories(),
+      ]);
+    } catch (error) {
+      setAlertInfo({
+        message: "Gagal mengambil data. Silakan coba lagi.",
+        type: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchMasjidCategories = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
@@ -78,13 +96,8 @@ export default function MasjidCategoriesPage() {
       setMasjidCategoriesList(data);
       setFilteredMasjidCategoriesList(data);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch masjid categories. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      console.error("Error fetching masjid categories:", error);
+      throw error;
     }
   };
 
@@ -106,11 +119,7 @@ export default function MasjidCategoriesPage() {
       setMasjidList(data);
     } catch (error) {
       console.error("Error fetching masjids:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch masjids. Please try again.",
-        variant: "destructive",
-      });
+      throw error;
     }
   };
 
@@ -129,15 +138,10 @@ export default function MasjidCategoriesPage() {
         throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
-      console.log("Fetched categories:", data); // Tambahkan log untuk melihat hasil fetch
       setCategoryList(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch categories. Please try again.",
-        variant: "destructive",
-      });
+      throw error;
     }
   };
 
@@ -151,6 +155,7 @@ export default function MasjidCategoriesPage() {
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
     );
+
     const sorted = [...filtered].sort((a, b) => {
       if (sortBy === "masjid") {
         return sortOrder === "asc"
@@ -162,6 +167,7 @@ export default function MasjidCategoriesPage() {
           : b.category.name.localeCompare(a.category.name);
       }
     });
+
     setFilteredMasjidCategoriesList(sorted);
   }, [masjidCategoriesList, searchTerm, sortBy, sortOrder]);
 
@@ -179,12 +185,43 @@ export default function MasjidCategoriesPage() {
   };
 
   const handleEdit = (masjidCategory: MasjidCategory) => {
-    setMasjidCategoryToEdit(masjidCategory);
-    setAlertDialogOpen(true);
+    const categoryToEdit = masjidCategoriesList.find(
+      (item) => item.id === masjidCategory.id
+    );
+
+    if (!categoryToEdit) {
+      setAlertInfo({
+        message: "Kategori yang ingin diedit tidak ditemukan.",
+        type: "error",
+      });
+      return;
+    }
+
+    setMasjidCategoryToEdit(categoryToEdit);
+    setCurrentMasjidCategory({
+      id: categoryToEdit.id,
+      id_masjid: categoryToEdit.id_masjid,
+      id_category: categoryToEdit.id_category,
+    });
+    setIsEditing(true);
+    handleOpenModal();
   };
 
   const confirmEdit = () => {
     if (masjidCategoryToEdit) {
+      const categoryExists = masjidCategoriesList.some(
+        (item) => item.id === masjidCategoryToEdit.id
+      );
+
+      if (!categoryExists) {
+        setAlertInfo({
+          message: "Kategori yang ingin diedit telah dihapus.",
+          type: "error",
+        });
+        setAlertDialogOpen(false);
+        return;
+      }
+
       setCurrentMasjidCategory({
         id: masjidCategoryToEdit.id,
         id_masjid: masjidCategoryToEdit.id_masjid,
@@ -206,7 +243,6 @@ export default function MasjidCategoriesPage() {
       const url = isEditing
         ? `https://masjidinfo-backend.vercel.app/api/masjidcategories/${currentMasjidCategory.id}`
         : "https://masjidinfo-backend.vercel.app/api/masjidcategories";
-
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -216,43 +252,39 @@ export default function MasjidCategoriesPage() {
           Authorization: `${token}`,
         },
         body: JSON.stringify({
-          id_masjid: currentMasjidCategory.id_masjid,
-          id_category: currentMasjidCategory.id_category,
+          masjidId: currentMasjidCategory.id_masjid,
+          categoryId: currentMasjidCategory.id_category,
         }),
       });
 
-      if (response.status === 403) {
-        throw new Error("Forbidden: You do not have the necessary permissions");
-      }
+      const responseData = await response.json();
 
       if (!response.ok) {
         throw new Error("Failed to submit masjid category");
       }
 
-      const data = await response.json();
       if (isEditing) {
         setMasjidCategoriesList((prevList) =>
           prevList.map((item) =>
-            item.id === currentMasjidCategory.id ? { ...item, ...data } : item
+            item.id === currentMasjidCategory.id ? responseData : item
           )
         );
       } else {
-        setMasjidCategoriesList([...masjidCategoriesList, data]);
+        setMasjidCategoriesList((prevList) => [...prevList, responseData]);
       }
 
       handleCloseModal();
-      toast({
-        title: "Success",
-        description: isEditing
-          ? "Masjid category updated successfully"
-          : "Masjid category created successfully",
+      setAlertInfo({
+        message: isEditing
+          ? "Data Category Berhasil diperbaharui"
+          : "Masjid Category Berhasil ditambahkan",
+        type: "success",
       });
     } catch (error) {
       console.error("Error submitting masjid category:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit masjid category. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menyimpan kategori masjid. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
@@ -298,23 +330,38 @@ export default function MasjidCategoriesPage() {
       setMasjidCategoriesList((prevList) =>
         prevList.filter((item) => item.id !== id)
       );
-      toast({
-        title: "Masjid Category Deleted",
-        description: "The masjid category has been successfully deleted.",
-        variant: "default",
+
+      if (masjidCategoryToEdit?.id === id) {
+        setMasjidCategoryToEdit(null);
+        setCurrentMasjidCategory({});
+      }
+
+      setAlertInfo({
+        message: "Kategori Masjid Berhasil Dihapus",
+        type: "success",
       });
     } catch (error) {
       console.error("Error deleting masjid category:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete masjid category. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menghapus kategori masjid. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
 
+  const availableMasjids = masjidList.filter(
+    (masjid) => !masjidCategoriesList.some((mc) => mc.id_masjid === masjid.id)
+  );
+
   return (
     <div className="container mx-auto p-4">
+      {alertInfo && (
+        <Alert
+          type={alertInfo.type}
+          message={alertInfo.message}
+          onClose={() => setAlertInfo(null)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-primary mb-4 md:mb-0">
           Daftar Kategori Masjid
@@ -414,7 +461,7 @@ export default function MasjidCategoriesPage() {
         fields={formFields}
         data={currentMasjidCategory}
         onChange={handleChange}
-        masjidList={masjidList}
+        masjidList={isEditing ? masjidList : availableMasjids}
         categoriesList={categoryList}
       />
 
