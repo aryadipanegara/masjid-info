@@ -17,7 +17,7 @@ async function getDetailMasjid(id: string) {
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const detailMasjid = await getDetailMasjid(params.id);
   return {
-    title: `${detailMasjid.name} - Masjid Info`,
+    title: `${detailMasjid.name}`,
     description: `Informasi tentang masjid ${detailMasjid.name}, terletak di ${detailMasjid.address}. Klik untuk melihat lebih lanjut.`,
   };
 }
