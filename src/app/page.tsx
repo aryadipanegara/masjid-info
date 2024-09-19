@@ -21,6 +21,7 @@ import {
   Card as CarouselCard,
 } from "@/components/ui/apple-cards-carousel";
 import Loading from "./loading";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 
 export default function MasjidFinder() {
   const [masjids, setMasjids] = useState<Masjid[]>([]);
@@ -31,6 +32,7 @@ export default function MasjidFinder() {
     []
   );
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const placeholders = masjids.slice(0, 10).map((masjid) => masjid.name);
 
   useEffect(() => {
     fetchMasjids();
@@ -118,6 +120,15 @@ export default function MasjidFinder() {
     />
   ));
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    filterMasjids();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -131,12 +142,10 @@ export default function MasjidFinder() {
             </div>
 
             <div className="mb-8">
-              <Input
-                type="search"
-                placeholder="Cari masjid..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="max-w-md mx-auto"
+              <PlaceholdersAndVanishInput
+                placeholders={placeholders}
+                onChange={handleSearchChange}
+                onSubmit={handleSearchSubmit}
               />
             </div>
 
@@ -156,13 +165,15 @@ export default function MasjidFinder() {
                   transition={{ duration: 0.5 }}
                 >
                   <UiCard className="overflow-hidden">
-                    <Image
-                      src={masjid.thumbnail}
-                      alt={masjid.name}
-                      width={400}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={masjid.thumbnail}
+                        alt={masjid.name}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-t-lg"
+                      />
+                    </div>
 
                     <CardHeader>
                       {masjid.categories && masjid.categories.length > 0 && (
