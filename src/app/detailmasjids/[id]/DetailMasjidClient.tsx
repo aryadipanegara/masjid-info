@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import Commentar from "@/components/comments";
-import Loading from "@/app/loading";
 import Head from "next/head";
 
 export default function DetailMasjidClient({
