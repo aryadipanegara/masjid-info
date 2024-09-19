@@ -3,12 +3,21 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/lib/auth-context";
-import Script from "next/script";
-import { getMetadataForPage } from "@/components/metadata";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = getMetadataForPage("masjidinfo");
+export const metadata: Metadata = {
+  title: {
+    default: "Masjidinfo",
+    template: "%s - Masjidinfo",
+  },
+  description:
+    "Masjidinfo adalah situs yang memberikan informasi tentang masjid-masjid di Indonesia dan diseluruh Dunia",
+  twitter: {
+    card: "summary_large_image",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -26,16 +35,6 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
         </AuthProvider>
-        <Script id="schema-org" type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "Masjid Info",
-              "url": "https://www.masjidinfo.com"
-            }
-          `}
-        </Script>
       </body>
     </html>
   );

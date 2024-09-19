@@ -5,6 +5,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "MasjidInfo's Privacy Policy",
+  keywords: ["privacy", "policy", "masjidinfo", "information"],
+};
 
 export default function PrivacyPolicy() {
   return (

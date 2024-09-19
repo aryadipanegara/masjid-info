@@ -14,14 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CalendarIcon, EyeIcon } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { Masjid } from "@/types/masjidInterfaces";
 import { CategoryList } from "@/components/CategoryList";
-import Loading from "./loading";
 import {
   Carousel,
   Card as CarouselCard,
 } from "@/components/ui/apple-cards-carousel";
+import Loading from "./loading";
 
 export default function MasjidFinder() {
   const [masjids, setMasjids] = useState<Masjid[]>([]);
@@ -32,7 +31,6 @@ export default function MasjidFinder() {
     []
   );
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const { toast } = useToast();
 
   useEffect(() => {
     fetchMasjids();
@@ -65,11 +63,6 @@ export default function MasjidFinder() {
       setCategories(uniqueCategories);
     } catch (error) {
       console.error("Error fetching masjid data:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch masjid data. Please try again.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +92,6 @@ export default function MasjidFinder() {
     setSelectedCategory(categoryId);
   };
 
-  // Ambil 5 masjid dengan total_klik terbanyak
   const topMasjids = masjids
     .slice()
     .sort(
@@ -109,7 +101,6 @@ export default function MasjidFinder() {
     )
     .slice(0, 5);
 
-  // Data masjid untuk carousel
   const carouselCards = topMasjids.map((masjid, index) => (
     <CarouselCard
       key={masjid.id}
