@@ -17,7 +17,6 @@ import {
 import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { Category } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
@@ -39,8 +38,11 @@ export default function AdminCategoriesPage() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"name" | "created_at">("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
   const router = useRouter();
-  const { toast } = useToast();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -72,10 +74,9 @@ export default function AdminCategoriesPage() {
       setFilteredCategoriesList(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch categories. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal mengambil data categories",
+        type: "error",
       });
     }
   };
@@ -172,19 +173,15 @@ export default function AdminCategoriesPage() {
       }
 
       handleCloseModal();
-      toast({
-        title: isEditing ? "Category Updated" : "Category Created",
-        description: isEditing
-          ? "The category has been successfully updated."
-          : "A new category has been successfully created.",
-        variant: "default",
+      setAlertInfo({
+        message: isEditing ? "Category Updated" : "Category Created",
+        type: "success",
       });
     } catch (error) {
       console.error("Error submitting category:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit category. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menyimpan kategori. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
@@ -230,17 +227,15 @@ export default function AdminCategoriesPage() {
       setCategoriesList((prevList) =>
         prevList.filter((item) => item.id !== id)
       );
-      toast({
-        title: "Category Deleted",
-        description: "The category has been successfully deleted.",
-        variant: "default",
+      setAlertInfo({
+        message: "Kategori berhasil dihapus",
+        type: "success",
       });
     } catch (error) {
       console.error("Error deleting category:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete category. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menghapus kategori. Silakan coba lagi.",
+        type: "error",
       });
     }
   };

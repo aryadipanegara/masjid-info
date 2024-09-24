@@ -14,7 +14,7 @@ import { Discussion } from "@/types/masjidInterfaces";
 const formFields: FormField[] = [
   { name: "message", label: "Pesan", type: "text" },
   { name: "id_detail_masjid", label: "ID Detail Masjid", type: "text" },
-  // Optionally add fields for user and replies
+
 ];
 
 export default function AdminDiscussionPage() {

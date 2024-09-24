@@ -25,7 +25,7 @@ import {
 import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+
 import { DetailMasjid, Masjid } from "@/types/masjidInterfaces";
 
 const formFields: FormField[] = [
@@ -48,7 +48,10 @@ export default function AdminDetailMasjidPage() {
     useState<DetailMasjid | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [masjidList, setMasjidList] = useState<Masjid[]>([]);
-  const { toast } = useToast();
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -81,11 +84,9 @@ export default function AdminDetailMasjidPage() {
       setDetailMasjidList(data);
       setFilteredDetailMasjidList(data);
     } catch (error) {
-      console.error("Error fetching detail masjids:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch detail masjids. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal mengambil data detail masjid. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
@@ -107,11 +108,9 @@ export default function AdminDetailMasjidPage() {
       const data = await response.json();
       setMasjidList(data);
     } catch (error) {
-      console.error("Error fetching masjids:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch masjids. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal mengambil data masjid. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
@@ -170,11 +169,9 @@ export default function AdminDetailMasjidPage() {
           (dm) => dm.id_masjid === currentDetailMasjid.id_masjid
         );
         if (existingDetailMasjid) {
-          toast({
-            title: "Error",
-            description:
-              "A Detail Masjid already exists for this Masjid. You cannot add another one.",
-            variant: "destructive",
+          setAlertInfo({
+            message: "Detail Masjid sudah ada untuk masjid ini.",
+            type: "error",
           });
           return;
         }
@@ -219,19 +216,17 @@ export default function AdminDetailMasjidPage() {
       }
 
       handleCloseModal();
-      toast({
-        title: isEditing ? "Detail Masjid Updated" : "Detail Masjid Created",
-        description: isEditing
-          ? "The detail masjid has been successfully updated."
-          : "A new detail masjid has been successfully created.",
-        variant: "default",
+      setAlertInfo({
+        message: isEditing
+          ? "Data DetailMasjid berhasil diperbaharui"
+          : "Data DetailMasjid berhasil ditambahkan",
+        type: "success",
       });
     } catch (error) {
       console.error("Error submitting detail masjid:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit detail masjid. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menyimpan data masjid. Silakan Coba lagi",
+        type: "error",
       });
     }
   };
@@ -268,17 +263,15 @@ export default function AdminDetailMasjidPage() {
       setDetailMasjidList((prevList) =>
         prevList.filter((item) => item.id !== id)
       );
-      toast({
-        title: "Detail Masjid Deleted",
-        description: "The detail masjid has been successfully deleted.",
-        variant: "default",
+      setAlertInfo({
+        message: "Data DetailMasjid berhasil dihapus",
+        type: "success",
       });
     } catch (error) {
       console.error("Error deleting detail masjid:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete detail masjid. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menghapus data masjid. Silakan Coba lagi",
+        type: "error",
       });
     }
   };

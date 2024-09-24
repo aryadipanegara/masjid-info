@@ -3,7 +3,7 @@ import CardDetail from "@/components/CardDetails";
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import Head from "next/head";
 import { useState } from "react";
-import Commentar from "@/components/comments";
+
 
 export default function DetailMasjidClient({
   initialData,

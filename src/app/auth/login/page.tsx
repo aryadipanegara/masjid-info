@@ -15,7 +15,7 @@ import {
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/lib/AuthContext";
 import Alert from "@/components/AlertCustom";
 
 export default function Login() {
@@ -67,7 +67,7 @@ export default function Login() {
 
       // Simulasi delay untuk melihat progress loading
       setTimeout(() => {
-        login(token); // Use the login function from AuthContext
+        login(token); 
         setAlertInfo({
           message: "Login Successful. Welcome back!",
           type: "success",

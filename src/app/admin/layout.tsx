@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminTabs from "@/components/AdminTabs";
 import Loading from "../loading";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/lib/AuthContext";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [authorized, setAuthorized] = useState(false);

@@ -12,7 +12,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CalendarIcon, EyeIcon } from "lucide-react";
 import { Masjid } from "@/types/masjidInterfaces";
 import { CategoryList } from "@/components/CategoryList";
@@ -204,7 +203,7 @@ export default function MasjidFinder() {
                     <CardFooter className="flex justify-between items-center">
                       <Button variant="outline" size="sm">
                         <Link
-                          href={`/detailmasjids/${masjid.detailMasjids[0]?.id}`}
+                          href={`/detailmasjids/${masjid.detailMasjids[0]?.slug}`}
                         >
                           Lihat detail
                         </Link>

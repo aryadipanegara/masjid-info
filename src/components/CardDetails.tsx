@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   Card,
@@ -19,35 +21,27 @@ import {
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Head from "next/head";
 import Commentar from "@/components/comments";
 
 type CardDetailProps = {
   detailMasjid: DetailMasjid;
 };
 
-export default function CardDetail({ detailMasjid }: CardDetailProps) {
+export default function Component({ detailMasjid }: CardDetailProps) {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
   const getCardSizeClass = () => {
     if (imageSize.width > 800 || imageSize.height > 800) {
       return "w-full h-auto";
-    } else if (imageSize.width > 400 || imageSize.height > 400) {
-      return "w-3/4 h-auto";
+    } else if (imageSize.width > 800 || imageSize.height > 450) {
+      return "w-full md:w-3/4 h-auto";
     } else {
-      return "w-1/2 h-auto";
+      return "w-full md:w-2/3 h-auto";
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Head>
-        <title>{detailMasjid.name} - Masjid Info</title>
-        <meta
-          name="description"
-          content={`Informasi tentang masjid ${detailMasjid.name}, terletak di ${detailMasjid.address}. Klik untuk melihat lebih lanjut.`}
-        />
-      </Head>
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,36 +51,36 @@ export default function CardDetail({ detailMasjid }: CardDetailProps) {
         >
           <Card className="mb-8">
             <CardHeader className="text-center">
-              <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-primary">
+              <CardTitle className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-primary">
                 {detailMasjid.name}
               </CardTitle>
-              <CardDescription className="flex items-center justify-center text-lg">
-                <MapPinIcon className="mr-2 h-5 w-5" />
+              <CardDescription className="flex items-center justify-center text-sm sm:text-base lg:text-lg">
+                <MapPinIcon className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 {detailMasjid.address}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-center space-x-4">
-                <Badge variant="secondary" className="text-sm">
-                  <EyeIcon className="mr-1 h-4 w-4" />
+              <div className="flex flex-wrap justify-center gap-2">
+                <Badge variant="secondary" className="text-xs sm:text-sm">
+                  <EyeIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                   {detailMasjid.total_klik}
                 </Badge>
-                <Badge variant="secondary" className="text-sm">
-                  <CalendarIcon className="mr-1 h-4 w-4" />
+                <Badge variant="secondary" className="text-xs sm:text-sm">
+                  <CalendarIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                   {new Date(detailMasjid.created_at).toLocaleDateString()}
                 </Badge>
-                <Badge variant="secondary" className="text-sm">
-                  <ClockIcon className="mr-1 h-4 w-4" />
+                <Badge variant="secondary" className="text-xs sm:text-sm">
+                  <ClockIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                   {new Date(detailMasjid.updated_at).toLocaleDateString()}
                 </Badge>
               </div>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <Card className="md:col-span-2 pt-5">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <Card className="lg:col-span-2 pt-5">
               <CardContent>
-                <div className=" pr-4">
+                <div className="pr-0 lg:pr-4">
                   {detailMasjid.sejarah.map((sejarah, index) => (
                     <motion.div
                       key={sejarah.id}
@@ -95,7 +89,7 @@ export default function CardDetail({ detailMasjid }: CardDetailProps) {
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       className="mb-8"
                     >
-                      <h3 className="text-xl font-semibold mb-4 text-primary text-center">
+                      <h3 className="text-lg sm:text-xl font-semibold mb-4 text-primary text-center">
                         {sejarah.title}
                       </h3>
                       {detailMasjid.photos[index] && (
@@ -117,13 +111,13 @@ export default function CardDetail({ detailMasjid }: CardDetailProps) {
                               }}
                             />
                           </div>
-                          <p className="text-sm text-center mt-2 text-muted-foreground">
+                          <p className="text-xs sm:text-sm text-center mt-2 text-muted-foreground">
                             {detailMasjid.photos[index].caption}
                           </p>
                         </div>
                       )}
                       <div
-                        className="text-justify leading-relaxed text-foreground prose max-w-none"
+                        className="text-justify leading-relaxed text-foreground prose max-w-none text-sm sm:text-base"
                         dangerouslySetInnerHTML={{ __html: sejarah.content }}
                       />
                       {index < detailMasjid.sejarah.length - 1 && (
@@ -138,13 +132,13 @@ export default function CardDetail({ detailMasjid }: CardDetailProps) {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-xl font-semibold flex items-center">
-                    <InfoIcon className="mr-2 h-5 w-5 text-primary" />
+                  <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
+                    <InfoIcon className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     Informasi Tambahan
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm leading-relaxed text-foreground">
+                  <p className="text-xs sm:text-sm leading-relaxed text-foreground">
                     Masjid ini memiliki sejarah yang panjang dan merupakan salah
                     satu bangunan yang memiliki nilai historis penting.
                     Lokasinya menjadikan masjid ini tempat yang sering
@@ -158,13 +152,13 @@ export default function CardDetail({ detailMasjid }: CardDetailProps) {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-xl font-semibold flex items-center">
-                    <CameraIcon className="mr-2 h-5 w-5 text-primary" />
+                  <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
+                    <CameraIcon className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     Galeri Foto
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-4">
                     {detailMasjid.photos.map((photo, index) => (
                       <div
                         key={photo.id}

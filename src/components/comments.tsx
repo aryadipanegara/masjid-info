@@ -65,7 +65,7 @@ export default function DiscussionComponent() {
     [key: string]: boolean;
   }>({});
   const params = useParams();
-  const detailMasjidId = params.id as string | undefined;
+  const detailMasjidSlug = params.slug as string | undefined;
   const router = useRouter();
 
   const checkUserLogin = () => {
@@ -97,15 +97,15 @@ export default function DiscussionComponent() {
   };
 
   const fetchComments = async () => {
-    if (!detailMasjidId) {
-      console.error("detailMasjidId is undefined");
+    if (!detailMasjidSlug) {
+      console.error("detailMasjidSlug is undefined");
       return;
     }
     try {
       setIsLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/detailmasjids/${detailMasjidId}`,
+        `https://masjidinfo-backend.vercel.app/api/detailmasjids/slug/${detailMasjidSlug}`, // Ubah URL
         {
           headers: { Authorization: ` ${token}` },
         }
@@ -188,7 +188,8 @@ export default function DiscussionComponent() {
       let body: any = {
         message,
         id_replies_discussion: parentId,
-        id_detail_masjid: detailMasjidId,
+        slug,
+
         id_user: currentUser?.id,
       };
 
@@ -293,8 +294,8 @@ export default function DiscussionComponent() {
 
   useEffect(() => {
     checkUserLogin();
-    if (detailMasjidId) fetchComments();
-  }, [detailMasjidId]);
+    if (detailMasjidSlug) fetchComments();
+  }, [detailMasjidSlug]);
 
   const toggleReplies = (commentId: string) => {
     setExpandedReplies((prev) => ({

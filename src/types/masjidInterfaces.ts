@@ -17,6 +17,7 @@ export interface DetailMasjid {
   id: string;
   id_masjid: string;
   name: string;
+  slug: string;
   address: string;
   total_klik: number;
   created_at: string;
