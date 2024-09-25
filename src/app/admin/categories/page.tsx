@@ -61,7 +61,7 @@ export default function AdminCategoriesPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/categories`,
+        "https://masjidinfo-backend.vercel.app/api/categories",
         {
           headers: {
             Authorization: `${token}`,
@@ -139,8 +139,8 @@ export default function AdminCategoriesPage() {
       }
 
       const url = isEditing
-        ? `${process.env.NEXT_PUBLIC_API_URL}/categories/${currentCategory.id}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+        ? `https://masjidinfo-backend.vercel.app/api/categories/${currentCategory.id}`
+        : "https://masjidinfo-backend.vercel.app/api/categories";
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -209,7 +209,7 @@ export default function AdminCategoriesPage() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,
+        `https://masjidinfo-backend.vercel.app/api/categories/${id}`,
         {
           method: "DELETE",
           headers: {

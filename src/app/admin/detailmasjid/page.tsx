@@ -63,7 +63,7 @@ export default function AdminDetailMasjidPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids`,
+        "https://masjidinfo-backend.vercel.app/api/detailmasjids",
         {
           headers: {
             Authorization: `${token}`,
@@ -88,7 +88,7 @@ export default function AdminDetailMasjidPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/masjids`,
+        "https://masjidinfo-backend.vercel.app/api/masjids",
         {
           headers: {
             Authorization: `${token}`,
@@ -171,8 +171,8 @@ export default function AdminDetailMasjidPage() {
       }
 
       const url = isEditing
-        ? `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/${currentDetailMasjid.id}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids`;
+        ? `https://masjidinfo-backend.vercel.app/api/detailmasjids/${currentDetailMasjid.id}`
+        : "https://masjidinfo-backend.vercel.app/api/detailmasjids";
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -236,7 +236,7 @@ export default function AdminDetailMasjidPage() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/${id}`,
+        `https://masjidinfo-backend.vercel.app/api/detailmasjids/${id}`,
         {
           method: "DELETE",
           headers: {

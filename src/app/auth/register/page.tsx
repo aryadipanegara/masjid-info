@@ -77,7 +77,7 @@ export default function Register() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        "https://masjidinfo-backend.vercel.app/api/auth/register",
         {
           method: "POST",
           headers: {

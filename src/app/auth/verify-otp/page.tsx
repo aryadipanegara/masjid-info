@@ -30,7 +30,7 @@ const VerifyOTP = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/verify-otp`,
+        "https://masjidinfo-backend.vercel.app/api/users/verify-otp",
         {
           method: "POST",
           headers: {

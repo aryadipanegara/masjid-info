@@ -83,7 +83,7 @@ export default function MasjidCategoriesPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories`,
+        "https://masjidinfo-backend.vercel.app/api/masjidcategories",
         {
           headers: {
             Authorization: `${token}`,
@@ -106,7 +106,7 @@ export default function MasjidCategoriesPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/masjids`,
+        "https://masjidinfo-backend.vercel.app/api/masjids",
         {
           headers: {
             Authorization: `${token}`,
@@ -128,7 +128,7 @@ export default function MasjidCategoriesPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/categories`,
+        "https://masjidinfo-backend.vercel.app/api/categories",
         {
           headers: {
             Authorization: `${token}`,
@@ -242,8 +242,8 @@ export default function MasjidCategoriesPage() {
       }
 
       const url = isEditing
-        ? `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories/${currentMasjidCategory.id}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories`;
+        ? `https://masjidinfo-backend.vercel.app/api/masjidcategories/${currentMasjidCategory.id}`
+        : "https://masjidinfo-backend.vercel.app/api/masjidcategories";
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -311,7 +311,7 @@ export default function MasjidCategoriesPage() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories/${id}`,
+        `https://masjidinfo-backend.vercel.app/api/masjidcategories/${id}`,
         {
           method: "DELETE",
           headers: {

@@ -13,7 +13,7 @@ export const contentType = "image/png";
 // Mengganti dari id menjadi slug
 async function getDetailMasjid(slug: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/slug/${slug}`,
+    `https://masjidinfo-backend.vercel.app/api/detailmasjids/slug/${slug}`,
     { next: { revalidate: 3600 } }
   );
   if (!res.ok) {

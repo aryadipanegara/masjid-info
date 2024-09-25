@@ -62,11 +62,14 @@ export default function AdminUsersPage() {
   const fetchUsers = async () => {
     try {
       const token = Cookies.get("token");
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://masjidinfo-backend.vercel.app/api/users",
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch users");
       }
@@ -140,8 +143,8 @@ export default function AdminUsersPage() {
       }
 
       const url = isEditing
-        ? `${process.env.NEXT_PUBLIC_API_URL}/users/${currentUser.id}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/users`;
+        ? `https://masjidinfo-backend.vercel.app/api/users/${currentUser.id}`
+        : "https://masjidinfo-backend.vercel.app/api/users";
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -210,7 +213,7 @@ export default function AdminUsersPage() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
+        `https://masjidinfo-backend.vercel.app/api/users/${id}`,
         {
           method: "DELETE",
           headers: {

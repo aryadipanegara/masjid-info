@@ -5,7 +5,7 @@ import Loading from "@/app/loading";
 import MasjidFinderClient from "@/components/client/MasjidFinderClient";
 
 async function getMasjids() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/masjids`, {
+  const res = await fetch(`https://masjidinfo-backend.vercel.app/api/masjids`, {
     headers: {
       "Cache-Control": "no-cache",
     },

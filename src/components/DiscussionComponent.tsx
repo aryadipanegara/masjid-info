@@ -88,7 +88,7 @@ export default function DiscussionComponent() {
   const fetchUserInfo = async (userId: string): Promise<User> => {
     const token = Cookies.get("token");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/public/${userId}`,
+      `https://masjidinfo-backend.vercel.app/api/users/public/${userId}`,
       {
         headers: { Authorization: ` ${token}` },
       }
@@ -106,7 +106,7 @@ export default function DiscussionComponent() {
       setIsLoading(true);
       const token = Cookies.get("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/slug/${detailMasjidSlug}`,
+        `https://masjidinfo-backend.vercel.app/api/detailmasjids/slug/${detailMasjidSlug}`,
         {
           headers: { Authorization: ` ${token}` },
         }
@@ -187,7 +187,7 @@ export default function DiscussionComponent() {
 
     try {
       const token = Cookies.get("token");
-      let url = "${process.env.NEXT_PUBLIC_API_URL}/discussions";
+      let url = "https://masjidinfo-backend.vercel.app/api/discussions";
       let method = "POST";
       let body: any = {
         message,

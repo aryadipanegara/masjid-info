@@ -6,7 +6,7 @@ import DetailMasjidClient from "@/components/client/DetailMasjidClient";
 
 async function getDetailMasjid(slug: string) {
   const res = await fetch(
-    `http://localhost:5000/api/detailmasjids/slug/${slug}`,
+    `https://masjidinfo-backend.vercel.app/api/detailmasjids/slug/${slug}`,
     {
       headers: {
         "Cache-Control": "no-cache",

@@ -30,7 +30,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/request-password-reset`,
+        "https://masjidinfo-backend.vercel.app/api/users/request-password-reset",
         { email }
       );
       setStep(2);
@@ -49,7 +49,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/reset-password`,
+        "https://masjidinfo-backend.vercel.app/api/users/reset-password",
         {
           email,
           otp,

@@ -40,7 +40,7 @@ export default function Login() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        `https://masjidinfo-backend.vercel.app/api/auth/login`,
         {
           method: "POST",
           headers: {
