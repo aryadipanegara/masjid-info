@@ -1,5 +1,5 @@
 "use client";
-import CardDetail from "@/components/ui/CardDetails";
+import CardDetail from "@/components/CardDetails";
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import Head from "next/head";
 import { useState } from "react";
