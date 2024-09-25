@@ -21,7 +21,7 @@ import {
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Commentar from "@/components/Comments";
+import Commentar from "../Comments";
 
 type CardDetailProps = {
   detailMasjid: DetailMasjid;
@@ -178,7 +178,6 @@ export default function Component({ detailMasjid }: CardDetailProps) {
               </Card>
             </div>
           </div>
-          {/* ERROR */}
           <Commentar />
         </motion.div>
       </div>
