@@ -178,6 +178,7 @@ export default function Component({ detailMasjid }: CardDetailProps) {
               </Card>
             </div>
           </div>
+          {/* ERROR */}
           <Commentar />
         </motion.div>
       </div>
