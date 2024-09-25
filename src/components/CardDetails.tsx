@@ -21,7 +21,7 @@ import {
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Commentar from "./Comments";
+import DiscussionComponent from "./DiscussionComponent";
 
 type CardDetailProps = {
   detailMasjid: DetailMasjid;
@@ -178,7 +178,7 @@ export default function Component({ detailMasjid }: CardDetailProps) {
               </Card>
             </div>
           </div>
-          <Commentar />
+          <DiscussionComponent />
         </motion.div>
       </div>
     </div>
