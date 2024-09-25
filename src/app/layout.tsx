@@ -15,7 +15,9 @@ export const metadata: Metadata = {
     template: "%s - Masjidinfo",
   },
   description:
-    "Masjidinfo adalah situs yang memberikan informasi tentang masjid-masjid di Indonesia dan diseluruh Dunia",
+    "Masjidinfo adalah platform terpercaya yang menyediakan informasi mendalam tentang masjid-masjid di Indonesia dan di seluruh dunia. Temukan sejarah, arsitektur, dan acara penting dari masjid-masjid terkenal. Dari masjid besar hingga yang tersembunyi, kami memberikan panduan lengkap bagi Anda untuk menjelajahi keindahan dan kebijaksanaan yang terkandung di dalamnya. Bergabunglah dengan komunitas kami untuk berbagi pengalaman dan pengetahuan tentang masjid-masjid yang memperkaya budaya dan spiritualitas umat.",
+  keywords:
+    "masjid, informasi masjid, sejarah masjid, arsitektur masjid, masjid di Indonesia",
   twitter: {
     card: "summary_large_image",
   },

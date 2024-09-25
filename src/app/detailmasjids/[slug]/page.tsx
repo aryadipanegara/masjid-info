@@ -30,8 +30,8 @@ export async function generateMetadata({
 }) {
   const detailMasjid = await getDetailMasjid(params.slug);
   return {
-    title: `${detailMasjid.name}`,
-    description: `Informasi tentang masjid ${detailMasjid.name}, terletak di ${detailMasjid.address}. Klik untuk melihat lebih lanjut.`,
+    title: `${detailMasjid.name} - Temukan Sejarah dan Keindahan Masjid Ini `,
+    description: `Selamat datang di halaman detail Masjid ${detailMasjid.name}. Terletak di ${detailMasjid.address}, masjid ini adalah salah satu permata arsitektur yang mengagumkan. Bergabunglah dengan kami untuk menjelajahi sejarah, keindahan arsitektur, dan pengalaman unik yang ditawarkan oleh masjid ini. Klik untuk mendapatkan informasi lebih lanjut tentang kegiatan, fasilitas, dan nilai budaya yang ada di ${detailMasjid.name}.`,
   };
 }
 
