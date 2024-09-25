@@ -16,10 +16,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FormField, FormData, User } from "@/types/form";
-import { useToast } from "@/hooks/use-toast";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import Cookies from "js-cookie";
+import Alert from "@/components/ui/AlertCustom";
 
 const formFields: FormField[] = [
   { name: "name", label: "Name", type: "text" },
@@ -40,11 +41,15 @@ export default function AdminUsersPage() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [masjidList, setMasjidList] = useState([]);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
-  const { toast } = useToast();
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
+
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -56,15 +61,12 @@ export default function AdminUsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/users",
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
+      const token = Cookies.get("token");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch users");
       }
@@ -73,10 +75,9 @@ export default function AdminUsersPage() {
       setFilteredUserList(data);
     } catch (error) {
       console.error("Error fetching users:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch users. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Failed to fetch users. Please try again.",
+        type: "error",
       });
     }
   };
@@ -133,14 +134,14 @@ export default function AdminUsersPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token"); // Use cookie for token
       if (!token) {
-        throw new Error("No token found in localStorage");
+        throw new Error("No token found in cookies");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/users/${currentUser.id}`
-        : "https://masjidinfo-backend.vercel.app/api/users";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/users/${currentUser.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -173,19 +174,17 @@ export default function AdminUsersPage() {
       }
 
       handleCloseModal();
-      toast({
-        title: isEditing ? "User Updated" : "User Created",
-        description: isEditing
-          ? "The user has been successfully updated."
-          : "A new user has been successfully created.",
-        variant: "default",
+      setAlertInfo({
+        message: isEditing
+          ? "Data user Berhasil diperbaharui"
+          : "User Berhasil Ditambahkan",
+        type: "success",
       });
     } catch (error) {
       console.error("Error submitting user:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit user. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menyimpan user. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
@@ -205,13 +204,13 @@ export default function AdminUsersPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token"); // Use cookie for token
       if (!token) {
-        throw new Error("No token found in localStorage");
+        throw new Error("No token found in cookies");
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/users/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -229,23 +228,29 @@ export default function AdminUsersPage() {
       }
 
       setUserList((prevList) => prevList.filter((item) => item.id !== id));
-      toast({
-        title: "User Deleted",
-        description: "The user has been successfully deleted.",
-        variant: "default",
+      setAlertInfo({
+        message: "User Berhasil Dihapus",
+        type: "success",
       });
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete user. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal menghapus user. Silakan coba lagi.",
+        type: "error",
       });
     }
   };
 
   return (
     <div className="container mx-auto p-4">
+      {alertInfo && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          duration={3000}
+          onClose={() => setAlertInfo(null)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-primary mb-4 md:mb-0">
           User List

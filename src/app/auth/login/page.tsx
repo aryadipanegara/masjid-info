@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,11 +12,11 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/lib/AuthContext";
-import Alert from "@/components/AlertCustom";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Alert from "@/components/ui/AlertCustom";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,7 +30,6 @@ export default function Login() {
     type: "success" | "error" | null;
   }>({ message: "", type: null });
   const router = useRouter();
-  const { toast } = useToast();
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +40,7 @@ export default function Login() {
 
     try {
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/auth/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
         {
           method: "POST",
           headers: {
@@ -59,15 +58,17 @@ export default function Login() {
       const data = await response.json();
       const { token } = data;
 
-      if (rememberMe) {
-        localStorage.setItem("token", token);
-      } else {
-        sessionStorage.setItem("token", token);
-      }
+      const cookieOptions = {
+        expires: rememberMe ? 7 : undefined, // Cookie expire 7 hari jika rememberMe
+        secure: process.env.NODE_ENV === "production", // Hanya gunakan s ecure di produksi
+        sameSite: "Strict" as "Strict", // Atur SameSite untuk keamanan
+      };
+
+      Cookies.set("token", token, cookieOptions);
 
       // Simulasi delay untuk melihat progress loading
       setTimeout(() => {
-        login(token); 
+        login(token);
         setAlertInfo({
           message: "Login Successful. Welcome back!",
           type: "success",

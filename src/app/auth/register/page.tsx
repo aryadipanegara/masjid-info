@@ -23,7 +23,6 @@ import {
   XCircle,
   Mail,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -35,8 +34,11 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | null;
+  }>({ message: "", type: null });
   const router = useRouter();
-  const { toast } = useToast();
 
   const passwordStrength = (password: string) => {
     let strength = 0;
@@ -75,7 +77,7 @@ export default function Register() {
 
     try {
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/auth/register",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
         {
           method: "POST",
           headers: {
@@ -91,20 +93,19 @@ export default function Register() {
       }
 
       setIsRegistered(true);
-      toast({
-        title: "Registration Successful",
-        description: "Please check your email to verify your account.",
-        duration: 5000,
+      setAlertInfo({
+        message:
+          "Registration successful. Please check your email to verify your account.",
+        type: "success",
       });
     } catch (error) {
       console.error("Registration error:", error);
       setError(
         error instanceof Error ? error.message : "An unexpected error occurred"
       );
-      toast({
-        title: "Registration Failed",
-        description: "Please try again later.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Failed to register. Please try again.",
+        type: "error",
       });
     } finally {
       setIsLoading(false);
@@ -138,9 +139,13 @@ export default function Register() {
           <CardFooter className="flex justify-center">
             <Button
               variant="outline"
-              onClick={() => router.push("/auth/login")}
+              onClick={() =>
+                router.push(
+                  "/auth/verify-otp?email=" + encodeURIComponent(email)
+                )
+              }
             >
-              Return to Login
+              Go to Verify OTP
             </Button>
           </CardFooter>
         </Card>
@@ -265,51 +270,50 @@ export default function Register() {
                   At least 8 characters long
                 </li>
                 <li className="flex items-center">
-                  {password.match(/[a-z]/) && password.match(/[A-Z]/) ? (
+                  {/[a-z]+/.test(password) ? (
                     <CheckCircle2 className="h-4 w-4 text-green-500 mr-2" />
                   ) : (
                     <XCircle className="h-4 w-4 text-red-500 mr-2" />
                   )}
-                  Contains both uppercase and lowercase letters
+                  At least 1 lowercase letter
                 </li>
                 <li className="flex items-center">
-                  {password.match(/[0-9]/) ? (
+                  {/[A-Z]+/.test(password) ? (
                     <CheckCircle2 className="h-4 w-4 text-green-500 mr-2" />
                   ) : (
                     <XCircle className="h-4 w-4 text-red-500 mr-2" />
                   )}
-                  Contains at least one number
+                  At least 1 uppercase letter
                 </li>
                 <li className="flex items-center">
-                  {password.match(/[$@#&!]/) ? (
+                  {/[0-9]+/.test(password) ? (
                     <CheckCircle2 className="h-4 w-4 text-green-500 mr-2" />
                   ) : (
                     <XCircle className="h-4 w-4 text-red-500 mr-2" />
                   )}
-                  Contains at least one special character ($@#&!)
+                  At least 1 number
+                </li>
+                <li className="flex items-center">
+                  {/\W+/.test(password) ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-500 mr-2" />
+                  ) : (
+                    <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                  )}
+                  At least 1 special character
                 </li>
               </ul>
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Registering...
-                </>
-              ) : (
-                "Register"
-              )}
+              {isLoading ? <Loader2 className="animate-spin" /> : "Register"}
             </Button>
           </form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-gray-600">
+          <p className="mt-4 text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link href="/auth/login" className="text-blue-600 hover:underline">
-              Log in
+              Login here
             </Link>
           </p>
-        </CardFooter>
+        </CardContent>
       </Card>
     </div>
   );

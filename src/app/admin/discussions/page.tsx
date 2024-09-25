@@ -10,11 +10,11 @@ import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
 import { Discussion } from "@/types/masjidInterfaces";
+import Cookies from "js-cookie";
 
 const formFields: FormField[] = [
   { name: "message", label: "Pesan", type: "text" },
   { name: "id_detail_masjid", label: "ID Detail Masjid", type: "text" },
-
 ];
 
 export default function AdminDiscussionPage() {
@@ -35,7 +35,7 @@ export default function AdminDiscussionPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -47,9 +47,9 @@ export default function AdminDiscussionPage() {
 
   const fetchDiscussions = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/discussions",
+        `${process.env.NEXT_PUBLIC_API_URL}/discussions`,
         {
           headers: {
             Authorization: `${token}`,
@@ -118,14 +118,14 @@ export default function AdminDiscussionPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/discussion/${currentDiscussion.id}`
-        : "https://masjidinfo-backend.vercel.app/api/discussion";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/discussion/${currentDiscussion.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/discussion`;
 
       const method = isEditing ? "PUT" : "POST";
 

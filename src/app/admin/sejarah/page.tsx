@@ -18,9 +18,10 @@ import { FormField, FormData } from "@/types/form";
 import { DetailMasjid, Sejarah } from "../../../types/masjidInterfaces";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
-import { toast } from "@/hooks/use-toast";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import Cookies from "js-cookie";
+import Alert from "@/components/ui/AlertCustom";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -43,10 +44,14 @@ export default function AdminSejarahPage() {
   const [detailMasjidList, setDetailMasjidList] = useState<DetailMasjid[]>([]);
   const [masjidList, setMasjidList] = useState([]);
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -59,9 +64,9 @@ export default function AdminSejarahPage() {
 
   const fetchSejarah = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/sejarah",
+        `${process.env.NEXT_PUBLIC_API_URL}/sejarah`,
         {
           headers: {
             Authorization: `${token}`,
@@ -76,19 +81,18 @@ export default function AdminSejarahPage() {
       setFilteredSejarahList(data);
     } catch (error) {
       console.error("Error fetching sejarah:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch sejarah. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal mengambil data sejarah",
+        type: "error",
       });
     }
   };
 
   const fetchDetailMasjids = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/detailmasjids",
+        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -102,10 +106,9 @@ export default function AdminSejarahPage() {
       setDetailMasjidList(data);
     } catch (error) {
       console.error("Error fetching detailmasjids:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch detailmasjids. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal Mengambil data detailmasjids",
+        type: "error",
       });
     }
   };
@@ -157,14 +160,14 @@ export default function AdminSejarahPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/sejarah/${currentSejarah.id}`
-        : "https://masjidinfo-backend.vercel.app/api/sejarah";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/sejarah/${currentSejarah.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/sejarah`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -201,19 +204,15 @@ export default function AdminSejarahPage() {
       }
 
       handleCloseModal();
-      toast({
-        title: isEditing ? "Sejarah Updated" : "Sejarah Created",
-        description: isEditing
-          ? "The sejarah has been successfully updated."
-          : "A new sejarah has been successfully created.",
-        variant: "default",
+      setAlertInfo({
+        message: isEditing ? "Sejarah Updated" : "Sejarah Created",
+        type: "success",
       });
     } catch (error) {
       console.error("Error submitting sejarah:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit sejarah. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal Menyimpan Data sejarah",
+        type: "error",
       });
     }
   };
@@ -230,7 +229,7 @@ export default function AdminSejarahPage() {
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/sejarah/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/sejarah/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -248,17 +247,15 @@ export default function AdminSejarahPage() {
       }
 
       setSejarahList((prevList) => prevList.filter((item) => item.id !== id));
-      toast({
-        title: "Sejarah Deleted",
-        description: "The sejarah has been successfully deleted.",
-        variant: "default",
+      setAlertInfo({
+        message: "Sejarah Berhasil di hapus",
+        type: "success",
       });
     } catch (error) {
       console.error("Error deleting sejarah:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete sejarah. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal Menghapus data sejarah",
+        type: "error",
       });
     }
   };
@@ -289,6 +286,14 @@ export default function AdminSejarahPage() {
 
   return (
     <div className="container mx-auto p-4">
+      {alertInfo && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          duration={3000}
+          onClose={() => setAlertInfo(null)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-primary mb-4 md:mb-0">
           Daftar Sejarah Masjid

@@ -5,6 +5,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "MasjidInfo's Terms of Service",
+  keywords: ["terms", "service", "masjidinfo", "information"],
+};
 
 export default function TermsOfService() {
   return (

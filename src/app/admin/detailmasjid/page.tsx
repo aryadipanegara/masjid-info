@@ -1,15 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Plus,
-  Edit,
-  Trash2,
-  MapPin,
-  Calendar,
-  MessageSquare,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Plus, Edit, Trash2, Image } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import GenericModal from "@/components/modal/GenericModal";
 import { Button } from "@/components/ui/button";
@@ -25,8 +17,9 @@ import {
 import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
-
+import Cookies from "js-cookie";
 import { DetailMasjid, Masjid } from "@/types/masjidInterfaces";
+import Alert from "@/components/ui/AlertCustom";
 
 const formFields: FormField[] = [
   { name: "id_masjid", label: "Nama Masjid", type: "select" },
@@ -55,7 +48,7 @@ export default function AdminDetailMasjidPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -68,9 +61,9 @@ export default function AdminDetailMasjidPage() {
 
   const fetchDetailMasjids = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/detailmasjids",
+        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -93,9 +86,9 @@ export default function AdminDetailMasjidPage() {
 
   const fetchMasjids = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/masjids",
+        `${process.env.NEXT_PUBLIC_API_URL}/masjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -158,7 +151,7 @@ export default function AdminDetailMasjidPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
@@ -178,8 +171,8 @@ export default function AdminDetailMasjidPage() {
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/detailmasjids/${currentDetailMasjid.id}`
-        : "https://masjidinfo-backend.vercel.app/api/detailmasjids";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/${currentDetailMasjid.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -237,13 +230,13 @@ export default function AdminDetailMasjidPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/detailmasjids/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -278,6 +271,14 @@ export default function AdminDetailMasjidPage() {
 
   return (
     <div className="container mx-auto p-4">
+      {alertInfo && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          duration={3000}
+          onClose={() => setAlertInfo(null)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-primary mb-4 md:mb-0">
           Daftar Detail Masjid

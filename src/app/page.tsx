@@ -45,7 +45,7 @@ export default function MasjidFinder() {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/masjids"
+        `${process.env.NEXT_PUBLIC_API_URL}/masjids`
       );
       if (!response.ok) throw new Error("Failed to fetch masjid data");
 

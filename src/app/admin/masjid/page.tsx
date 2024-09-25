@@ -17,9 +17,10 @@ import {
 } from "@/components/ui/table";
 import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
-import Alert from "@/components/AlertCustom";
+import Alert from "@/components/ui/AlertCustom";
 import Image from "next/image";
 import { Masjid } from "@/types/masjidInterfaces";
+import Cookies from "js-cookie";
 
 const formFields: FormField[] = [
   { name: "name", label: "Nama Masjid", type: "text" },
@@ -46,7 +47,7 @@ export default function AdminMasjidPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -58,9 +59,9 @@ export default function AdminMasjidPage() {
 
   const fetchMasjids = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/masjids",
+        `${process.env.NEXT_PUBLIC_API_URL}/masjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -139,14 +140,14 @@ export default function AdminMasjidPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/masjids/${currentMasjid.id}`
-        : "https://masjidinfo-backend.vercel.app/api/masjids";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/masjids/${currentMasjid.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/masjids`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -213,13 +214,13 @@ export default function AdminMasjidPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/masjids/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/masjids/${id}`,
         {
           method: "DELETE",
           headers: {

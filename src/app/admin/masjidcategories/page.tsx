@@ -18,7 +18,8 @@ import { FormField, FormData } from "@/types/form";
 import { useRouter } from "next/navigation";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { Category, Masjid, MasjidCategory } from "@/types/masjidInterfaces";
-import Alert from "@/components/AlertCustom";
+import Alert from "@/components/ui/AlertCustom";
+import Cookies from "js-cookie";
 
 const formFields: FormField[] = [
   { name: "id_masjid", label: "Masjid", type: "select" },
@@ -52,7 +53,7 @@ export default function MasjidCategoriesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -82,7 +83,7 @@ export default function MasjidCategoriesPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/masjidcategories",
+        `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories`,
         {
           headers: {
             Authorization: `${token}`,
@@ -103,9 +104,9 @@ export default function MasjidCategoriesPage() {
 
   const fetchMasjids = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/masjids",
+        `${process.env.NEXT_PUBLIC_API_URL}/masjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -125,9 +126,9 @@ export default function MasjidCategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/categories",
+        `${process.env.NEXT_PUBLIC_API_URL}/categories`,
         {
           headers: {
             Authorization: `${token}`,
@@ -235,14 +236,14 @@ export default function MasjidCategoriesPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/masjidcategories/${currentMasjidCategory.id}`
-        : "https://masjidinfo-backend.vercel.app/api/masjidcategories";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories/${currentMasjidCategory.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories`;
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -304,13 +305,13 @@ export default function MasjidCategoriesPage() {
 
   const handleDelete = async (id: any) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/masjidcategories/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/masjidcategories/${id}`,
         {
           method: "DELETE",
           headers: {

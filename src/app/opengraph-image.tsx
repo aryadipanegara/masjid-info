@@ -10,9 +10,10 @@ export const size = {
 
 export const contentType = "image/png";
 
-async function getDetailMasjid(id: string) {
+// Mengganti dari id menjadi slug
+async function getDetailMasjid(slug: string) {
   const res = await fetch(
-    `https://masjidinfo-backend.vercel.app/api/detailmasjids/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/slug/${slug}`,
     { next: { revalidate: 3600 } }
   );
   if (!res.ok) {
@@ -21,8 +22,8 @@ async function getDetailMasjid(id: string) {
   return res.json();
 }
 
-export default async function Image({ params }: { params: { id: string } }) {
-  const masjid = await getDetailMasjid(params.id);
+export default async function Image({ params }: { params: { slug: string } }) {
+  const masjid = await getDetailMasjid(params.slug);
 
   return new ImageResponse(
     (

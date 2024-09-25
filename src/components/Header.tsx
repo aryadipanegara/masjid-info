@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConfirmationDialog } from "./ConfirmationDialog";
-import { useAuth } from "@/lib/AuthContext";
 import { motion } from "framer-motion";
+import { useAuth } from "@/lib/AuthContext";
 
 const navItems = [
   { href: "/masjid", label: "Masjid" },

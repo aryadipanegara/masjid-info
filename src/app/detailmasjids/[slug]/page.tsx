@@ -2,15 +2,14 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 
 import Loading from "@/app/loading";
-import DetailMasjidClient from "@/components/DetailMasjidClient";
+import DetailMasjidClient from "@/components/client/DetailMasjidClient";
 
-// Fungsi untuk mengambil detail masjid dari API tanpa revalidate
 async function getDetailMasjid(slug: string) {
   const res = await fetch(
-    `https://masjidinfo-backend.vercel.app/api/detailmasjids/slug/${slug}`,
+    `http://localhost:5000/api/detailmasjids/slug/${slug}`,
     {
       headers: {
-        "Cache-Control": "no-cache", 
+        "Cache-Control": "no-cache",
       },
     }
   );
@@ -36,7 +35,6 @@ export async function generateMetadata({
   };
 }
 
-// Fungsi utama untuk menampilkan halaman detail masjid
 export default async function DetailMasjidPage({
   params,
 }: {

@@ -24,7 +24,7 @@ import {
 import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
-import { toast } from "@/hooks/use-toast";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import { DetailMasjid, Photo } from "@/types/masjidInterfaces";
 
@@ -47,10 +47,15 @@ export default function AdminPhotosPage() {
   const [masjidList, setMasjidList] = useState([]);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+  const [alertInfo, setAlertInfo] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
+
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -65,7 +70,7 @@ export default function AdminPhotosPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/photos",
+        `${process.env.NEXT_PUBLIC_API_URL}/photos`,
         {
           headers: {
             Authorization: `${token}`,
@@ -80,19 +85,18 @@ export default function AdminPhotosPage() {
       setFilteredPhotosList(data);
     } catch (error) {
       console.error("Error fetching photos:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch photos. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: " Gagal Mengambil Data Photos",
+        type: "error",
       });
     }
   };
 
   const fetchDetailMasjids = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/detailmasjids",
+        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -106,10 +110,9 @@ export default function AdminPhotosPage() {
       setDetailMasjidList(data);
     } catch (error) {
       console.error("Error fetching detailmasjids:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch detailmasjids. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal Mengambil Data Detail Masjid",
+        type: "error",
       });
     }
   };
@@ -161,14 +164,14 @@ export default function AdminPhotosPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/photos/${currentPhoto.id}`
-        : "https://masjidinfo-backend.vercel.app/api/photos";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/photos/${currentPhoto.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/photos`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -205,19 +208,15 @@ export default function AdminPhotosPage() {
       }
 
       handleCloseModal();
-      toast({
-        title: isEditing ? "Photo Updated" : "Photo Added",
-        description: isEditing
-          ? "The photo has been successfully updated."
-          : "A new photo has been successfully added.",
-        variant: "default",
+      setAlertInfo({
+        message: isEditing ? "Photo Updated" : "Photo Added",
+        type: "success",
       });
     } catch (error) {
       console.error("Error submitting photo:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit photo. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal memperbaharui data Photos",
+        type: "error",
       });
     }
   };
@@ -228,13 +227,13 @@ export default function AdminPhotosPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/photos/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/photos/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -252,17 +251,15 @@ export default function AdminPhotosPage() {
       }
 
       setPhotosList((prevList) => prevList.filter((item) => item.id !== id));
-      toast({
-        title: "Photo Deleted",
-        description: "The photo has been successfully deleted.",
-        variant: "default",
+      setAlertInfo({
+        message: "Photo deleted successfully",
+        type: "success",
       });
     } catch (error) {
       console.error("Error deleting photo:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete photo. Please try again.",
-        variant: "destructive",
+      setAlertInfo({
+        message: "Gagal Menghapus Foto",
+        type: "error",
       });
     }
   };

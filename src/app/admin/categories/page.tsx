@@ -18,6 +18,8 @@ import { FormField, FormData } from "@/types/form";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRouter } from "next/navigation";
 import { Category } from "@/types/masjidInterfaces";
+import Cookies from "js-cookie";
+import Alert from "@/components/ui/AlertCustom";
 
 const formFields: FormField[] = [
   { name: "name", label: "Nama Kategori", type: "text" },
@@ -45,7 +47,7 @@ export default function AdminCategoriesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (!token) {
       router.push("/auth/login");
     } else {
@@ -57,9 +59,9 @@ export default function AdminCategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/categories",
+        `${process.env.NEXT_PUBLIC_API_URL}/categories`,
         {
           headers: {
             Authorization: `${token}`,
@@ -131,14 +133,14 @@ export default function AdminCategoriesPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/categories/${currentCategory.id}`
-        : "https://masjidinfo-backend.vercel.app/api/categories";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/categories/${currentCategory.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/categories`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -201,13 +203,13 @@ export default function AdminCategoriesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       if (!token) {
         throw new Error("No token found in localStorage");
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/categories/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -242,6 +244,14 @@ export default function AdminCategoriesPage() {
 
   return (
     <div className="container mx-auto p-4">
+      {alertInfo && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          duration={3000}
+          onClose={() => setAlertInfo(null)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-primary mb-4 md:mb-0">
           Daftar Kategori

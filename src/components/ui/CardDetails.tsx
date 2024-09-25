@@ -21,7 +21,7 @@ import {
 import { DetailMasjid } from "@/types/masjidInterfaces";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Commentar from "@/components/comments";
+import Commentar from "@/components/Comments";
 
 type CardDetailProps = {
   detailMasjid: DetailMasjid;

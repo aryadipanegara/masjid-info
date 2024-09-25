@@ -1,5 +1,4 @@
 "use client";
-
 import React, {
   createContext,
   useContext,
@@ -8,6 +7,7 @@ import React, {
   ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface AuthContextType {
   userRole: string | null;
@@ -24,35 +24,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserRole(payload.role);
-      } catch (error) {
-        console.error("Invalid token", error);
-        setUserRole(null);
-      }
+      verifyToken(token);
     }
   }, []);
 
-  const login = (token: string) => {
+  const verifyToken = (token: string) => {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       setUserRole(payload.role);
-      localStorage.setItem("token", token);
     } catch (error) {
       console.error("Invalid token", error);
       setUserRole(null);
     }
   };
 
+  const login = (token: string) => {
+    Cookies.set("token", token, { expires: 7 });
+    verifyToken(token);
+  };
+
   const logout = () => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-
+    Cookies.remove("token");
     setUserRole(null);
-
     router.push("/auth/login");
   };
 

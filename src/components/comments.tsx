@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import AlertCustom from "@/components/AlertCustom";
+import AlertCustom from "@/components/ui/AlertCustom";
 import {
   MoreHorizontal,
   Edit,
@@ -28,6 +28,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import Cookies from "js-cookie";
 import Loading from "@/app/loading";
 
 type User = { id: string; name: string; avatar: string };
@@ -65,11 +66,12 @@ export default function DiscussionComponent() {
     [key: string]: boolean;
   }>({});
   const params = useParams();
+  const [detailMasjidId, setDetailMasjidId] = useState<string | null>(null);
   const detailMasjidSlug = params.slug as string | undefined;
   const router = useRouter();
 
   const checkUserLogin = () => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (token) {
       try {
         const { id, name, avatar } = JSON.parse(atob(token.split(".")[1]));
@@ -84,9 +86,9 @@ export default function DiscussionComponent() {
   };
 
   const fetchUserInfo = async (userId: string): Promise<User> => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     const response = await fetch(
-      `https://masjidinfo-backend.vercel.app/api/users/public/${userId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/public/${userId}`,
       {
         headers: { Authorization: ` ${token}` },
       }
@@ -98,20 +100,22 @@ export default function DiscussionComponent() {
 
   const fetchComments = async () => {
     if (!detailMasjidSlug) {
-      console.error("detailMasjidSlug is undefined");
       return;
     }
     try {
       setIsLoading(true);
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/detailmasjids/slug/${detailMasjidSlug}`, // Ubah URL
+        `${process.env.NEXT_PUBLIC_API_URL}/detailmasjids/slug/${detailMasjidSlug}`,
         {
           headers: { Authorization: ` ${token}` },
         }
       );
       if (!response.ok) throw new Error("Failed to fetch discussions.");
+
       const data = await response.json();
+
+      setDetailMasjidId(data.id);
 
       const commentsWithUserInfo = await Promise.all(
         data.discussions.map(async (comment: Comment) => {
@@ -182,14 +186,13 @@ export default function DiscussionComponent() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      let url = "https://masjidinfo-backend.vercel.app/api/discussions";
+      const token = Cookies.get("token");
+      let url = "${process.env.NEXT_PUBLIC_API_URL}/discussions";
       let method = "POST";
       let body: any = {
         message,
         id_replies_discussion: parentId,
-        slug,
-
+        id_detail_masjid: detailMasjidId,
         id_user: currentUser?.id,
       };
 
