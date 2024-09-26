@@ -31,7 +31,72 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        <link rel="icon" href="masjid.png" />
+        {/* Basic SEO */}
+        <meta
+          name="description"
+          content="Masjidinfo adalah platform terpercaya yang menyediakan informasi mendalam tentang masjid-masjid di Indonesia dan di seluruh dunia. Temukan sejarah, arsitektur, dan acara penting dari masjid-masjid terkenal."
+        />
+        <meta
+          name="keywords"
+          content="masjid, informasi masjid, sejarah masjid, arsitektur masjid, masjid di Indonesia"
+        />
+        <meta name="author" content="aryadipanegara" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        {/* Open Graph for Social Media */}
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Masjidinfo - Informasi Mendalam Tentang Masjid di Dunia"
+        />
+        <meta
+          property="og:description"
+          content="Masjidinfo adalah platform terpercaya yang menyediakan informasi mendalam tentang masjid-masjid di seluruh dunia."
+        />
+
+        <meta property="og:url" content="https://www.masjidinfo.my.id" />
+        <meta property="og:site_name" content="Masjidinfo" />
+        <meta property="og:locale" content="id_ID" />
+
+        {/* Twitter Cards */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Masjidinfo - Informasi Mendalam Tentang Masjid di Dunia"
+        />
+        <meta
+          name="twitter:description"
+          content="Masjidinfo adalah platform terpercaya yang menyediakan informasi mendalam tentang masjid-masjid di seluruh dunia."
+        />
+
+        <meta name="twitter:site" content="@Masjidinfo" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://www.masjidinfo.my.id" />
+
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://www.masjidinfo.my.id",
+              name: "Masjidinfo",
+              author: {
+                "@type": "Organization",
+                name: "Masjidinfo",
+              },
+              description:
+                "Masjidinfo adalah platform terpercaya yang menyediakan informasi mendalam tentang masjid-masjid di seluruh dunia.",
+              inLanguage: "id_ID",
+              publisher: {
+                "@type": "Organization",
+                name: "Masjidinfo",
+              },
+            }),
+          }}
+        />
       </head>
       <body className={inter.className}>
         <AuthProvider>
