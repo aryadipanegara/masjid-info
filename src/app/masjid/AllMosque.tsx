@@ -15,16 +15,12 @@ import { Button } from "@/components/ui/button";
 import { IconCalendar, IconEye, IconSearch } from "@tabler/icons-react";
 import { Masjid } from "@/types/masjidInterfaces";
 import { CategoryList } from "@/components/CategoryList";
-import {
-  Carousel,
-  Card as CarouselCard,
-} from "@/components/ui/apple-cards-carousel";
-import Loading from "./loading";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
-import { ShareMediaButton } from "@/components/ShareMediaButton";
-import { ShareMediaModal } from "@/components/modal/ShareMediaModal";
+import Loading from "@/app/loading";
+import { ShareMediaButton } from "../../components/ShareMediaButton";
+import { ShareMediaModal } from "../../components/modal/ShareMediaModal";
 
-export default function MasjidFinder() {
+export default function AllMosque() {
   const [masjids, setMasjids] = useState<Masjid[]>([]);
   const [filteredMasjids, setFilteredMasjids] = useState<Masjid[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -97,32 +93,6 @@ export default function MasjidFinder() {
     setSelectedCategory(categoryId);
   };
 
-  const topMasjids = masjids
-    .slice()
-    .sort(
-      (a, b) =>
-        b.detailMasjids.reduce((acc, dm) => acc + dm.total_klik, 0) -
-        a.detailMasjids.reduce((acc, dm) => acc + dm.total_klik, 0)
-    )
-    .slice(0, 5);
-
-  const carouselCards = topMasjids.map((masjid, index) => (
-    <CarouselCard
-      key={masjid.id}
-      card={{
-        category: masjid.categories[0]?.category.name,
-        title: masjid.name,
-        src: masjid.thumbnail,
-        content: (
-          <p className="text-sm text-muted-foreground mb-2">
-            {masjid.description.slice(0, 100)}...
-          </p>
-        ),
-      }}
-      index={index}
-    />
-  ));
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -138,16 +108,15 @@ export default function MasjidFinder() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {isLoading ? (
           <Loading />
         ) : (
           <>
-            {/* Carousel Section */}
-            <div className="mb-10">
-              <Carousel items={carouselCards} />
-            </div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8 text-gray-800">
+              Semua Masjid
+            </h1>
 
             <div className="mb-8">
               <div className="max-w-2xl mx-auto">
@@ -161,7 +130,7 @@ export default function MasjidFinder() {
 
             <div className="mb-8">
               <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-                Categories
+                Kategori
               </h2>
               <CategoryList
                 categories={categories}
@@ -171,7 +140,7 @@ export default function MasjidFinder() {
             </div>
 
             {/* Masjid List */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
               <AnimatePresence>
                 {filteredMasjids.map((masjid) => (
                   <motion.div
@@ -252,6 +221,6 @@ export default function MasjidFinder() {
           masjidSlug={selectedMasjid.detailMasjids[0]?.slug || ""}
         />
       )}
-    </div>
+    </>
   );
 }

@@ -1,39 +1,12 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import AllMosque from "@/app/masjid/AllMosque";
+import { Metadata } from "next";
 
-import Loading from "@/app/loading";
-import MasjidFinderClient from "@/components/client/MasjidFinderClient";
+export const metadata: Metadata = {
+  title: "Semua Masjid ",
+  description:
+    "Explore all mosques in our database. Search, filter, and discover mosques near you.",
+};
 
-async function getMasjids() {
-  const res = await fetch(`https://masjidinfo-backend.vercel.app/api/masjids`, {
-    headers: {
-      "Cache-Control": "no-cache",
-    },
-  });
-
-  if (!res.ok) {
-    console.error("Error fetching masjid data:", res.status, res.statusText);
-    notFound();
-  }
-
-  const data = await res.json();
-  return data;
-}
-
-export async function generateMetadata() {
-  const masjids = await getMasjids();
-  return {
-    title: "Temukan Masjid",
-    description: "Menjelajahi Keindahan dan Kebijaksanaan Masjid",
-  };
-}
-
-export default async function MasjidFinderPage() {
-  const masjids = await getMasjids();
-
-  return (
-    <Suspense fallback={<Loading />}>
-      <MasjidFinderClient initialMasjids={masjids} />
-    </Suspense>
-  );
+export default function SemuaMasjidPage() {
+  return <AllMosque />;
 }
