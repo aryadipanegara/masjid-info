@@ -27,6 +27,7 @@ import { ShareMediaButton } from "../../components/ShareMediaButton";
 import { ShareMediaModal } from "../../components/modal/ShareMediaModal";
 import { toggleBookmark, toggleLike } from "@/redux/slice/masjidSlice";
 import { useMasjid } from "@/redux/hooks/useMasjid";
+import Alert from "@/components/ui/AlertCustom";
 
 export default function AllMosque() {
   const {
@@ -270,6 +271,14 @@ export default function AllMosque() {
           onClose={() => setIsShareModalOpen(false)}
           masjidName={selectedMasjid.name}
           masjidSlug={selectedMasjid.detailMasjids[0]?.slug || ""}
+        />
+      )}
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          duration={3000}
+          onClose={() => {}}
         />
       )}
     </>

@@ -24,6 +24,7 @@ import { useMasjid } from "@/redux/hooks/useMasjid";
 import { ShareMediaButton } from "../ShareMediaButton";
 import { ShareMediaModal } from "../modal/ShareMediaModal";
 import Alert from "../ui/AlertCustom";
+import Loading from "@/app/loading";
 
 export default function SavedMasjids() {
   const {
@@ -135,7 +136,7 @@ export default function SavedMasjids() {
           size="sm"
           onClick={() => toggleBookmark(masjid.id)}
           className={
-            bookmarkedMasjids.includes(masjid.id) ? "text-blue-500" : ""
+            bookmarkedMasjids.includes(masjid.id) ? "text-yellow-500" : ""
           }
         >
           <IconBookmark className="h-4 w-4" />
@@ -147,7 +148,7 @@ export default function SavedMasjids() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        Loading...
+        <Loading />
       </div>
     );
   }
