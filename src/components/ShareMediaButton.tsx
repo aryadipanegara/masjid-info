@@ -8,7 +8,7 @@ interface ShareMediaButtonProps {
 export function ShareMediaButton({ onClick }: ShareMediaButtonProps) {
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
       onClick={onClick}
       className="bg-white bg-opacity-80 hover:bg-opacity-100"

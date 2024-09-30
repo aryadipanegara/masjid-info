@@ -12,7 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { IconCalendar, IconEye, IconSearch } from "@tabler/icons-react";
+import {
+  IconCalendar,
+  IconEye,
+  IconHeart,
+  IconBookmark,
+} from "@tabler/icons-react";
 import { Masjid } from "@/types/masjidInterfaces";
 import { CategoryList } from "@/components/CategoryList";
 import {
@@ -21,10 +26,24 @@ import {
 } from "@/components/ui/apple-cards-carousel";
 import Loading from "./loading";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import { useMasjid } from "../redux/hooks/useMasjid";
 import { ShareMediaButton } from "@/components/ShareMediaButton";
 import { ShareMediaModal } from "@/components/modal/ShareMediaModal";
+import Alert from "@/components/ui/AlertCustom";
 
 export default function MasjidFinder() {
+  const {
+    likedMasjids,
+    bookmarkedMasjids,
+    viewCounts,
+    lastVisited,
+    toggleLike,
+    toggleBookmark,
+    incrementViewCount,
+    updateLastVisited,
+    alert,
+  } = useMasjid();
+
   const [masjids, setMasjids] = useState<Masjid[]>([]);
   const [filteredMasjids, setFilteredMasjids] = useState<Masjid[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -99,11 +118,7 @@ export default function MasjidFinder() {
 
   const topMasjids = masjids
     .slice()
-    .sort(
-      (a, b) =>
-        b.detailMasjids.reduce((acc, dm) => acc + dm.total_klik, 0) -
-        a.detailMasjids.reduce((acc, dm) => acc + dm.total_klik, 0)
-    )
+    .sort((a, b) => (viewCounts[b.id] || 0) - (viewCounts[a.id] || 0))
     .slice(0, 5);
 
   const carouselCards = topMasjids.map((masjid, index) => (
@@ -137,13 +152,26 @@ export default function MasjidFinder() {
     setIsShareModalOpen(true);
   };
 
+  const handleLikeClick = (masjidId: string) => {
+    toggleLike(masjidId);
+  };
+
+  const handleBookmarkClick = (masjidId: string) => {
+    toggleBookmark(masjidId);
+  };
+
+  const handleMasjidClick = (masjidId: string) => {
+    incrementViewCount(masjidId);
+    updateLastVisited(masjidId);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {isLoading ? (
           <Loading />
         ) : (
-          <>
+          <div>
             {/* Carousel Section */}
             <div className="mb-10">
               <Carousel items={carouselCards} />
@@ -194,30 +222,25 @@ export default function MasjidFinder() {
 
                       <CardHeader className="flex-grow">
                         {masjid.categories && masjid.categories.length > 0 && (
-                          <span className="text-xs font-medium text-emerald-600 mb-2 block">
+                          <span className="text-xs sm:text-sm font-medium text-emerald-600 mb-1 sm:mb-2 block">
                             {masjid.categories[0].category.name}
                           </span>
                         )}
-                        <CardTitle className="text-lg sm:text-xl line-clamp-1">
+                        <CardTitle className="text-base sm:text-lg line-clamp-1">
                           {masjid.name}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2 line-clamp-2">
                           {masjid.description}
                         </p>
                         <div className="flex items-center text-xs text-gray-500">
-                          <IconCalendar className="mr-1 h-3 w-3" />
+                          <IconCalendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                           <span className="mr-4">
                             {new Date(masjid.created_at).toLocaleDateString()}
                           </span>
-                          <IconEye className="mr-1 h-3 w-3" />
-                          <span>
-                            {masjid.detailMasjids.reduce(
-                              (acc, dm) => acc + dm.total_klik,
-                              0
-                            )}
-                          </span>
+                          <IconEye className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+                          <span>{viewCounts[masjid.id] || 0}</span>
                         </div>
                       </CardContent>
                       <CardFooter className="flex justify-between items-center space-x-2">
@@ -225,12 +248,37 @@ export default function MasjidFinder() {
                           variant="outline"
                           size="sm"
                           className="flex-grow"
+                          onClick={() => handleMasjidClick(masjid.id)}
                         >
                           <Link
                             href={`/detailmasjids/${masjid.detailMasjids[0]?.slug}`}
                           >
                             Kunjungi Masjid
                           </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleLikeClick(masjid.id)}
+                          className={
+                            likedMasjids.includes(masjid.id)
+                              ? "text-red-500"
+                              : ""
+                          }
+                        >
+                          <IconHeart className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleBookmarkClick(masjid.id)}
+                          className={
+                            bookmarkedMasjids.includes(masjid.id)
+                              ? "text-yellow-500"
+                              : ""
+                          }
+                        >
+                          <IconBookmark className="h-4 w-4" />
                         </Button>
                         <ShareMediaButton
                           onClick={() => handleShareClick(masjid)}
@@ -241,7 +289,7 @@ export default function MasjidFinder() {
                 ))}
               </AnimatePresence>
             </div>
-          </>
+          </div>
         )}
       </div>
       {selectedMasjid && (
@@ -250,6 +298,14 @@ export default function MasjidFinder() {
           onClose={() => setIsShareModalOpen(false)}
           masjidName={selectedMasjid.name}
           masjidSlug={selectedMasjid.detailMasjids[0]?.slug || ""}
+        />
+      )}
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          duration={3000}
+          onClose={() => {}}
         />
       )}
     </div>

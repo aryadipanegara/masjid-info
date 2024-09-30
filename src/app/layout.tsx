@@ -6,10 +6,12 @@ import Footer from "@/components/Footer";
 import { Metadata } from "next";
 import { AuthProvider } from "@/lib/AuthContext";
 import NotificationBanner from "@/components/modal/NotificationModal";
+import Providers from "@/redux/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.masjidinfo.net/"),
   title: {
     default: "Masjidinfo",
     template: "%s - Masjidinfo",
@@ -102,7 +104,9 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           <NotificationBanner />
-          <main>{children}</main>
+          <Providers>
+            <main>{children}</main>
+          </Providers>
           <Footer />
         </AuthProvider>
       </body>

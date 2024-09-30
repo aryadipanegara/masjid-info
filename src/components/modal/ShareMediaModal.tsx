@@ -38,7 +38,7 @@ export function ShareMediaModal({
   const [copied, setCopied] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
   const shareUrl = `https://masjidinfo.my.id/detailmasjids/${masjidSlug}`;
-  const title = `Check out ${masjidName}`;
+  const title = `Kunjungi ${masjidName}`;
 
   const socialMedias = [
     {

@@ -19,6 +19,7 @@ import { useAuth } from "@/lib/AuthContext";
 
 const navItems = [
   { href: "/masjid", label: "Masjid" },
+  { href: "/save", label: "Save" },
   { href: "/about", label: "About" },
 ];
 
@@ -86,7 +87,7 @@ export default function Header() {
       );
     } else {
       return (
-        <>
+        <div>
           <Link href="/auth/login">
             <Button variant="ghost" className="text-black">
               Login
@@ -97,7 +98,7 @@ export default function Header() {
               Register
             </Button>
           </Link>
-        </>
+        </div>
       );
     }
   };

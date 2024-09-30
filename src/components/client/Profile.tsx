@@ -237,12 +237,12 @@ export default function ProfilePage() {
         </CardContent>
         <CardFooter className="flex justify-end space-x-2">
           {isEditing ? (
-            <>
+            <div>
               <Button variant="outline" onClick={handleCancel}>
                 Cancel
               </Button>
               <Button onClick={handleSave}>Save Changes</Button>
-            </>
+            </div>
           ) : (
             <Button onClick={handleEdit} className="hidden">
               Edit Profile

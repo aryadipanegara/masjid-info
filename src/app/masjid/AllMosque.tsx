@@ -12,15 +12,34 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { IconCalendar, IconEye, IconSearch } from "@tabler/icons-react";
+import {
+  IconBookmark,
+  IconCalendar,
+  IconEye,
+  IconHeart,
+  IconSearch,
+} from "@tabler/icons-react";
 import { Masjid } from "@/types/masjidInterfaces";
 import { CategoryList } from "@/components/CategoryList";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import Loading from "@/app/loading";
 import { ShareMediaButton } from "../../components/ShareMediaButton";
 import { ShareMediaModal } from "../../components/modal/ShareMediaModal";
+import { toggleBookmark, toggleLike } from "@/redux/slice/masjidSlice";
+import { useMasjid } from "@/redux/hooks/useMasjid";
 
 export default function AllMosque() {
+  const {
+    likedMasjids,
+    bookmarkedMasjids,
+    viewCounts,
+    lastVisited,
+    toggleLike,
+    toggleBookmark,
+    incrementViewCount,
+    updateLastVisited,
+    alert,
+  } = useMasjid();
   const [masjids, setMasjids] = useState<Masjid[]>([]);
   const [filteredMasjids, setFilteredMasjids] = useState<Masjid[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,6 +119,14 @@ export default function AllMosque() {
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     filterMasjids();
+  };
+
+  const handleLikeClick = (masjidId: string) => {
+    toggleLike(masjidId);
+  };
+
+  const handleBookmarkClick = (masjidId: string) => {
+    toggleBookmark(masjidId);
   };
 
   const handleShareClick = (masjid: Masjid) => {
@@ -200,6 +227,30 @@ export default function AllMosque() {
                           >
                             Kunjungi Masjid
                           </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleLikeClick(masjid.id)}
+                          className={
+                            likedMasjids.includes(masjid.id)
+                              ? "text-red-500"
+                              : ""
+                          }
+                        >
+                          <IconHeart className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleBookmarkClick(masjid.id)}
+                          className={
+                            bookmarkedMasjids.includes(masjid.id)
+                              ? "text-yellow-500"
+                              : ""
+                          }
+                        >
+                          <IconBookmark className="h-4 w-4" />
                         </Button>
                         <ShareMediaButton
                           onClick={() => handleShareClick(masjid)}

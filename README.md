@@ -44,7 +44,10 @@ Masjid Info is a dynamic platform that showcases information about various mosqu
 - **Tailwind CSS**: Utility-first CSS framework for building custom designs quickly.
 - **Mantine UI**: Component library for building user interfaces.
 - **Shadcn UI**: Utility-focused UI components for React, simplifying the styling process.
+- **Redux**: A predictable state container for JavaScript apps, used to manage the application state across the app, including user actions like likes, bookmarks, and more.
 - **Railway (MySQL)**: Cloud platform for hosting databases, including MySQL, for managing and scaling the backend.
+
+## <a name="features">🔋 Features</a>
 
 ## <a name="features">🔋 Features</a>
 
@@ -59,6 +62,8 @@ Masjid Info is a dynamic platform that showcases information about various mosqu
 👉 **Responsive Design**: The interface adapts to all devices for a seamless user experience.
 
 👉 **Photo Galleries**: View photo collections of each mosque with a clean and accessible layout.
+
+👉 **Saved Mosques**: Users can now save their liked and bookmarked mosques, with a dedicated tabbed interface for easy access.
 
 ## <a name="quick-start">🤸 Quick Start</a>
 
