@@ -49,7 +49,7 @@ export default function AdminDiscussionPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/discussions",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/discussions`,
         {
           headers: {
             Authorization: `${token}`,
@@ -124,8 +124,8 @@ export default function AdminDiscussionPage() {
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/discussion/${currentDiscussion.id}`
-        : "https://masjidinfo-backend.vercel.app/api/discussion";
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/discussion/${currentDiscussion.id}`
+        : `${process.env.NEXT_PUBLIC_BASE_URL}/api/discussion`;
 
       const method = isEditing ? "PUT" : "POST";
 

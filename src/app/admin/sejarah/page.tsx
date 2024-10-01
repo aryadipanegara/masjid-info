@@ -66,7 +66,7 @@ export default function AdminSejarahPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/sejarah",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/sejarah`,
         {
           headers: {
             Authorization: `${token}`,
@@ -92,7 +92,7 @@ export default function AdminSejarahPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/detailmasjids",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailmasjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -166,8 +166,8 @@ export default function AdminSejarahPage() {
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/sejarah/${currentSejarah.id}`
-        : "https://masjidinfo-backend.vercel.app/api/sejarah";
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/sejarah/${currentSejarah.id}`
+        : `${process.env.NEXT_PUBLIC_BASE_URL}/api/sejarah`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -229,7 +229,7 @@ export default function AdminSejarahPage() {
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/sejarah/${id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/sejarah/${id}`,
         {
           method: "DELETE",
           headers: {

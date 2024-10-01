@@ -11,7 +11,6 @@ import Providers from "@/redux/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.masjidinfo.net/"),
   title: {
     default: "Masjidinfo",
     template: "%s - Masjidinfo",

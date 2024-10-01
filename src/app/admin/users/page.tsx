@@ -63,7 +63,7 @@ export default function AdminUsersPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/users",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/users`,
         {
           headers: {
             Authorization: `${token}`,
@@ -143,8 +143,8 @@ export default function AdminUsersPage() {
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/users/${currentUser.id}`
-        : "https://masjidinfo-backend.vercel.app/api/users";
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${currentUser.id}`
+        : `${process.env.NEXT_PUBLIC_BASE_URL}/api/users`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -213,7 +213,7 @@ export default function AdminUsersPage() {
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/users/${id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${id}`,
         {
           method: "DELETE",
           headers: {

@@ -70,7 +70,7 @@ export default function AdminPhotosPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/photos",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/photos`,
         {
           headers: {
             Authorization: `${token}`,
@@ -96,7 +96,7 @@ export default function AdminPhotosPage() {
     try {
       const token = Cookies.get("token");
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/detailmasjids",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailmasjids`,
         {
           headers: {
             Authorization: `${token}`,
@@ -170,8 +170,8 @@ export default function AdminPhotosPage() {
       }
 
       const url = isEditing
-        ? `https://masjidinfo-backend.vercel.app/api/photos/${currentPhoto.id}`
-        : "https://masjidinfo-backend.vercel.app/api/photos";
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/photos/${currentPhoto.id}`
+        : `${process.env.NEXT_PUBLIC_BASE_URL}/api/photos`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -233,7 +233,7 @@ export default function AdminPhotosPage() {
       }
 
       const response = await fetch(
-        `https://masjidinfo-backend.vercel.app/api/photos/${id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/photos/${id}`,
         {
           method: "DELETE",
           headers: {

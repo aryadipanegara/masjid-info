@@ -58,7 +58,7 @@ export default function ProfilePage() {
       }
 
       const response = await fetch(
-        "https://masjidinfo-backend.vercel.app/api/users/me",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/me`,
         {
           headers: { Authorization: `${token}` },
         }

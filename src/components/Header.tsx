@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, X, Search, Bell } from "lucide-react";
+import { Menu, X, Search, Bell, BookmarkIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,6 @@ import { useAuth } from "@/lib/AuthContext";
 
 const navItems = [
   { href: "/masjid", label: "Masjid" },
-  { href: "/save", label: "Save" },
   { href: "/about", label: "About" },
 ];
 
@@ -89,12 +88,15 @@ export default function Header() {
       return (
         <div>
           <Link href="/auth/login">
-            <Button variant="ghost" className="text-black">
+            <Button
+              variant="ghost"
+              className="text-black hover:bg-gray-700 hover:text-emerald-200"
+            >
               Login
             </Button>
           </Link>
           <Link href="/auth/register">
-            <Button className="bg-white text-black hover:text-white hover:bg-emerald-700">
+            <Button className="bg-white text-black hover:text-emerald-200 hover:bg-gray-700">
               Register
             </Button>
           </Link>
@@ -122,7 +124,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-sm font-medium transition-colors hover:text-emerald-200 text-black px-3 py-2 rounded-md hover:bg-emerald-700"
+                  className="text-sm font-medium transition-colors hover:text-emerald-200 text-black px-3 py-2 rounded-md hover:bg-gray-700"
                 >
                   {item.label}
                 </Link>
@@ -131,12 +133,21 @@ export default function Header() {
           </div>
 
           <div className="hidden lg:flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="  hover:text-emerald-200 hover:bg-gray-700"
+            >
+              <Link href="/save">
+                <BookmarkIcon size={20} />
+              </Link>
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-black hover:text-emerald-200"
+                  className="text-black hover:text-emerald-200 hover:bg-gray-700"
                 >
                   <Bell className="h-5 w-5" />
                 </Button>
@@ -185,7 +196,7 @@ export default function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-sm font-medium transition-colors hover:text-emerald-200 text-black px-3 py-2 rounded-md hover:bg-emerald-700"
+                    className="text-sm font-medium transition-colors hover:text-gray-700 text-black px-3 py-2 rounded-md hover:bg-emerald-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
