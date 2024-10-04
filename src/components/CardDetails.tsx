@@ -15,7 +15,6 @@ import {
   CalendarIcon,
   ClockIcon,
   MapPinIcon,
-  CameraIcon,
   InfoIcon,
 } from "lucide-react";
 import { DetailMasjid } from "@/types/masjidInterfaces";
@@ -92,6 +91,10 @@ export default function Component({ detailMasjid }: CardDetailProps) {
                       <h3 className="text-lg sm:text-xl font-semibold mb-4 text-primary text-center">
                         {sejarah.title}
                       </h3>
+                      <div
+                        className="text-justify leading-relaxed text-foreground prose max-w-none text-sm sm:text-base"
+                        dangerouslySetInnerHTML={{ __html: sejarah.content }}
+                      />
                       {detailMasjid.photos[index] && (
                         <div className="mb-4">
                           <div
@@ -116,15 +119,51 @@ export default function Component({ detailMasjid }: CardDetailProps) {
                           </p>
                         </div>
                       )}
-                      <div
-                        className="text-justify leading-relaxed text-foreground prose max-w-none text-sm sm:text-base"
-                        dangerouslySetInnerHTML={{ __html: sejarah.content }}
-                      />
+
                       {index < detailMasjid.sejarah.length - 1 && (
                         <Separator className="my-8" />
                       )}
                     </motion.div>
                   ))}
+
+                  {/* Menampilkan foto-foto yang tersisa setelah sejarah */}
+                  {detailMasjid.photos.length > detailMasjid.sejarah.length && (
+                    <div className="mb-8">
+                      <h3 className="text-lg sm:text-xl font-semibold mb-4 text-primary text-center">
+                        Foto Lainnya
+                      </h3>
+                      <CardContent>
+                        <div className="grid grid-cols-1 gap-2 sm:gap-4">
+                          {detailMasjid.photos
+                            .slice(detailMasjid.sejarah.length)
+                            .map((photo) => (
+                              <div key={photo.id} className="mb-4">
+                                <div
+                                  className={`rounded-lg overflow-hidden shadow-lg mx-auto ${getCardSizeClass()}`}
+                                >
+                                  <Image
+                                    src={photo.photo_url}
+                                    alt={photo.caption}
+                                    width={800}
+                                    height={450}
+                                    className="w-full h-auto"
+                                    onLoadingComplete={(img) => {
+                                      setImageSize({
+                                        width: img.naturalWidth,
+                                        height: img.naturalHeight,
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <p className="text-xs sm:text-sm text-center mt-2 text-muted-foreground">
+                                  {photo.caption}
+                                </p>
+                              </div>
+                            ))}
+                        </div>
+                      </CardContent>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -149,35 +188,9 @@ export default function Component({ detailMasjid }: CardDetailProps) {
                   </p>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
-                    <CameraIcon className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    Galeri Foto
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                    {detailMasjid.photos.map((photo, index) => (
-                      <div
-                        key={photo.id}
-                        className="relative aspect-square rounded-md overflow-hidden"
-                      >
-                        <Image
-                          src={photo.photo_url}
-                          alt={photo.caption}
-                          layout="fill"
-                          objectFit="cover"
-                          className="transition-transform duration-300 hover:scale-110"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
+
           <DiscussionComponent />
         </motion.div>
       </div>

@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { DetailMasjid, Photo } from "@/types/masjidInterfaces";
+import Alert from "@/components/ui/AlertCustom";
 
 const formFields: FormField[] = [
   { name: "photo_url", label: "URL Foto", type: "text" },
@@ -229,7 +230,7 @@ export default function AdminPhotosPage() {
     try {
       const token = Cookies.get("token");
       if (!token) {
-        throw new Error("No token found in localStorage");
+        throw new Error("No token found in Cookies");
       }
 
       const response = await fetch(
@@ -272,13 +273,11 @@ export default function AdminPhotosPage() {
     );
   };
 
-  // Group photos by detailMasjidId
   const groupedPhotos = filteredPhotosList.reduce((acc, photo) => {
     (acc[photo.detailMasjidId] = acc[photo.detailMasjidId] || []).push(photo);
     return acc;
   }, {} as Record<string, Photo[]>);
 
-  // Sort photos within each group by created_at
   Object.values(groupedPhotos).forEach((group) => {
     group.sort(
       (a, b) =>
@@ -288,6 +287,14 @@ export default function AdminPhotosPage() {
 
   return (
     <div className="container mx-auto p-4">
+      {alertInfo && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          duration={3000}
+          onClose={() => setAlertInfo(null)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-primary mb-4 md:mb-0">
           Daftar Foto Masjid
