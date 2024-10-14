@@ -135,7 +135,6 @@ export default function Header() {
           <div className="hidden lg:flex items-center space-x-4">
             <Button
               variant="ghost"
-              size="icon"
               className="  hover:text-emerald-200 hover:bg-gray-700"
             >
               <Link href="/save">
@@ -154,12 +153,6 @@ export default function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>Dalam Tahap Pengembangan</DropdownMenuItem>
-                {/* <DropdownMenuItem>
-                  Event reminder: Eid celebration
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  New mosque added in your area
-                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
             <AuthButtons />
@@ -189,8 +182,11 @@ export default function Header() {
                   size="icon"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-black"
-                ></Button>
+                >
+                  <X className="h-6 w-6" />
+                </Button>
               </div>
+
               <nav className="flex flex-col space-y-4">
                 {navItems.concat(adminNavItems).map((item) => (
                   <Link
@@ -202,7 +198,14 @@ export default function Header() {
                     {item.label}
                   </Link>
                 ))}
+                <div
+                  className="text-sm font-medium transition-colors hover:text-gray-700 text-black px-3 py-2 rounded-md hover:bg-emerald-200 items-end"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Link href="/save">Bookmarks</Link>
+                </div>
               </nav>
+
               <div className="mt-6 space-y-4">
                 <div className="flex justify-between items-center">
                   <AuthButtons />
