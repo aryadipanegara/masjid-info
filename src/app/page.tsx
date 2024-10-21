@@ -30,6 +30,7 @@ import { useMasjid } from "../redux/hooks/useMasjid";
 import { ShareMediaButton } from "@/components/ShareMediaButton";
 import { ShareMediaModal } from "@/components/modal/ShareMediaModal";
 import Alert from "@/components/ui/AlertCustom";
+import MasjidFinderSkeleton from "@/components/skeleton/SkeletonMasjidFinder";
 
 export default function MasjidFinder() {
   const {
@@ -87,8 +88,10 @@ export default function MasjidFinder() {
       setCategories(uniqueCategories);
     } catch (error) {
       console.error("Error fetching masjid data:", error);
-    } finally {
-      setIsLoading(false);
+    }
+
+    if (isLoading) {
+      return <MasjidFinderSkeleton />;
     }
   };
 
@@ -166,148 +169,151 @@ export default function MasjidFinder() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <div>
-            {/* Carousel Section */}
-            <div className="mb-10">
-              <Carousel items={carouselCards} />
-            </div>
+    <>
+      {isLoading ? (
+        <MasjidFinderSkeleton />
+      ) : (
+        <div className="min-h-screen bg-background">
+          <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+            <div>
+              {/* Carousel Section */}
+              <div className="mb-10">
+                <Carousel items={carouselCards} />
+              </div>
 
-            <div className="mb-8">
-              <div className="max-w-2xl mx-auto">
-                <PlaceholdersAndVanishInput
-                  placeholders={placeholders}
-                  onChange={handleSearchChange}
-                  onSubmit={handleSearchSubmit}
+              <div className="mb-8">
+                <div className="max-w-2xl mx-auto">
+                  <PlaceholdersAndVanishInput
+                    placeholders={placeholders}
+                    onChange={handleSearchChange}
+                    onSubmit={handleSearchSubmit}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+                  Categories
+                </h2>
+                <CategoryList
+                  categories={categories}
+                  onSelectCategory={handleCategorySelect}
+                  selectedCategory={selectedCategory}
                 />
               </div>
-            </div>
 
-            <div className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-                Categories
-              </h2>
-              <CategoryList
-                categories={categories}
-                onSelectCategory={handleCategorySelect}
-                selectedCategory={selectedCategory}
-              />
-            </div>
-
-            {/* Masjid List */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              <AnimatePresence>
-                {filteredMasjids.map((masjid) => (
-                  <motion.div
-                    key={masjid.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <UiCard className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
-                      <div className="relative w-full pt-[56.25%]">
-                        <Image
-                          src={masjid.thumbnail}
-                          alt={masjid.name}
-                          layout="fill"
-                          objectFit="cover"
-                          className="rounded-t-lg"
-                        />
-                      </div>
-
-                      <CardHeader className="flex-grow">
-                        {masjid.categories && masjid.categories.length > 0 && (
-                          <span className="text-xs sm:text-sm font-medium text-emerald-600 mb-1 sm:mb-2 block">
-                            {masjid.categories[0].category.name}
-                          </span>
-                        )}
-                        <CardTitle className="text-base sm:text-lg line-clamp-1">
-                          {masjid.name}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2 line-clamp-2">
-                          {masjid.description}
-                        </p>
-                        <div className="flex items-center text-xs text-gray-500">
-                          <IconCalendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-                          <span className="mr-4">
-                            {new Date(masjid.created_at).toLocaleDateString()}
-                          </span>
-                          <IconEye className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-                          <span>{viewCounts[masjid.id] || 0}</span>
+              {/* Masjid List */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <AnimatePresence>
+                  {filteredMasjids.map((masjid) => (
+                    <motion.div
+                      key={masjid.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <UiCard className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+                        <div className="relative w-full pt-[56.25%]">
+                          <Image
+                            src={masjid.thumbnail}
+                            alt={masjid.name}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-t-lg"
+                          />
                         </div>
-                      </CardContent>
-                      <CardFooter className="flex justify-between items-center space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex-grow"
-                          onClick={() => handleMasjidClick(masjid.id)}
-                        >
-                          <Link
-                            href={`/detailmasjids/${masjid.detailMasjids[0]?.slug}`}
+
+                        <CardHeader className="flex-grow">
+                          {masjid.categories &&
+                            masjid.categories.length > 0 && (
+                              <span className="text-xs sm:text-sm font-medium text-emerald-600 mb-1 sm:mb-2 block">
+                                {masjid.categories[0].category.name}
+                              </span>
+                            )}
+                          <CardTitle className="text-base sm:text-lg line-clamp-1">
+                            {masjid.name}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-xs sm:text-sm text-muted-foreground mb-2 line-clamp-2">
+                            {masjid.description}
+                          </p>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <IconCalendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className="mr-4">
+                              {new Date(masjid.created_at).toLocaleDateString()}
+                            </span>
+                            <IconEye className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+                            <span>{viewCounts[masjid.id] || 0}</span>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between items-center space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-grow"
+                            onClick={() => handleMasjidClick(masjid.id)}
                           >
-                            Kunjungi Masjid
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleLikeClick(masjid.id)}
-                          className={
-                            likedMasjids.includes(masjid.id)
-                              ? "text-red-500"
-                              : ""
-                          }
-                        >
-                          <IconHeart className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleBookmarkClick(masjid.id)}
-                          className={
-                            bookmarkedMasjids.includes(masjid.id)
-                              ? "text-yellow-500"
-                              : ""
-                          }
-                        >
-                          <IconBookmark className="h-4 w-4" />
-                        </Button>
-                        <ShareMediaButton
-                          onClick={() => handleShareClick(masjid)}
-                        />
-                      </CardFooter>
-                    </UiCard>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                            <Link
+                              href={`/detailmasjids/${masjid.detailMasjids[0]?.slug}`}
+                            >
+                              Kunjungi Masjid
+                            </Link>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleLikeClick(masjid.id)}
+                            className={
+                              likedMasjids.includes(masjid.id)
+                                ? "text-red-500"
+                                : ""
+                            }
+                          >
+                            <IconHeart className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleBookmarkClick(masjid.id)}
+                            className={
+                              bookmarkedMasjids.includes(masjid.id)
+                                ? "text-yellow-500"
+                                : ""
+                            }
+                          >
+                            <IconBookmark className="h-4 w-4" />
+                          </Button>
+                          <ShareMediaButton
+                            onClick={() => handleShareClick(masjid)}
+                          />
+                        </CardFooter>
+                      </UiCard>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
-        )}
-      </div>
-      {selectedMasjid && (
-        <ShareMediaModal
-          isOpen={isShareModalOpen}
-          onClose={() => setIsShareModalOpen(false)}
-          masjidName={selectedMasjid.name}
-          masjidSlug={selectedMasjid.detailMasjids[0]?.slug || ""}
-        />
+          {selectedMasjid && (
+            <ShareMediaModal
+              isOpen={isShareModalOpen}
+              onClose={() => setIsShareModalOpen(false)}
+              masjidName={selectedMasjid.name}
+              masjidSlug={selectedMasjid.detailMasjids[0]?.slug || ""}
+            />
+          )}
+          {alert && (
+            <Alert
+              message={alert.message}
+              type={alert.type}
+              duration={3000}
+              onClose={() => {}}
+            />
+          )}
+        </div>
       )}
-      {alert && (
-        <Alert
-          message={alert.message}
-          type={alert.type}
-          duration={3000}
-          onClose={() => {}}
-        />
-      )}
-    </div>
+    </>
   );
 }

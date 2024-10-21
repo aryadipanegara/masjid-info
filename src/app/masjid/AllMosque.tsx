@@ -28,6 +28,7 @@ import { ShareMediaModal } from "../../components/modal/ShareMediaModal";
 import { toggleBookmark, toggleLike } from "@/redux/slice/masjidSlice";
 import { useMasjid } from "@/redux/hooks/useMasjid";
 import Alert from "@/components/ui/AlertCustom";
+import AllMosqueSkeleton from "@/components/skeleton/SkeletonAllMosque";
 
 export default function AllMosque() {
   const {
@@ -52,10 +53,11 @@ export default function AllMosque() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedMasjid, setSelectedMasjid] = useState<Masjid | null>(null);
   const placeholders = masjids.slice(0, 10).map((masjid) => masjid.name);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     fetchMasjids();
-  }, []);
+  }, [searchTerm, masjids, selectedCategory]);
 
   useEffect(() => {
     filterMasjids();
@@ -84,8 +86,13 @@ export default function AllMosque() {
       setCategories(uniqueCategories);
     } catch (error) {
       console.error("Error fetching masjid data:", error);
-    } finally {
-      setIsLoading(false);
+    }
+    // finally {
+    //   setIsLoading(false);
+    // }
+
+    if (isLoading) {
+      return <AllMosqueSkeleton />;
     }
   };
 
@@ -137,10 +144,10 @@ export default function AllMosque() {
 
   return (
     <>
-      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {isLoading ? (
-          <Loading />
-        ) : (
+      {isLoading ? (
+        <AllMosqueSkeleton />
+      ) : (
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <>
             <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8 text-gray-800">
               Semua Masjid
@@ -263,8 +270,8 @@ export default function AllMosque() {
               </AnimatePresence>
             </div>
           </>
-        )}
-      </div>
+        </div>
+      )}
       {selectedMasjid && (
         <ShareMediaModal
           isOpen={isShareModalOpen}
